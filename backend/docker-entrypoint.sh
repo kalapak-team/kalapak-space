@@ -20,40 +20,51 @@ fi
 php artisan config:clear 2>/dev/null || true
 
 # ============================================================
-# DATABASE: Nuclear reset via raw SQL then migrate
+# DATABASE: Full schema reset using psql, then migrate
 # ============================================================
-# Laravel's migrate:fresh only drops tables. On Render's PostgreSQL,
-# orphaned sequences/types from failed migrations can block CREATE TABLE.
-# Solution: DROP the entire public schema and recreate it.
-# ============================================================
-echo "==> Resetting database schema (DROP SCHEMA public CASCADE)..."
-php -r "
-try {
-    \$dsn = 'pgsql:host=' . getenv('DB_HOST') . ';port=' . getenv('DB_PORT') . ';dbname=' . getenv('DB_DATABASE');
-    \$pdo = new PDO(\$dsn, getenv('DB_USERNAME'), getenv('DB_PASSWORD'));
-    \$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+echo "==> [DB] Checking env vars..."
+echo "==> DB_HOST=${DB_HOST}"
+echo "==> DB_PORT=${DB_PORT}"
+echo "==> DB_DATABASE=${DB_DATABASE}"
+echo "==> DB_USERNAME=${DB_USERNAME}"
 
-    \$pdo->exec('DROP SCHEMA IF EXISTS public CASCADE');
-    \$pdo->exec('CREATE SCHEMA public');
+echo "==> [DB] Dropping and recreating public schema via psql..."
+PGPASSWORD="${DB_PASSWORD}" psql \
+    -h "${DB_HOST}" \
+    -p "${DB_PORT:-5432}" \
+    -U "${DB_USERNAME}" \
+    -d "${DB_DATABASE}" \
+    -c "DROP SCHEMA IF EXISTS public CASCADE; CREATE SCHEMA public; GRANT ALL ON SCHEMA public TO \"${DB_USERNAME}\"; GRANT ALL ON SCHEMA public TO PUBLIC;" \
+    2>&1
 
-    \$user = getenv('DB_USERNAME');
-    \$pdo->exec('GRANT ALL ON SCHEMA public TO \"' . \$user . '\"');
-    \$pdo->exec('GRANT ALL ON SCHEMA public TO PUBLIC');
+if [ $? -eq 0 ]; then
+    echo "==> [DB] Schema reset successful!"
+else
+    echo "==> [DB] psql schema reset failed — trying Laravel db:wipe..."
+    php artisan db:wipe --force --no-interaction 2>&1 || true
+fi
 
-    echo \"==> Schema reset OK\n\";
-} catch (Exception \$e) {
-    echo '==> Schema reset error: ' . \$e->getMessage() . \"\n\";
-    echo \"==> Falling back to db:wipe...\n\";
-}
-" 2>&1
-
-echo "==> Running migrations with seed..."
-php artisan migrate --seed --force --no-interaction 2>&1
+echo "==> [DB] Running migrations with seed (verbose)..."
+php artisan migrate --seed --force --no-interaction -v 2>&1
 
 if [ $? -ne 0 ]; then
-    echo "==> [!] Migration failed. Trying db:wipe then migrate..."
-    php artisan db:wipe --force --no-interaction 2>&1 || true
-    php artisan migrate --seed --force --no-interaction 2>&1
+    echo "==> [DB] Migration STILL failed after schema reset!"
+    echo "==> [DB] Listing existing tables for debug..."
+    PGPASSWORD="${DB_PASSWORD}" psql \
+        -h "${DB_HOST}" \
+        -p "${DB_PORT:-5432}" \
+        -U "${DB_USERNAME}" \
+        -d "${DB_DATABASE}" \
+        -c "\dt" \
+        2>&1
+    echo "==> [DB] Listing existing sequences..."
+    PGPASSWORD="${DB_PASSWORD}" psql \
+        -h "${DB_HOST}" \
+        -p "${DB_PORT:-5432}" \
+        -U "${DB_USERNAME}" \
+        -d "${DB_DATABASE}" \
+        -c "SELECT sequencename FROM pg_sequences WHERE schemaname = 'public';" \
+        2>&1
 fi
 
 # Cache for production performance
