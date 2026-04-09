@@ -1,5 +1,4 @@
 #!/bin/sh
-set -e
 
 cd /var/www/html
 
@@ -21,30 +20,27 @@ fi
 php artisan config:clear 2>/dev/null || true
 
 # ============================================================
-# DATABASE MIGRATION (auto-recovery on failure)
+# DATABASE: try migrate, if fails → nuke and rebuild
 # ============================================================
-echo "==> Running database migrations..."
-if ! php artisan migrate --force --no-interaction 2>&1; then
+echo "==> Attempting database migration..."
+php artisan migrate --force --no-interaction 2>&1 || {
     echo ""
-    echo "==> Migration failed! Database may be in a broken state."
-    echo "==> Auto-recovering with migrate:fresh --seed ..."
+    echo "==> [!] Migration FAILED — auto-recovering with migrate:fresh --seed"
     echo ""
     php artisan migrate:fresh --seed --force --no-interaction
     echo "==> Database rebuilt successfully!"
-fi
+}
 
-# Cache config & routes for production performance
+# Cache for production performance
 php artisan config:cache 2>/dev/null || true
 php artisan route:cache 2>/dev/null || true
-
-# Clear application cache
 php artisan cache:clear 2>/dev/null || true
 
-# Create storage link if not exists
+# Create storage link
 php artisan storage:link 2>/dev/null || true
 
 # Set permissions
 chown -R www-data:www-data storage bootstrap/cache 2>/dev/null || true
 
-echo "Starting Laravel server on port ${PORT}..."
+echo "==> Starting Laravel on port ${PORT}..."
 exec php artisan serve --host=0.0.0.0 --port=${PORT}
