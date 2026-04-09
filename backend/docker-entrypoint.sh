@@ -17,14 +17,31 @@ if [ -z "$APP_KEY" ]; then
     php artisan key:generate --force --no-interaction 2>/dev/null || true
 fi
 
-# Clear config cache (file-based, safe before migration)
+# Clear config cache
 php artisan config:clear 2>/dev/null || true
 
-# Run migrations first (cache table must exist before cache:clear)
-php artisan migrate --force --no-interaction 2>/dev/null || true
+# ============================================================
+# DATABASE MIGRATION STRATEGY
+# ============================================================
+# FRESH_DB=true  → drops ALL tables and re-seeds (first deploy / broken DB)
+# FRESH_DB=false → runs normal incremental migrations (default)
+#
+# Set FRESH_DB=true in Render Environment Variables for first deploy,
+# then remove it or set to false after the database is working.
+# ============================================================
+if [ "$FRESH_DB" = "true" ]; then
+    echo "==> FRESH_DB=true: Dropping all tables and re-migrating with seed..."
+    php artisan migrate:fresh --seed --force --no-interaction
+    echo "==> Database rebuilt successfully! Set FRESH_DB=false now."
+else
+    echo "==> Running incremental migrations..."
+    php artisan migrate --force --no-interaction
+fi
 
-# Clear cache (now safe since cache table exists)
+# Clear application cache (safe after migrations)
 php artisan cache:clear 2>/dev/null || true
+php artisan config:cache 2>/dev/null || true
+php artisan route:cache 2>/dev/null || true
 
 # Create storage link if not exists
 php artisan storage:link 2>/dev/null || true
