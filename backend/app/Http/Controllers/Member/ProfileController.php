@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Services\SupabaseStorage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -67,21 +67,14 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+        $storage = app(SupabaseStorage::class);
 
         try {
             if ($user->avatar) {
-                Storage::disk('supabase')->delete($user->avatar);
+                $storage->delete($user->avatar);
             }
 
-            $path = $request->file('avatar')->store('avatars', 'supabase');
-
-            if (!$path) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Failed to upload file to storage.',
-                ], 500);
-            }
-
+            $path = $storage->upload($request->file('avatar'), 'avatars');
             $user->update(['avatar' => $path]);
 
             return response()->json([
@@ -92,12 +85,13 @@ class ProfileController extends Controller
         } catch (\Exception $e) {
             Log::error('Avatar upload failed', [
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
             ]);
             return response()->json([
                 'success' => false,
                 'message' => 'Storage error: ' . $e->getMessage(),
             ], 500);
+        }
+    }
         }
     }
 }

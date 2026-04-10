@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Media;
+use App\Services\SupabaseStorage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class MediaController extends Controller
@@ -34,7 +34,7 @@ class MediaController extends Controller
 
         $items = collect($media->items())->map(function ($item) {
             $data = $item->toArray();
-            $data['url'] = Storage::disk($item->disk)->url($item->path);
+            $data['url'] = app(SupabaseStorage::class)->url($item->path);
             if ($item->uploader) {
                 $data['uploader'] = [
                     'id' => $item->uploader->id,
@@ -64,18 +64,11 @@ class MediaController extends Controller
 
         try {
             $file = $request->file('file');
-            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('media', $filename, 'supabase');
-
-            if (!$path) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Failed to upload file to storage.',
-                ], 500);
-            }
+            $storage = app(SupabaseStorage::class);
+            $path = $storage->upload($file, 'media');
 
             $media = Media::create([
-                'filename' => $filename,
+                'filename' => basename($path),
                 'original_name' => $file->getClientOriginalName(),
                 'path' => $path,
                 'disk' => 'supabase',
@@ -85,7 +78,7 @@ class MediaController extends Controller
             ]);
 
             $responseData = $media->toArray();
-            $responseData['url'] = Storage::disk('supabase')->url($path);
+            $responseData['url'] = $storage->url($path);
 
             return response()->json([
                 'success' => true,
@@ -95,7 +88,6 @@ class MediaController extends Controller
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Media upload failed', [
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
             ]);
             return response()->json([
                 'success' => false,
@@ -107,7 +99,7 @@ class MediaController extends Controller
     public function destroy(int $id): JsonResponse
     {
         $media = Media::findOrFail($id);
-        Storage::disk($media->disk)->delete($media->path);
+        app(SupabaseStorage::class)->delete($media->path);
         $media->delete();
 
         return response()->json([

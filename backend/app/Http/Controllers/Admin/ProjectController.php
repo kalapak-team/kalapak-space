@@ -7,9 +7,9 @@ use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\ActivityLog;
 use App\Models\Project;
+use App\Services\SupabaseStorage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -44,7 +44,7 @@ class ProjectController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('cover_image')) {
-            $data['cover_image'] = $request->file('cover_image')->store('projects', 'supabase');
+            $data['cover_image'] = app(SupabaseStorage::class)->upload($request->file('cover_image'), 'projects');
         }
 
         $data['created_by'] = auth()->id();
@@ -82,9 +82,9 @@ class ProjectController extends Controller
 
         if ($request->hasFile('cover_image')) {
             if ($project->cover_image) {
-                Storage::disk('supabase')->delete($project->cover_image);
+                app(SupabaseStorage::class)->delete($project->cover_image);
             }
-            $data['cover_image'] = $request->file('cover_image')->store('projects', 'supabase');
+            $data['cover_image'] = app(SupabaseStorage::class)->upload($request->file('cover_image'), 'projects');
         }
 
         $tags = $data['tags'] ?? [];

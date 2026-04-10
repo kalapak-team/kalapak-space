@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
+use App\Services\SupabaseStorage;
 
 class TeamMemberResource extends JsonResource
 {
@@ -15,7 +15,7 @@ class TeamMemberResource extends JsonResource
             'name' => $this->name,
             'title' => $this->title,
             'bio' => $this->bio,
-            'avatar' => $this->avatar ? Storage::disk('supabase')->url($this->avatar) : null,
+            'avatar' => $this->avatar ? app(SupabaseStorage::class)->url($this->avatar) : null,
             'github_url' => $this->github_url,
             'linkedin_url' => $this->linkedin_url,
             'telegram_url' => $this->telegram_url,

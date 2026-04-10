@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\TeamMemberResource;
 use App\Models\ActivityLog;
 use App\Models\TeamMember;
+use App\Services\SupabaseStorage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class TeamMemberController extends Controller
 {
@@ -39,7 +39,7 @@ class TeamMemberController extends Controller
         ]);
 
         if ($request->hasFile('avatar')) {
-            $data['avatar'] = $request->file('avatar')->store('team', 'supabase');
+            $data['avatar'] = app(SupabaseStorage::class)->upload($request->file('avatar'), 'team');
         }
 
         $member = TeamMember::create($data);
@@ -73,9 +73,9 @@ class TeamMemberController extends Controller
 
         if ($request->hasFile('avatar')) {
             if ($member->avatar) {
-                Storage::disk('supabase')->delete($member->avatar);
+                app(SupabaseStorage::class)->delete($member->avatar);
             }
-            $data['avatar'] = $request->file('avatar')->store('team', 'supabase');
+            $data['avatar'] = app(SupabaseStorage::class)->upload($request->file('avatar'), 'team');
         }
 
         $member->update($data);
@@ -94,7 +94,7 @@ class TeamMemberController extends Controller
         $member = TeamMember::findOrFail($id);
         $name = $member->name;
         if ($member->avatar) {
-            Storage::disk('supabase')->delete($member->avatar);
+            app(SupabaseStorage::class)->delete($member->avatar);
         }
         $member->delete();
 

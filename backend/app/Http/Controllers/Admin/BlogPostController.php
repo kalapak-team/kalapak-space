@@ -8,9 +8,9 @@ use App\Http\Resources\BlogPostResource;
 use App\Models\ActivityLog;
 use App\Models\BlogCategory;
 use App\Models\BlogPost;
+use App\Services\SupabaseStorage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class BlogPostController extends Controller
 {
@@ -50,7 +50,7 @@ class BlogPostController extends Controller
         $data['author_id'] = auth()->id();
 
         if ($request->hasFile('cover_image')) {
-            $data['cover_image'] = $request->file('cover_image')->store('blog', 'supabase');
+            $data['cover_image'] = app(SupabaseStorage::class)->upload($request->file('cover_image'), 'blog');
         }
 
         if ($data['status'] === 'published' && empty($data['published_at'])) {
@@ -85,9 +85,9 @@ class BlogPostController extends Controller
 
         if ($request->hasFile('cover_image')) {
             if ($post->cover_image) {
-                Storage::disk('supabase')->delete($post->cover_image);
+                app(SupabaseStorage::class)->delete($post->cover_image);
             }
-            $data['cover_image'] = $request->file('cover_image')->store('blog', 'supabase');
+            $data['cover_image'] = app(SupabaseStorage::class)->upload($request->file('cover_image'), 'blog');
         }
 
         if ($data['status'] === 'published' && !$post->published_at && empty($data['published_at'])) {
