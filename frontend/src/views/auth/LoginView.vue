@@ -79,6 +79,11 @@
         </router-link>
       </div>
 
+      <!-- Turnstile CAPTCHA -->
+      <div class="flex justify-center">
+        <VueTurnstile :site-key="turnstileSiteKey" v-model="turnstileToken" theme="dark" />
+      </div>
+
       <!-- Error -->
       <div v-if="error" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20">
         <svg class="w-5 h-5 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -154,11 +159,14 @@
 import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import VueTurnstile from 'vue-turnstile'
 
 const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
 
+const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
+const turnstileToken = ref('')
 const form = ref({ email: '', password: '', remember: false })
 const error = ref('')
 const showPassword = ref(false)
@@ -166,7 +174,7 @@ const showPassword = ref(false)
 async function handleLogin() {
   error.value = ''
   try {
-    await authStore.login(form.value)
+    await authStore.login({ ...form.value, turnstile_token: turnstileToken.value })
     const redirect = route.query.redirect || (authStore.isAdmin ? '/admin' : '/')
     router.push(redirect)
   } catch (e) {

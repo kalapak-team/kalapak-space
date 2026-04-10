@@ -17,6 +17,9 @@
         <label class="block text-sm font-medium dark:text-gray-300 mb-1">Email</label>
         <input v-model="email" type="email" required class="input-field" placeholder="your@email.com" />
       </div>
+      <div class="flex justify-center">
+        <VueTurnstile :site-key="turnstileSiteKey" v-model="turnstileToken" theme="dark" />
+      </div>
       <button type="submit" :disabled="loading" class="btn-primary w-full">
         <span v-if="loading">Sending...</span>
         <span v-else>Send Reset Link</span>
@@ -35,17 +38,20 @@
 <script setup>
 import { ref } from 'vue'
 import { authApi } from '@/services/api'
+import VueTurnstile from 'vue-turnstile'
 
 const email = ref('')
 const loading = ref(false)
 const sent = ref(false)
 const error = ref('')
+const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
+const turnstileToken = ref('')
 
 async function handleSubmit() {
   loading.value = true
   error.value = ''
   try {
-    await authApi.forgotPassword({ email: email.value })
+    await authApi.forgotPassword({ email: email.value, turnstile_token: turnstileToken.value })
     sent.value = true
   } catch (e) {
     error.value = e.response?.data?.message || 'Failed to send reset link'

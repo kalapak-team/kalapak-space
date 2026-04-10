@@ -66,6 +66,8 @@ services:
         value: file
       - key: FILESYSTEM_DISK
         value: local
+      - key: TURNSTILE_SECRET_KEY
+        sync: false # Set manually in Render dashboard
 
   # -------------------------------------------------
   # Frontend — Vue 3 + Nginx (production build)

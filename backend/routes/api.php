@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Route;
 // ── PUBLIC ROUTES ─────────────────────────────────────
 
 // Auth
-Route::prefix('auth')->group(function () {
+Route::prefix('auth')->middleware('turnstile')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [RegisterController::class, 'register']);
     Route::post('/forgot-password', [PasswordResetController::class, 'forgotPassword']);
@@ -67,7 +67,7 @@ Route::get('/tags', function () {
 Route::get('/settings/public', [HomeController::class, 'settings']);
 
 // Contact
-Route::post('/contact', [ContactController::class, 'store']);
+Route::post('/contact', [ContactController::class, 'store'])->middleware('turnstile');
 
 // Storage diagnostics (remove after debugging)
 Route::get('/storage-test', function () {
@@ -76,7 +76,7 @@ Route::get('/storage-test', function () {
 });
 
 // Applications (public submit)
-Route::post('/applications', [ApplicationController::class, 'store']);
+Route::post('/applications', [ApplicationController::class, 'store'])->middleware('turnstile');
 
 // ── AUTHENTICATED ROUTES ──────────────────────────────
 

@@ -313,6 +313,9 @@
             </div>
 
             <!-- Navigation buttons -->
+            <div v-if="currentStep === 3" class="flex justify-center pt-2">
+              <VueTurnstile :site-key="turnstileSiteKey" v-model="turnstileToken" />
+            </div>
             <div class="flex items-center gap-4 pt-2">
               <button v-if="currentStep > 1" type="button" @click="currentStep--"
                 class="px-5 py-3 rounded-xl text-sm font-medium border border-gray-200 dark:border-dark-500 text-gray-600 dark:text-gray-400 hover:border-brand-violet dark:hover:border-brand-cyan hover:text-brand-violet dark:hover:text-brand-cyan transition-all duration-300">
@@ -370,12 +373,15 @@
 import { ref, reactive } from 'vue'
 import { memberApi } from '@/services/api'
 import CustomSelect from '@/components/common/CustomSelect.vue'
+import VueTurnstile from 'vue-turnstile'
 
 const currentStep = ref(1)
 const submitting = ref(false)
 const submitted = ref(false)
 const error = ref('')
 const openFaq = ref(null)
+const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
+const turnstileToken = ref('')
 
 const form = reactive({
   name: '',
@@ -462,7 +468,7 @@ async function handleSubmit() {
   submitting.value = true
   error.value = ''
   try {
-    await memberApi.submitApplication(form)
+    await memberApi.submitApplication({ ...form, turnstile_token: turnstileToken.value })
     submitted.value = true
   } catch (e) {
     error.value = e.response?.data?.message || 'Failed to submit. Please try again.'

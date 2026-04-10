@@ -150,6 +150,11 @@
         </label>
       </div>
 
+      <!-- Turnstile CAPTCHA -->
+      <div class="flex justify-center">
+        <VueTurnstile :site-key="turnstileSiteKey" v-model="turnstileToken" theme="dark" />
+      </div>
+
       <!-- Error -->
       <div v-if="error" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20">
         <svg class="w-5 h-5 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -225,9 +230,13 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import VueTurnstile from 'vue-turnstile'
 
 const router = useRouter()
 const authStore = useAuthStore()
+
+const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
+const turnstileToken = ref('')
 
 const form = ref({ name: '', email: '', password: '', password_confirmation: '' })
 const error = ref('')
@@ -265,7 +274,7 @@ async function handleRegister() {
     return
   }
   try {
-    await authStore.register(form.value)
+    await authStore.register({ ...form.value, turnstile_token: turnstileToken.value })
     router.push('/')
   } catch (e) {
     const errors = e.response?.data?.errors

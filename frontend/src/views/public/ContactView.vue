@@ -118,6 +118,9 @@
                   class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-dark-700 border border-gray-200 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all duration-300 resize-none" />
                 <p class="text-[10px] text-gray-400 mt-1 text-right">{{ form.message.length }} / 2000</p>
               </div>
+              <div class="flex justify-center">
+                <VueTurnstile :site-key="turnstileSiteKey" v-model="turnstileToken" />
+              </div>
               <button type="submit" :disabled="submitting"
                 class="w-full inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-sm font-semibold bg-gradient-brand text-white hover:shadow-glow transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none">
                 <svg v-if="!submitting" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" /></svg>
@@ -244,10 +247,13 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { publicApi } from '@/services/api'
+import VueTurnstile from 'vue-turnstile'
 
 const form = reactive({ name: '', email: '', subject: '', message: '' })
 const submitting = ref(false)
 const submitted = ref(false)
+const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
+const turnstileToken = ref('')
 const error = ref('')
 
 const contactInfo = [
@@ -272,7 +278,7 @@ async function handleSubmit() {
   submitting.value = true
   error.value = ''
   try {
-    await publicApi.sendContact(form)
+    await publicApi.sendContact({ ...form, turnstile_token: turnstileToken.value })
     submitted.value = true
   } catch (e) {
     error.value = e.response?.data?.message || 'Failed to send. Please try again.'

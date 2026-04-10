@@ -8,4 +8,8 @@ return [
         'bucket' => env('SUPABASE_BUCKET', 'kalapak-assets'),
     ],
 
+    'turnstile' => [
+        'secret_key' => env('TURNSTILE_SECRET_KEY'),
+    ],
+
 ];
