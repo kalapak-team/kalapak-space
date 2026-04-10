@@ -62,28 +62,42 @@ class MediaController extends Controller
             'file' => ['required', 'file', 'max:51200', 'mimes:jpg,jpeg,png,webp,gif,pdf,mp4,mov,avi,webm'],
         ]);
 
-        $file = $request->file('file');
-        $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-        $path = $file->storeAs('media', $filename, 'supabase');
+        try {
+            $file = $request->file('file');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('media', $filename, 'supabase');
 
-        $media = Media::create([
-            'filename' => $filename,
-            'original_name' => $file->getClientOriginalName(),
-            'path' => $path,
-            'disk' => 'supabase',
-            'mime_type' => $file->getMimeType(),
-            'size' => $file->getSize(),
-            'uploaded_by' => auth()->id(),
-        ]);
+            if (!$path) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to upload file to storage.',
+                ], 500);
+            }
 
-        $responseData = $media->toArray();
-        $responseData['url'] = Storage::disk('supabase')->url($path);
+            $media = Media::create([
+                'filename' => $filename,
+                'original_name' => $file->getClientOriginalName(),
+                'path' => $path,
+                'disk' => 'supabase',
+                'mime_type' => $file->getMimeType(),
+                'size' => $file->getSize(),
+                'uploaded_by' => auth()->id(),
+            ]);
 
-        return response()->json([
-            'success' => true,
-            'data' => $responseData,
-            'message' => 'File uploaded successfully.',
-        ], 201);
+            $responseData = $media->toArray();
+            $responseData['url'] = Storage::disk('supabase')->url($path);
+
+            return response()->json([
+                'success' => true,
+                'data' => $responseData,
+                'message' => 'File uploaded successfully.',
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Storage error: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function destroy(int $id): JsonResponse

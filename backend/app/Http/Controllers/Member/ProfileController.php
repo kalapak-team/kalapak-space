@@ -67,17 +67,32 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
-        if ($user->avatar) {
-            Storage::disk('supabase')->delete($user->avatar);
+        try {
+            if ($user->avatar) {
+                Storage::disk('supabase')->delete($user->avatar);
+            }
+
+            $path = $request->file('avatar')->store('avatars', 'supabase');
+
+            if (!$path) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to upload file to storage.',
+                ], 500);
+            }
+
+            $user->update(['avatar' => $path]);
+
+            return response()->json([
+                'success' => true,
+                'data' => new UserResource($user->fresh()->load('role')),
+                'message' => 'Avatar uploaded successfully.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Storage error: ' . $e->getMessage(),
+            ], 500);
         }
-
-        $path = $request->file('avatar')->store('avatars', 'supabase');
-        $user->update(['avatar' => $path]);
-
-        return response()->json([
-            'success' => true,
-            'data' => new UserResource($user->fresh()->load('role')),
-            'message' => 'Avatar uploaded successfully.',
-        ]);
     }
 }
