@@ -7,14 +7,14 @@ const routes = [
     path: '/',
     component: () => import('@/layouts/PublicLayout.vue'),
     children: [
-      { path: '', name: 'home', component: () => import('@/views/public/HomeView.vue') },
-      { path: 'about', name: 'about', component: () => import('@/views/public/AboutView.vue') },
-      { path: 'projects', name: 'projects', component: () => import('@/views/public/ProjectsView.vue') },
-      { path: 'projects/:slug', name: 'project-detail', component: () => import('@/views/public/ProjectDetailView.vue') },
-      { path: 'blog', name: 'blog', component: () => import('@/views/public/BlogView.vue') },
-      { path: 'blog/:slug', name: 'blog-post', component: () => import('@/views/public/BlogPostView.vue') },
-      { path: 'join', name: 'join', component: () => import('@/views/public/JoinUsView.vue') },
-      { path: 'contact', name: 'contact', component: () => import('@/views/public/ContactView.vue') },
+      { path: '', name: 'home', component: () => import('@/views/public/HomeView.vue'), meta: { title: 'Kalapak Code Team | Modern Tech Solutions from Cambodia' } },
+      { path: 'about', name: 'about', component: () => import('@/views/public/AboutView.vue'), meta: { title: 'About Us – Kalapak Code Team' } },
+      { path: 'projects', name: 'projects', component: () => import('@/views/public/ProjectsView.vue'), meta: { title: 'Projects – Kalapak Code Team' } },
+      { path: 'projects/:slug', name: 'project-detail', component: () => import('@/views/public/ProjectDetailView.vue'), meta: { title: 'Project – Kalapak Code Team' } },
+      { path: 'blog', name: 'blog', component: () => import('@/views/public/BlogView.vue'), meta: { title: 'Blog – Kalapak Code Team' } },
+      { path: 'blog/:slug', name: 'blog-post', component: () => import('@/views/public/BlogPostView.vue'), meta: { title: 'Blog – Kalapak Code Team' } },
+      { path: 'join', name: 'join', component: () => import('@/views/public/JoinUsView.vue'), meta: { title: 'Join Us – Kalapak Code Team' } },
+      { path: 'contact', name: 'contact', component: () => import('@/views/public/ContactView.vue'), meta: { title: 'Contact – Kalapak Code Team' } },
     ],
   },
   // Auth
@@ -103,6 +103,10 @@ router.beforeEach(async (to, from, next) => {
   }
 
   next()
+})
+
+router.afterEach((to) => {
+  document.title = to.meta.title || 'Kalapak Code Team | Modern Tech Solutions from Cambodia'
 })
 
 export default router
