@@ -27,6 +27,7 @@ const routes = [
       { path: 'register', name: 'register', component: () => import('@/views/auth/RegisterView.vue') },
       { path: 'forgot-password', name: 'forgot-password', component: () => import('@/views/auth/ForgotPasswordView.vue') },
       { path: 'reset-password/:token', name: 'reset-password', component: () => import('@/views/auth/ResetPasswordView.vue') },
+      { path: 'google/callback', name: 'google-callback', component: () => import('@/views/auth/GoogleCallbackView.vue') },
     ],
   },
   // Member
