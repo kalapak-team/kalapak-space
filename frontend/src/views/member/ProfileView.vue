@@ -48,7 +48,7 @@
           <!-- User Info -->
           <div class="flex-1 min-w-0">
             <div class="flex items-center gap-3 mb-1">
-              <h1 class="text-2xl sm:text-3xl font-jakarta font-bold text-white truncate">{{ authStore.user?.name }}</h1>
+              <h1 class="text-2xl sm:text-3xl font-sans font-bold text-white truncate">{{ authStore.user?.name }}</h1>
               <span
                 v-if="authStore.user?.role?.name"
                 class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-code font-medium tracking-wider"
@@ -180,7 +180,7 @@
           <div class="rounded-2xl border border-dark-600 dark:border-dark-600 border-gray-200 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden">
             <!-- Header -->
             <div class="px-6 py-5 border-b border-dark-600/50 dark:border-dark-600/50 border-gray-200">
-              <h3 class="text-lg font-jakarta font-semibold text-gray-900 dark:text-white">Edit Profile</h3>
+              <h3 class="text-lg font-sans font-semibold text-gray-900 dark:text-white">Edit Profile</h3>
               <p class="text-sm text-gray-500 mt-0.5">Update your personal information and social links</p>
             </div>
 
@@ -329,7 +329,7 @@
           <div class="lg:col-span-2">
             <div class="rounded-2xl border border-dark-600 dark:border-dark-600 border-gray-200 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden">
               <div class="px-6 py-5 border-b border-dark-600/50 dark:border-dark-600/50 border-gray-200">
-                <h3 class="text-lg font-jakarta font-semibold text-gray-900 dark:text-white">Change Password</h3>
+                <h3 class="text-lg font-sans font-semibold text-gray-900 dark:text-white">Change Password</h3>
                 <p class="text-sm text-gray-500 mt-0.5">Ensure your account stays secure by updating your password</p>
               </div>
 
@@ -456,7 +456,7 @@
         <div class="max-w-2xl">
           <div class="rounded-2xl border border-red-500/20 bg-red-500/5 backdrop-blur-sm overflow-hidden">
             <div class="px-6 py-5 border-b border-red-500/10">
-              <h3 class="text-lg font-jakarta font-semibold text-red-400">Danger Zone</h3>
+              <h3 class="text-lg font-sans font-semibold text-red-400">Danger Zone</h3>
               <p class="text-sm text-gray-500 mt-0.5">Irreversible and destructive actions</p>
             </div>
             <div class="p-6 space-y-6">

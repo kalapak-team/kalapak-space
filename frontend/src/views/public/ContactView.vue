@@ -15,7 +15,7 @@
           <span class="text-gray-900 dark:text-white">Let's</span>
           <span class="gradient-text"> Connect</span>
         </h1>
-        <p data-aos="fade-up" data-aos-delay="200" class="text-base sm:text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto font-jakarta leading-relaxed px-2 sm:px-0">
+        <p data-aos="fade-up" data-aos-delay="200" class="text-base sm:text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto font-sans leading-relaxed px-2 sm:px-0">
           Have a question, idea, or want to collaborate? We'd love to hear from you.
         </p>
       </div>

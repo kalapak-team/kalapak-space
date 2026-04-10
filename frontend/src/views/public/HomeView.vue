@@ -32,7 +32,7 @@
           <span class="text-gray-900 dark:text-white">We build</span><br />
           <span class="gradient-text">digital futures</span>
         </h1>
-        <p data-aos="fade-up" data-aos-delay="200" class="text-base sm:text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto mb-3 sm:mb-4 font-jakarta leading-relaxed px-2 sm:px-0">
+        <p data-aos="fade-up" data-aos-delay="200" class="text-base sm:text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto mb-3 sm:mb-4 font-sans leading-relaxed px-2 sm:px-0">
           A passionate team of developers from Cambodia, crafting modern web & mobile applications with cutting-edge technology.
         </p>
         <p data-aos="fade-up" data-aos-delay="300" class="text-xs sm:text-sm font-code text-brand-violet/70 dark:text-brand-cyan/70 mb-8 sm:mb-10 tracking-wide">

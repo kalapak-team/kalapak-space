@@ -2,7 +2,7 @@
   <div>
     <!-- Header -->
     <div class="mb-8">
-      <h2 class="text-3xl font-jakarta font-bold text-white mb-2">Welcome back</h2>
+      <h2 class="text-3xl font-sans font-bold text-white mb-2">Welcome back</h2>
       <p class="text-gray-400">Sign in to your account to continue</p>
     </div>
 

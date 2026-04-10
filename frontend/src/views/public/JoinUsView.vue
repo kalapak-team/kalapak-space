@@ -17,7 +17,7 @@
           <span class="text-gray-900 dark:text-white">Build the</span><br />
           <span class="gradient-text">Future With Us</span>
         </h1>
-        <p data-aos="fade-up" data-aos-delay="200" class="text-base sm:text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto font-jakarta leading-relaxed mb-6 sm:mb-8 px-2 sm:px-0">
+        <p data-aos="fade-up" data-aos-delay="200" class="text-base sm:text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto font-sans leading-relaxed mb-6 sm:mb-8 px-2 sm:px-0">
           We're looking for passionate developers, designers, and creators who want to build meaningful software and grow together.
         </p>
         <div data-aos="fade-up" data-aos-delay="300">

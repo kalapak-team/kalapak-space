@@ -47,7 +47,7 @@
           <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
           <span class="text-xs font-code text-brand-cyan tracking-wider">OPEN SOURCE</span>
         </div>
-        <h2 class="text-4xl xl:text-5xl font-jakarta font-bold text-white leading-tight">
+        <h2 class="text-4xl xl:text-5xl font-sans font-bold text-white leading-tight">
           Build the future, <br>
           <span class="gradient-text">one commit</span><br>
           at a time.
