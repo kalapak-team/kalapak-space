@@ -281,7 +281,13 @@ async function handleRegister() {
     if (errors) {
       error.value = Object.values(errors).flat().join(', ')
     } else {
-      error.value = e.response?.data?.message || 'Registration failed'
+      if (!e.response) {
+        error.value = 'Network error. Please check your connection.'
+      } else if (e.response.status === 502) {
+        error.value = 'Server is starting up. Please wait a moment and try again.'
+      } else {
+        error.value = e.response?.data?.message || 'Registration failed'
+      }
     }
   }
 }

@@ -178,7 +178,13 @@ async function handleLogin() {
     const redirect = route.query.redirect || (authStore.isAdmin ? '/admin' : '/')
     router.push(redirect)
   } catch (e) {
-    error.value = e.response?.data?.message || 'Invalid credentials'
+    if (!e.response) {
+      error.value = 'Network error. Please check your connection.'
+    } else if (e.response.status === 502) {
+      error.value = 'Server is starting up. Please wait a moment and try again.'
+    } else {
+      error.value = e.response?.data?.message || 'Invalid credentials'
+    }
   }
 }
 </script>
