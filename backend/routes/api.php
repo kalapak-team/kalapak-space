@@ -48,7 +48,7 @@ Route::get('/diag-check/{secret}', function ($secret) {
 // Auth
 Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);  // turnstile temporarily disabled for debug
-    Route::post('/register', [RegisterController::class, 'register'])->middleware('turnstile');
+    Route::post('/register', [RegisterController::class, 'register']);  // turnstile temporarily disabled - add domain to Cloudflare widget then re-enable
     Route::post('/forgot-password', [PasswordResetController::class, 'forgotPassword'])->middleware('turnstile');
     Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])->middleware('turnstile');
 });
