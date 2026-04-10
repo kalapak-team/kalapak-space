@@ -15,6 +15,10 @@ Route::get('/', function () {
 Route::get('/auth/google/redirect', [SocialAuthController::class, 'redirectToGoogle']);
 Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
 
+// GitHub OAuth
+Route::get('/auth/github/redirect', [SocialAuthController::class, 'redirectToGithub']);
+Route::get('/auth/github/callback', [SocialAuthController::class, 'handleGithubCallback']);
+
 // SEO: Sitemap & Robots.txt
 Route::get('/sitemap.xml', [SitemapController::class, 'sitemap']);
 Route::get('/robots.txt', [SitemapController::class, 'robots']);

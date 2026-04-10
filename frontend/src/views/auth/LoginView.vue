@@ -124,6 +124,7 @@
     <div class="grid grid-cols-2 gap-3">
       <button
         type="button"
+        @click="loginWithGithub"
         class="flex items-center justify-center gap-2.5 px-4 py-3 rounded-xl bg-dark-800/60 border border-dark-600 text-gray-300 hover:bg-dark-700 hover:border-dark-500 transition-all group"
       >
         <svg class="w-5 h-5 group-hover:text-white transition-colors" viewBox="0 0 24 24" fill="currentColor">
@@ -175,6 +176,11 @@ const showPassword = ref(false)
 function loginWithGoogle() {
   const backendUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'https://kalapakspace-backend.onrender.com'
   window.location.href = `${backendUrl}/auth/google/redirect`
+}
+
+function loginWithGithub() {
+  const backendUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'https://kalapakspace-backend.onrender.com'
+  window.location.href = `${backendUrl}/auth/github/redirect`
 }
 
 async function handleLogin() {

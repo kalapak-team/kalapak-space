@@ -57,4 +57,47 @@ class SocialAuthController extends Controller
 
         return redirect($frontendUrl . '/auth/google/callback?token=' . $token);
     }
+
+    public function redirectToGithub(): RedirectResponse
+    {
+        return Socialite::driver('github')->stateless()->redirect();
+    }
+
+    public function handleGithubCallback(): RedirectResponse
+    {
+        try {
+            $githubUser = Socialite::driver('github')->stateless()->user();
+        } catch (\Exception $e) {
+            $frontendUrl = env('FRONTEND_URL', 'https://kalapak-team.space');
+            return redirect($frontendUrl . '/auth/login?error=github_auth_failed');
+        }
+
+        $user = User::where('github_id', $githubUser->getId())
+            ->orWhere('email', $githubUser->getEmail())
+            ->first();
+
+        if ($user) {
+            if (!$user->github_id) {
+                $user->update(['github_id' => $githubUser->getId()]);
+            }
+            if (!$user->avatar && $githubUser->getAvatar()) {
+                $user->update(['avatar' => $githubUser->getAvatar()]);
+            }
+        } else {
+            $memberRole = Role::where('name', 'member')->first();
+            $user = User::create([
+                'name' => $githubUser->getName() ?? $githubUser->getNickname(),
+                'email' => $githubUser->getEmail(),
+                'github_id' => $githubUser->getId(),
+                'avatar' => $githubUser->getAvatar(),
+                'password' => null,
+                'role_id' => $memberRole->id,
+            ]);
+        }
+
+        $token = $user->createToken('auth-token')->plainTextToken;
+        $frontendUrl = env('FRONTEND_URL', 'https://kalapak-team.space');
+
+        return redirect($frontendUrl . '/auth/github/callback?token=' . $token);
+    }
 }
