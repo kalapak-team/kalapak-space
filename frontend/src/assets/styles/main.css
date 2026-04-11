@@ -73,10 +73,37 @@
 }
 
 .prose table {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 12px;
+  margin: 1.5em 0;
+  font-size: 0.9rem;
+}
+.prose table th,
+.prose table td {
+  border: 1px solid #e5e7eb;
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+.prose table th {
+  background: #f9fafb;
+  font-weight: 600;
+}
+.dark .prose table th,
+.dark .prose table td {
+  border-color: #374151;
+}
+.dark .prose table th {
+  background: rgba(55, 65, 81, 0.5);
+}
+.prose .table-wrapper {
   display: block;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   max-width: 100%;
+  margin: 1.5em 0;
 }
 
 .prose p,
