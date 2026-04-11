@@ -272,6 +272,43 @@ function addCopyButtons() {
   })
 }
 
+function styleBlockquotes() {
+  nextTick(() => {
+    const container = document.querySelector('.prose')
+    if (!container) return
+    const keywords = {
+      '[tip]': 'bq-tip', '[info]': 'bq-info', '[warning]': 'bq-warning',
+      '[danger]': 'bq-danger', '[success]': 'bq-success', '[note]': 'bq-note',
+      '[important]': 'bq-important'
+    }
+    const labels = {
+      '[tip]': 'Tip', '[info]': 'Info', '[warning]': 'Warning',
+      '[danger]': 'Danger', '[success]': 'Success', '[note]': 'Note',
+      '[important]': 'Important'
+    }
+    container.querySelectorAll('blockquote').forEach((bq) => {
+      if (bq.classList.contains('bq-styled')) return
+      bq.classList.add('bq-styled')
+      const firstP = bq.querySelector('p') || bq
+      const text = firstP.textContent.trim().toLowerCase()
+      let matched = false
+      for (const [keyword, cls] of Object.entries(keywords)) {
+        if (text.startsWith(keyword)) {
+          bq.classList.add(cls)
+          const label = document.createElement('span')
+          label.className = 'bq-label'
+          label.textContent = labels[keyword]
+          firstP.innerHTML = firstP.innerHTML.replace(new RegExp('\\[' + keyword.slice(1, -1) + '\\]\\s*', 'i'), '')
+          bq.insertBefore(label, bq.firstChild)
+          matched = true
+          break
+        }
+      }
+      if (!matched) bq.classList.add('bq-default')
+    })
+  })
+}
+
 onMounted(async () => {
   try {
     const { data } = await publicApi.getBlogPost(route.params.slug)
@@ -281,6 +318,7 @@ onMounted(async () => {
   } finally {
     loading.value = false
     addCopyButtons()
+    styleBlockquotes()
   }
 })
 </script>
