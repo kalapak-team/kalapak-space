@@ -87,6 +87,30 @@
   word-break: break-word;
 }
 
+/* ─── Blockquote ─── */
+.prose blockquote {
+  position: relative;
+  margin: 1.5em 0;
+  padding: 1.25rem 1.5rem;
+  border-left: 4px solid var(--brand-violet);
+  border-radius: 0 12px 12px 0;
+  background: rgba(123, 47, 255, 0.08);
+  color: #c7d2fe;
+  font-style: normal;
+}
+.prose blockquote p {
+  margin: 0;
+}
+.dark .prose blockquote {
+  background: rgba(123, 47, 255, 0.12);
+  border-left-color: var(--brand-cyan);
+  color: #e0e7ff;
+}
+.prose blockquote:not(.dark *) {
+  color: #374151;
+  background: rgba(123, 47, 255, 0.06);
+}
+
 .prose :where(iframe, video, embed, object) {
   max-width: 100%;
   border: none;
