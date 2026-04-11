@@ -332,7 +332,7 @@ function processBlockquoteKeywords(html) {
 const editor = useEditor({
   content: props.modelValue ? sanitizeHtml(props.modelValue) : '',
   extensions: [
-    StarterKit.configure({ codeBlock: false, horizontalRule: false, blockquote: false }),
+    StarterKit.configure({ codeBlock: false, horizontalRule: false, blockquote: false, link: false, underline: false }),
     CustomBlockquote,
     CodeBlockLowlight.configure({ lowlight, defaultLanguage: 'plaintext' }),
     Image.configure({ inline: false, allowBase64: true }),
