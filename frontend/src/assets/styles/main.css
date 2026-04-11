@@ -255,6 +255,185 @@
 .dark .prose blockquote.bq-curly p:first-child { color: #00d4ff; }
 .dark .prose blockquote.bq-curly p:last-child { color: #a5b4fc; }
 
+/* ─── Shared: Quote box styles with large decorative quote marks ─── */
+.prose blockquote.bq-qbox,
+.prose blockquote.bq-qline,
+.prose blockquote.bq-qround,
+.prose blockquote.bq-qdash,
+.prose blockquote.bq-qbold,
+.prose blockquote.bq-qbubble {
+  border-left: none;
+  position: relative;
+  padding: 2.5rem 2.5rem 2.5rem 2.5rem;
+  font-style: normal;
+  color: #1f2937;
+  line-height: 1.7;
+}
+.prose blockquote.bq-qbox::before,
+.prose blockquote.bq-qline::before,
+.prose blockquote.bq-qround::before,
+.prose blockquote.bq-qdash::before,
+.prose blockquote.bq-qbold::before,
+.prose blockquote.bq-qbubble::before {
+  content: '\201C\201C';
+  position: absolute;
+  top: 0.5rem;
+  left: 1rem;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--brand-violet);
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+.prose blockquote.bq-qbox::after,
+.prose blockquote.bq-qline::after,
+.prose blockquote.bq-qround::after,
+.prose blockquote.bq-qdash::after,
+.prose blockquote.bq-qbold::after,
+.prose blockquote.bq-qbubble::after {
+  content: '\201D\201D';
+  position: absolute;
+  bottom: 0.5rem;
+  right: 1rem;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--brand-violet);
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+.prose blockquote.bq-qbox p:first-child,
+.prose blockquote.bq-qline p:first-child,
+.prose blockquote.bq-qround p:first-child,
+.prose blockquote.bq-qdash p:first-child,
+.prose blockquote.bq-qbold p:first-child,
+.prose blockquote.bq-qbubble p:first-child {
+  font-weight: 800;
+  font-size: 1.1em;
+  margin-bottom: 0.5rem;
+  color: #111827;
+}
+.dark .prose blockquote.bq-qbox,
+.dark .prose blockquote.bq-qline,
+.dark .prose blockquote.bq-qround,
+.dark .prose blockquote.bq-qdash,
+.dark .prose blockquote.bq-qbold,
+.dark .prose blockquote.bq-qbubble {
+  color: #e5e7eb;
+}
+.dark .prose blockquote.bq-qbox::before,
+.dark .prose blockquote.bq-qline::before,
+.dark .prose blockquote.bq-qround::before,
+.dark .prose blockquote.bq-qdash::before,
+.dark .prose blockquote.bq-qbold::before,
+.dark .prose blockquote.bq-qbubble::before,
+.dark .prose blockquote.bq-qbox::after,
+.dark .prose blockquote.bq-qline::after,
+.dark .prose blockquote.bq-qround::after,
+.dark .prose blockquote.bq-qdash::after,
+.dark .prose blockquote.bq-qbold::after,
+.dark .prose blockquote.bq-qbubble::after {
+  color: var(--brand-cyan);
+}
+.dark .prose blockquote.bq-qbox p:first-child,
+.dark .prose blockquote.bq-qline p:first-child,
+.dark .prose blockquote.bq-qround p:first-child,
+.dark .prose blockquote.bq-qdash p:first-child,
+.dark .prose blockquote.bq-qbold p:first-child,
+.dark .prose blockquote.bq-qbubble p:first-child {
+  color: #fff;
+}
+
+/* ─── qbox: Solid border box (row1 col1) ─── */
+.prose blockquote.bq-qbox {
+  border: 2px solid var(--brand-violet);
+  border-radius: 4px;
+  background: rgba(123, 47, 255, 0.03);
+}
+.dark .prose blockquote.bq-qbox {
+  border-color: var(--brand-cyan);
+  background: rgba(0, 212, 255, 0.05);
+}
+
+/* ─── qline: Top line only (row1 col2) ─── */
+.prose blockquote.bq-qline {
+  border-top: 3px solid var(--brand-violet);
+  border-radius: 0;
+  background: rgba(123, 47, 255, 0.03);
+}
+.dark .prose blockquote.bq-qline {
+  border-top-color: var(--brand-cyan);
+  background: rgba(0, 212, 255, 0.05);
+}
+
+/* ─── qround: Rounded border (row1 col3) ─── */
+.prose blockquote.bq-qround {
+  border: 2px solid var(--brand-violet);
+  border-radius: 2rem;
+  background: rgba(123, 47, 255, 0.03);
+  padding: 2.5rem 3rem;
+}
+.dark .prose blockquote.bq-qround {
+  border-color: var(--brand-cyan);
+  background: rgba(0, 212, 255, 0.05);
+}
+
+/* ─── qdash: Dashed border (row2 col2) ─── */
+.prose blockquote.bq-qdash {
+  border: 2px dashed var(--brand-violet);
+  border-radius: 8px;
+  background: rgba(123, 47, 255, 0.03);
+}
+.dark .prose blockquote.bq-qdash {
+  border-color: var(--brand-cyan);
+  background: rgba(0, 212, 255, 0.05);
+}
+
+/* ─── qbold: Bold thick frame (row3 col3) ─── */
+.prose blockquote.bq-qbold {
+  border: 4px solid var(--brand-violet);
+  border-radius: 4px;
+  background: rgba(123, 47, 255, 0.03);
+}
+.prose blockquote.bq-qbold p:first-child {
+  font-size: 1.2em;
+  letter-spacing: 0.05em;
+}
+.dark .prose blockquote.bq-qbold {
+  border-color: var(--brand-cyan);
+  background: rgba(0, 212, 255, 0.05);
+}
+
+/* ─── qbubble: Speech bubble with tail (row3 col4) ─── */
+.prose blockquote.bq-qbubble {
+  border: 2px solid var(--brand-violet);
+  border-radius: 16px;
+  background: rgba(123, 47, 255, 0.03);
+  margin-bottom: 2rem;
+}
+.prose blockquote.bq-qbubble::after {
+  content: '\201D\201D';
+  bottom: 0.5rem;
+  right: 1rem;
+}
+.prose blockquote.bq-qbubble > *:last-child::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 2rem;
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 12px solid var(--brand-violet);
+}
+.dark .prose blockquote.bq-qbubble {
+  border-color: var(--brand-cyan);
+  background: rgba(0, 212, 255, 0.05);
+}
+.dark .prose blockquote.bq-qbubble > *:last-child::after {
+  border-top-color: var(--brand-cyan);
+}
+
 /* Keyword label inside blockquote */
 .prose blockquote .bq-label {
   display: inline-block;

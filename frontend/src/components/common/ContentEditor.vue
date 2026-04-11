@@ -288,6 +288,12 @@ const blockquoteTypes = [
   { label: 'Important', value: 'important', icon: '🔥' },
   { label: 'Quote', value: 'quote', icon: '💬' },
   { label: 'Curly Quote', value: 'curly', icon: '{  }' },
+  { label: 'Box Frame', value: 'qbox', icon: '❝❞' },
+  { label: 'Top Line', value: 'qline', icon: '▔❝' },
+  { label: 'Rounded', value: 'qround', icon: '⭕❝' },
+  { label: 'Dashed', value: 'qdash', icon: '┄❝' },
+  { label: 'Bold Frame', value: 'qbold', icon: '█❝' },
+  { label: 'Bubble', value: 'qbubble', icon: '💭' },
 ]
 
 // Wrap standalone YouTube iframes with data-youtube-video div for TipTap recognition
@@ -313,7 +319,7 @@ function processBlockquoteKeywords(html) {
   div.querySelectorAll('blockquote').forEach(bq => {
     const firstP = bq.querySelector('p') || bq
     const text = firstP.innerHTML
-    const match = text.match(/^\[(tip|info|warning|danger|success|note|important|quote|curly)\]\s*/)
+    const match = text.match(/^\[(tip|info|warning|danger|success|note|important|quote|curly|qbox|qline|qround|qdash|qbold|qbubble)\]\s*/)
     if (match) {
       bq.setAttribute('data-bq-type', match[1])
       firstP.innerHTML = text.substring(match[0].length)
@@ -835,6 +841,86 @@ const ToolBtn = defineComponent({
 }
 .dark .tiptap-content .tiptap blockquote[data-bq-type="curly"]::before,
 .dark .tiptap-content .tiptap blockquote[data-bq-type="curly"]::after { color: #00d4ff; }
+
+/* ─── Shared: Quote box styles ─── */
+.tiptap-content .tiptap blockquote[data-bq-type="qbox"],
+.tiptap-content .tiptap blockquote[data-bq-type="qline"],
+.tiptap-content .tiptap blockquote[data-bq-type="qround"],
+.tiptap-content .tiptap blockquote[data-bq-type="qdash"],
+.tiptap-content .tiptap blockquote[data-bq-type="qbold"],
+.tiptap-content .tiptap blockquote[data-bq-type="qbubble"] {
+  border-left: none;
+  position: relative;
+  padding: 2.5rem;
+  font-style: normal;
+  color: #1f2937;
+}
+.tiptap-content .tiptap blockquote[data-bq-type="qbox"]::before,
+.tiptap-content .tiptap blockquote[data-bq-type="qline"]::before,
+.tiptap-content .tiptap blockquote[data-bq-type="qround"]::before,
+.tiptap-content .tiptap blockquote[data-bq-type="qdash"]::before,
+.tiptap-content .tiptap blockquote[data-bq-type="qbold"]::before,
+.tiptap-content .tiptap blockquote[data-bq-type="qbubble"]::before {
+  content: '\201C\201C';
+  position: absolute;
+  top: 0.4rem; left: 0.8rem;
+  font-size: 2.2rem; font-weight: 900; color: #7b2fff;
+  font-family: Georgia, serif; line-height: 1; opacity: 1;
+}
+.tiptap-content .tiptap blockquote[data-bq-type="qbox"]::after,
+.tiptap-content .tiptap blockquote[data-bq-type="qline"]::after,
+.tiptap-content .tiptap blockquote[data-bq-type="qround"]::after,
+.tiptap-content .tiptap blockquote[data-bq-type="qdash"]::after,
+.tiptap-content .tiptap blockquote[data-bq-type="qbold"]::after,
+.tiptap-content .tiptap blockquote[data-bq-type="qbubble"]::after {
+  content: '\201D\201D';
+  position: absolute;
+  bottom: 0.4rem; right: 0.8rem;
+  font-size: 2.2rem; font-weight: 900; color: #7b2fff;
+  font-family: Georgia, serif; line-height: 1;
+}
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qbox"],
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qline"],
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qround"],
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qdash"],
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qbold"],
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qbubble"] { color: #e5e7eb; }
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qbox"]::before,
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qline"]::before,
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qround"]::before,
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qdash"]::before,
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qbold"]::before,
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qbubble"]::before,
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qbox"]::after,
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qline"]::after,
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qround"]::after,
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qdash"]::after,
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qbold"]::after,
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qbubble"]::after { color: #00d4ff; }
+
+/* qbox: Solid border box */
+.tiptap-content .tiptap blockquote[data-bq-type="qbox"] { border: 2px solid #7b2fff; border-radius: 4px; background: rgba(123,47,255,0.03); }
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qbox"] { border-color: #00d4ff; background: rgba(0,212,255,0.05); }
+
+/* qline: Top line only */
+.tiptap-content .tiptap blockquote[data-bq-type="qline"] { border-top: 3px solid #7b2fff; background: rgba(123,47,255,0.03); }
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qline"] { border-top-color: #00d4ff; background: rgba(0,212,255,0.05); }
+
+/* qround: Rounded border */
+.tiptap-content .tiptap blockquote[data-bq-type="qround"] { border: 2px solid #7b2fff; border-radius: 2rem; background: rgba(123,47,255,0.03); padding: 2.5rem 3rem; }
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qround"] { border-color: #00d4ff; background: rgba(0,212,255,0.05); }
+
+/* qdash: Dashed border */
+.tiptap-content .tiptap blockquote[data-bq-type="qdash"] { border: 2px dashed #7b2fff; border-radius: 8px; background: rgba(123,47,255,0.03); }
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qdash"] { border-color: #00d4ff; background: rgba(0,212,255,0.05); }
+
+/* qbold: Bold thick frame */
+.tiptap-content .tiptap blockquote[data-bq-type="qbold"] { border: 4px solid #7b2fff; border-radius: 4px; background: rgba(123,47,255,0.03); }
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qbold"] { border-color: #00d4ff; background: rgba(0,212,255,0.05); }
+
+/* qbubble: Speech bubble */
+.tiptap-content .tiptap blockquote[data-bq-type="qbubble"] { border: 2px solid #7b2fff; border-radius: 16px; background: rgba(123,47,255,0.03); }
+.dark .tiptap-content .tiptap blockquote[data-bq-type="qbubble"] { border-color: #00d4ff; background: rgba(0,212,255,0.05); }
 
 /* Horizontal Rule */
 .tiptap-content .tiptap hr {
