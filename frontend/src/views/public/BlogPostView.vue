@@ -84,6 +84,12 @@
             <!-- Main content -->
             <article data-aos="fade-up"
               class="min-w-0 rounded-2xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm p-4 sm:p-8 md:p-12 overflow-hidden">
+
+              <!-- Excerpt / Lead -->
+              <p v-if="post.excerpt" class="text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed font-medium border-l-4 border-brand-violet dark:border-brand-cyan pl-5 mb-8 italic">
+                {{ post.excerpt }}
+              </p>
+
               <div
                 class="prose prose-lg dark:prose-invert max-w-none
                   prose-headings:font-sans prose-headings:text-gray-900 dark:prose-headings:text-white
