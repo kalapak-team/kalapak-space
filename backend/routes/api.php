@@ -48,11 +48,11 @@ Route::get('/diag-check/{secret}', function ($secret) {
 });
 
 // Auth
-Route::prefix('auth')->middleware('throttle:login')->group(function () {
-    Route::post('/login', [AuthController::class, 'login']);  // turnstile temporarily disabled for debug
-    Route::post('/register', [RegisterController::class, 'register']);  // turnstile temporarily disabled - add domain to Cloudflare widget then re-enable
-    Route::post('/forgot-password', [PasswordResetController::class, 'forgotPassword'])->middleware('turnstile');
-    Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])->middleware('turnstile');
+Route::prefix('auth')->withoutMiddleware('throttle:api')->group(function () {
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login');
+    Route::post('/register', [RegisterController::class, 'register'])->middleware('throttle:login');
+    Route::post('/forgot-password', [PasswordResetController::class, 'forgotPassword'])->middleware(['throttle:login', 'turnstile']);
+    Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])->middleware(['throttle:login', 'turnstile']);
 });
 
 // Projects
@@ -88,7 +88,7 @@ Route::get('/tags', function () {
 Route::get('/settings/public', [HomeController::class, 'settings']);
 
 // Contact
-Route::post('/contact', [ContactController::class, 'store'])->middleware(['throttle:contact', 'turnstile']);
+Route::post('/contact', [ContactController::class, 'store'])->withoutMiddleware('throttle:api')->middleware(['throttle:contact', 'turnstile']);
 
 // Storage diagnostics (remove after debugging)
 Route::get('/storage-test', function () {
@@ -97,7 +97,7 @@ Route::get('/storage-test', function () {
 });
 
 // Applications (public submit)
-Route::post('/applications', [ApplicationController::class, 'store'])->middleware(['throttle:contact', 'turnstile']);
+Route::post('/applications', [ApplicationController::class, 'store'])->withoutMiddleware('throttle:api')->middleware(['throttle:contact', 'turnstile']);
 
 // ── AUTHENTICATED ROUTES ──────────────────────────────
 
