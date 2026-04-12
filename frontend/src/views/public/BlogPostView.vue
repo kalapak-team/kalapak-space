@@ -234,9 +234,16 @@ const copied = ref(false)
 
 const currentUrl = computed(() => window.location.href)
 
+const bqKeywords = ['tip', 'info', 'warning', 'danger', 'success', 'note', 'important', 'quote', 'curly', 'qbox', 'qline', 'qround', 'qdash', 'qbold', 'qbubble', 'conclusion', 'condark', 'conmin', 'conbold', 'confresh']
+const bqKeywordRe = new RegExp('^(>\\s*)\\[(' + bqKeywords.join('|') + ')\\][ \\t]+(.+)$', 'gim')
+
 const renderedContent = computed(() => {
   if (!post.value?.content) return ''
-  let html = marked.parse(post.value.content)
+  // Split [keyword] and content onto separate lines so marked parses headings correctly
+  let md = post.value.content.replace(bqKeywordRe, (_, prefix, kw, rest) => {
+    return `${prefix}[${kw}]\n${prefix}${rest}`
+  })
+  let html = marked.parse(md)
   return DOMPurify.sanitize(html, purifyConfig)
 })
 
