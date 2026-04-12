@@ -443,10 +443,9 @@ function convertNode(node) {
         }
         case 'blockquote': {
           const bqType = child.getAttribute('data-bq-type')
-          const prefix = bqType ? `[${bqType}] ` : ''
           const lines = inner.split('\n').filter(l => l.trim())
-          if (lines.length > 0) {
-            lines[0] = prefix + lines[0]
+          if (bqType) {
+            lines.unshift(`[${bqType}]`)
           }
           result += lines.map(l => `> ${l}`).join('\n') + '\n\n'
           break
