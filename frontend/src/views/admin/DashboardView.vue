@@ -92,20 +92,23 @@ function formatDate(date) {
 
 onMounted(async () => {
   try {
-    const { data } = await adminApi.getDashboard()
-    const stats = data.data?.stats || {}
-    statsCards.value[0].value = stats.users || 0
-    statsCards.value[1].value = stats.projects || 0
-    statsCards.value[2].value = stats.blog_posts || 0
-    statsCards.value[3].value = stats.messages || 0
-    recentActivity.value = data.data?.recent_activity || []
+    const [statsRes, activityRes] = await Promise.all([
+      adminApi.getDashboardStats(),
+      adminApi.getDashboardActivity(),
+    ])
+    const stats = statsRes.data?.data || {}
+    statsCards.value[0].value = stats.total_users || 0
+    statsCards.value[1].value = stats.total_projects || 0
+    statsCards.value[2].value = stats.total_blog_posts || 0
+    statsCards.value[3].value = stats.unread_messages || 0
+    recentActivity.value = activityRes.data?.data || []
 
     chartData.value = {
       labels: ['Users', 'Projects', 'Posts', 'Messages', 'Applications'],
       datasets: [
         {
           label: 'Count',
-          data: [stats.users || 0, stats.projects || 0, stats.blog_posts || 0, stats.messages || 0, stats.applications || 0],
+          data: [stats.total_users || 0, stats.total_projects || 0, stats.total_blog_posts || 0, stats.unread_messages || 0, stats.pending_applications || 0],
           backgroundColor: ['#7b2fff', '#00d4ff', '#9d5fff', '#33ddff', '#5a1fd4'],
           borderRadius: 8,
         },
