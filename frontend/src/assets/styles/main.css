@@ -500,6 +500,34 @@
   border-top-color: var(--brand-cyan);
 }
 
+/* ─── Blockquote: Conclusion (dark navy card) ─── */
+.prose blockquote.bq-conclusion {
+  border-left: none;
+  background: #0d0a3e;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  color: #cbd5e1;
+  line-height: 1.85;
+  position: relative;
+}
+.prose blockquote.bq-conclusion::before {
+  content: none;
+}
+.prose blockquote.bq-conclusion p:first-child {
+  font-weight: 800;
+  font-size: 1.25em;
+  color: #f1f5f9;
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.01em;
+}
+.dark .prose blockquote.bq-conclusion {
+  background: #020024;
+  color: #cbd5e1;
+}
+.dark .prose blockquote.bq-conclusion p:first-child {
+  color: #f1f5f9;
+}
+
 /* Keyword label inside blockquote */
 .prose blockquote .bq-label {
   display: inline-block;

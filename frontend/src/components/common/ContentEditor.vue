@@ -295,6 +295,7 @@ const blockquoteTypes = [
   { label: 'Dashed', value: 'qdash', icon: '┄❝' },
   { label: 'Bold Frame', value: 'qbold', icon: '█❝' },
   { label: 'Bubble', value: 'qbubble', icon: '💭' },
+  { label: 'Conclusion', value: 'conclusion', icon: '🏁' },
 ]
 
 // Wrap standalone YouTube iframes with data-youtube-video div for TipTap recognition
@@ -929,6 +930,28 @@ const ToolBtn = defineComponent({
 /* qbubble: Speech bubble */
 .tiptap-content .tiptap blockquote[data-bq-type="qbubble"] { border: 2px solid #7b2fff; border-radius: 16px; background: rgba(123,47,255,0.03); }
 .dark .tiptap-content .tiptap blockquote[data-bq-type="qbubble"] { border-color: #00d4ff; background: rgba(0,212,255,0.05); }
+
+/* Conclusion: Dark navy card */
+.tiptap-content .tiptap blockquote[data-bq-type="conclusion"] {
+  border-left: none;
+  background: #0d0a3e;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  color: #cbd5e1;
+  line-height: 1.85;
+}
+.tiptap-content .tiptap blockquote[data-bq-type="conclusion"]::before { content: none; }
+.tiptap-content .tiptap blockquote[data-bq-type="conclusion"] p:first-child {
+  font-weight: 800;
+  font-size: 1.25em;
+  color: #f1f5f9;
+  margin-bottom: 0.5rem;
+}
+.dark .tiptap-content .tiptap blockquote[data-bq-type="conclusion"] {
+  background: #020024;
+  color: #cbd5e1;
+}
+.dark .tiptap-content .tiptap blockquote[data-bq-type="conclusion"] p:first-child { color: #f1f5f9; }
 
 /* Horizontal Rule */
 .tiptap-content .tiptap hr {

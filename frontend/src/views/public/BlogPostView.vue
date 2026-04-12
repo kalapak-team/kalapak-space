@@ -287,14 +287,16 @@ function styleBlockquotes() {
       '[danger]': 'bq-danger', '[success]': 'bq-success', '[note]': 'bq-note',
       '[important]': 'bq-important', '[quote]': 'bq-quote', '[curly]': 'bq-curly',
       '[qbox]': 'bq-qbox', '[qline]': 'bq-qline', '[qround]': 'bq-qround',
-      '[qdash]': 'bq-qdash', '[qbold]': 'bq-qbold', '[qbubble]': 'bq-qbubble'
+      '[qdash]': 'bq-qdash', '[qbold]': 'bq-qbold', '[qbubble]': 'bq-qbubble',
+      '[conclusion]': 'bq-conclusion'
     }
     const labels = {
       '[tip]': 'Tip', '[info]': 'Info', '[warning]': 'Warning',
       '[danger]': 'Danger', '[success]': 'Success', '[note]': 'Note',
       '[important]': 'Important', '[quote]': null, '[curly]': null,
       '[qbox]': null, '[qline]': null, '[qround]': null,
-      '[qdash]': null, '[qbold]': null, '[qbubble]': null
+      '[qdash]': null, '[qbold]': null, '[qbubble]': null,
+      '[conclusion]': null
     }
     container.querySelectorAll('blockquote').forEach((bq) => {
       if (bq.classList.contains('bq-styled')) return
