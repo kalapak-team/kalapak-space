@@ -540,6 +540,7 @@ function addImage() {
     try {
       const formData = new FormData()
       formData.append('file', file)
+      formData.append('storage_provider', localStorage.getItem('media_storage_provider') || 'supabase')
       const { data } = await adminApi.uploadMedia(formData)
       const url = data.data?.url
       if (url) {
