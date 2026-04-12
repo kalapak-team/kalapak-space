@@ -931,62 +931,51 @@ const ToolBtn = defineComponent({
 .tiptap-content .tiptap blockquote[data-bq-type="qbubble"] { border: 2px solid #7b2fff; border-radius: 16px; background: rgba(123,47,255,0.03); }
 .dark .tiptap-content .tiptap blockquote[data-bq-type="qbubble"] { border-color: #00d4ff; background: rgba(0,212,255,0.05); }
 
-/* Conclusion: Modern dark card with quote marks */
+/* Conclusion: Modern accent card */
 .tiptap-content .tiptap blockquote[data-bq-type="conclusion"] {
   border-left: none;
-  background: linear-gradient(145deg, #0c0833 0%, #120e45 50%, #0a0730 100%);
-  padding: 2.5rem 3rem 2.5rem 3.5rem;
-  border-radius: 16px;
-  border: 1px solid rgba(123, 47, 255, 0.2);
-  box-shadow: 0 4px 24px rgba(123, 47, 255, 0.08), inset 0 1px 0 rgba(255,255,255,0.03);
-  color: #c8ceda;
+  background: #1e293b;
+  padding: 0;
+  border-radius: 14px;
+  color: #cbd5e1;
   line-height: 1.85;
   position: relative;
   overflow: hidden;
 }
 .tiptap-content .tiptap blockquote[data-bq-type="conclusion"]::before {
-  content: '\201C';
+  content: '';
   position: absolute;
-  top: -0.15rem;
-  left: 1rem;
-  font-size: 5rem;
-  font-weight: 900;
-  color: rgba(123, 47, 255, 0.25);
-  font-family: Georgia, serif;
-  line-height: 1;
-  pointer-events: none;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #7b2fff 0%, #00d4ff 100%);
+  border-radius: 14px 14px 0 0;
   opacity: 1;
 }
-.tiptap-content .tiptap blockquote[data-bq-type="conclusion"]::after {
-  content: '\201D';
-  position: absolute;
-  bottom: -1.5rem;
-  right: 1.5rem;
-  font-size: 5rem;
-  font-weight: 900;
-  color: rgba(123, 47, 255, 0.25);
-  font-family: Georgia, serif;
-  line-height: 1;
-  pointer-events: none;
+.tiptap-content .tiptap blockquote[data-bq-type="conclusion"]::after { content: none; }
+.tiptap-content .tiptap blockquote[data-bq-type="conclusion"] > * {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+.tiptap-content .tiptap blockquote[data-bq-type="conclusion"] > *:first-child {
+  padding-top: 1.75rem;
+}
+.tiptap-content .tiptap blockquote[data-bq-type="conclusion"] > *:last-child {
+  padding-bottom: 1.75rem;
 }
 .tiptap-content .tiptap blockquote[data-bq-type="conclusion"] p:first-child {
   font-weight: 800;
-  font-size: 1.2em;
-  color: #e8ecf4;
+  font-size: 1.15em;
+  color: #f8fafc;
   margin-bottom: 0.5rem;
 }
-.tiptap-content .tiptap blockquote[data-bq-type="conclusion"] p { margin: 0.4em 0; }
+.tiptap-content .tiptap blockquote[data-bq-type="conclusion"] p { margin: 0.35em 0; }
 .dark .tiptap-content .tiptap blockquote[data-bq-type="conclusion"] {
-  background: linear-gradient(145deg, #050320 0%, #0a073a 50%, #040218 100%);
-  border-color: rgba(0, 212, 255, 0.15);
-  box-shadow: 0 4px 24px rgba(0, 212, 255, 0.06), inset 0 1px 0 rgba(255,255,255,0.02);
-  color: #c8ceda;
+  background: #0f172a;
+  color: #94a3b8;
 }
-.dark .tiptap-content .tiptap blockquote[data-bq-type="conclusion"]::before,
-.dark .tiptap-content .tiptap blockquote[data-bq-type="conclusion"]::after {
-  color: rgba(0, 212, 255, 0.2);
-}
-.dark .tiptap-content .tiptap blockquote[data-bq-type="conclusion"] p:first-child { color: #e8ecf4; }
+.dark .tiptap-content .tiptap blockquote[data-bq-type="conclusion"] p:first-child { color: #f1f5f9; }
 
 /* Horizontal Rule */
 .tiptap-content .tiptap hr {

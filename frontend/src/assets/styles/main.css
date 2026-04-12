@@ -500,65 +500,54 @@
   border-top-color: var(--brand-cyan);
 }
 
-/* ─── Blockquote: Conclusion (modern dark card with quote marks) ─── */
+/* ─── Blockquote: Conclusion (modern accent card) ─── */
 .prose blockquote.bq-conclusion {
   border-left: none;
-  background: linear-gradient(145deg, #0c0833 0%, #120e45 50%, #0a0730 100%);
-  padding: 2.5rem 3rem 2.5rem 3.5rem;
-  border-radius: 16px;
-  border: 1px solid rgba(123, 47, 255, 0.2);
-  box-shadow: 0 4px 24px rgba(123, 47, 255, 0.08), inset 0 1px 0 rgba(255,255,255,0.03);
-  color: #c8ceda;
+  background: #1e293b;
+  padding: 0;
+  border-radius: 14px;
+  color: #cbd5e1;
   line-height: 1.85;
   position: relative;
   overflow: hidden;
 }
 .prose blockquote.bq-conclusion::before {
-  content: '\201C';
+  content: '';
   position: absolute;
-  top: -0.15rem;
-  left: 1rem;
-  font-size: 5rem;
-  font-weight: 900;
-  color: rgba(123, 47, 255, 0.25);
-  font-family: Georgia, serif;
-  line-height: 1;
-  pointer-events: none;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #7b2fff 0%, #00d4ff 100%);
+  border-radius: 14px 14px 0 0;
 }
-.prose blockquote.bq-conclusion::after {
-  content: '\201D';
-  position: absolute;
-  bottom: -1.5rem;
-  right: 1.5rem;
-  font-size: 5rem;
-  font-weight: 900;
-  color: rgba(123, 47, 255, 0.25);
-  font-family: Georgia, serif;
-  line-height: 1;
-  pointer-events: none;
+.prose blockquote.bq-conclusion::after { content: none; }
+.prose blockquote.bq-conclusion > * {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+.prose blockquote.bq-conclusion > *:first-child {
+  padding-top: 1.75rem;
+}
+.prose blockquote.bq-conclusion > *:last-child {
+  padding-bottom: 1.75rem;
 }
 .prose blockquote.bq-conclusion p:first-child {
   font-weight: 800;
-  font-size: 1.2em;
-  color: #e8ecf4;
-  margin-bottom: 0.6rem;
-  letter-spacing: 0.01em;
-  position: relative;
-  padding-left: 0;
+  font-size: 1.15em;
+  color: #f8fafc;
+  margin-bottom: 0.5rem;
 }
-.prose blockquote.bq-conclusion p { margin: 0.4em 0; }
+.prose blockquote.bq-conclusion p { margin: 0.35em 0; }
 .dark .prose blockquote.bq-conclusion {
-  background: linear-gradient(145deg, #050320 0%, #0a073a 50%, #040218 100%);
-  border-color: rgba(0, 212, 255, 0.15);
-  box-shadow: 0 4px 24px rgba(0, 212, 255, 0.06), inset 0 1px 0 rgba(255,255,255,0.02);
-  color: #c8ceda;
+  background: #0f172a;
+  color: #94a3b8;
 }
-.dark .prose blockquote.bq-conclusion::before,
-.dark .prose blockquote.bq-conclusion::after {
-  color: rgba(0, 212, 255, 0.2);
+.dark .prose blockquote.bq-conclusion::before {
+  background: linear-gradient(90deg, #7b2fff 0%, #00d4ff 100%);
 }
 .dark .prose blockquote.bq-conclusion p:first-child {
-  color: #e8ecf4;
+  color: #f1f5f9;
 }
 
 /* Keyword label inside blockquote */
