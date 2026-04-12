@@ -163,7 +163,10 @@
   background: rgba(123, 47, 255, 0.08);
   color: #374151;
   font-style: normal;
+  quotes: none;
 }
+.prose blockquote p:first-of-type::before { content: none; }
+.prose blockquote p:last-of-type::after { content: none; }
 .prose blockquote::before {
   position: absolute;
   left: 1rem;
