@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\SearchController;
+use App\Http\Controllers\Admin\StorageStatsController;
 use App\Models\Tag;
 use App\Models\TeamMember;
 use App\Http\Resources\TeamMemberResource;
@@ -221,5 +222,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // Search
         Route::get('/search', [SearchController::class, 'search']);
+
+        // Storage Stats
+        Route::get('/storage-stats', [StorageStatsController::class, 'index']);
+        Route::post('/storage-stats/refresh', [StorageStatsController::class, 'refresh']);
     });
 });

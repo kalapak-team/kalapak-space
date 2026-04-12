@@ -46,6 +46,11 @@
         </div>
       </div>
     </div>
+
+    <!-- Storage Usage -->
+    <div class="mt-8">
+      <StorageStats />
+    </div>
   </div>
 </template>
 
@@ -54,6 +59,7 @@ import { ref, onMounted } from 'vue'
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js'
 import { adminApi } from '@/services/api'
+import StorageStats from '@/components/admin/StorageStats.vue'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 

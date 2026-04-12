@@ -74,6 +74,10 @@ export const adminApi = {
   getDashboardStats: () => api.get('/admin/dashboard/stats'),
   getDashboardActivity: () => api.get('/admin/dashboard/activity'),
 
+  // Storage Stats
+  getStorageStats: () => api.get('/admin/storage-stats'),
+  refreshStorageStats: () => api.post('/admin/storage-stats/refresh'),
+
   getUsers: (params) => api.get('/admin/users', { params }),
   getUser: (id) => api.get(`/admin/users/${id}`),
   createUser: (data) => api.post('/admin/users', data),
