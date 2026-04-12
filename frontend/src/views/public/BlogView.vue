@@ -40,7 +40,7 @@
           <div class="w-full sm:w-48">
             <CustomSelect
               v-model="selectedCategory"
-              :options="[{ label: 'All Categories', value: '' }, ...categories.map(c => ({ label: c.name, value: c.id }))]"
+              :options="[{ label: 'All Categories', value: '' }, ...categories.map(c => ({ label: c.name, value: c.slug }))]"
               placeholder="All Categories"
               @change="fetchPosts"
             />
@@ -55,9 +55,9 @@
         <div v-if="categories.length" data-aos="fade-up" class="flex flex-wrap items-center gap-2 mt-4 px-1">
           <button
             v-for="cat in categories" :key="cat.id"
-            @click="selectedCategory = selectedCategory === cat.id ? '' : cat.id; fetchPosts()"
+            @click="selectedCategory = selectedCategory === cat.slug ? '' : cat.slug; fetchPosts()"
             class="px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-300"
-            :class="selectedCategory === cat.id
+            :class="selectedCategory === cat.slug
               ? 'bg-brand-violet text-white border-brand-violet dark:bg-brand-cyan dark:border-brand-cyan dark:text-dark-900'
               : 'border-gray-200 dark:border-dark-500 text-gray-600 dark:text-gray-400 hover:border-brand-violet/40 dark:hover:border-brand-cyan/40 hover:text-brand-violet dark:hover:text-brand-cyan'">
             {{ cat.name }}
