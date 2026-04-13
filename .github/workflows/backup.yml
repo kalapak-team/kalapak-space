@@ -32,7 +32,7 @@ jobs:
         run: |
           git config --global user.name "Khat Vanna"
           git config --global user.email "vanna@kalapak.space"
-          git clone https://x-access-token:${{ secrets.BACKUP_REPO_TOKEN }}@github.com/khatvanna/kalapak-db-backups.git backup_repo
+          git clone https://x-access-token:${{ secrets.BACKUP_REPO_TOKEN }}@github.com/kalapak-team/kalapak-db-backups.git backup_repo
           cp ${{ env.BACKUP_FILE }} backup_repo/
           cd backup_repo
           git add .
