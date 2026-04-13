@@ -15,7 +15,12 @@ class ProjectController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
+        $user = $request->user();
         $query = Project::with(['tags', 'creator']);
+
+        if ($user && !$user->isSuperAdmin()) {
+            $query->where('created_by', $user->id);
+        }
 
         if ($search = $request->get('search')) {
             $query->where('title', 'ilike', "%{$search}%");
