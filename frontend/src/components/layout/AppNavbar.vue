@@ -95,7 +95,7 @@
                 leave-from-class="opacity-100 scale-100 translate-y-0"
                 leave-to-class="opacity-0 scale-95 -translate-y-1"
               >
-                <div v-if="notifOpen" class="absolute right-0 mt-3 w-80 sm:w-96 rounded-2xl bg-white dark:bg-dark-800 shadow-xl shadow-black/10 dark:shadow-black/40 ring-1 ring-gray-200/80 dark:ring-white/[0.08] z-50 overflow-hidden">
+                <div v-if="notifOpen" class="absolute left-0 sm:right-0 sm:left-auto mt-3 -mx-4 sm:mx-0 w-[calc(100vw-2rem)] sm:w-80 md:w-96 rounded-2xl bg-white dark:bg-dark-800 shadow-xl shadow-black/10 dark:shadow-black/40 ring-1 ring-gray-200/80 dark:ring-white/[0.08] z-50 overflow-hidden">
                   <!-- Header -->
                   <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-white/[0.06]">
                     <h3 class="text-sm font-bold text-gray-900 dark:text-white">Notifications</h3>
