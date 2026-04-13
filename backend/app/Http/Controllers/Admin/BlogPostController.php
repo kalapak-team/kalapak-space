@@ -84,6 +84,11 @@ class BlogPostController extends Controller
     public function update(BlogPostRequest $request, int $id): JsonResponse
     {
         $post = BlogPost::findOrFail($id);
+
+        if ($post->author_id !== auth()->id() && !auth()->user()->isSuperAdmin()) {
+            return response()->json(['success' => false, 'message' => 'You can only edit your own blog posts.'], 403);
+        }
+
         $data = $request->validated();
 
         if ($request->hasFile('cover_image')) {
@@ -113,6 +118,11 @@ class BlogPostController extends Controller
     public function destroy(int $id): JsonResponse
     {
         $post = BlogPost::findOrFail($id);
+
+        if ($post->author_id !== auth()->id() && !auth()->user()->isSuperAdmin()) {
+            return response()->json(['success' => false, 'message' => 'You can only delete your own blog posts.'], 403);
+        }
+
         $title = $post->title;
 
         $this->deleteCoverImage($post->cover_image, $post->storage_provider);

@@ -168,10 +168,10 @@
             </td>
             <td class="py-3 px-4 text-right">
               <div class="flex items-center justify-end gap-1">
-                <router-link :to="{ name: 'admin-blog-edit', params: { id: post.id } }" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Edit">
+                <router-link v-if="canEdit(post)" :to="{ name: 'admin-blog-edit', params: { id: post.id } }" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Edit">
                   <svg class="w-4 h-4 text-gray-400 group-hover:text-brand-violet dark:group-hover:text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                 </router-link>
-                <button @click="confirmDelete(post)" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Delete">
+                <button v-if="canEdit(post)" @click="confirmDelete(post)" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Delete">
                   <svg class="w-4 h-4 text-gray-400 group-hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                 </button>
               </div>
@@ -239,10 +239,10 @@
           <div class="flex items-center justify-between mt-3">
             <span class="text-[10px] text-gray-400">{{ formatDate(post.published_at || post.created_at) }}</span>
             <div class="flex items-center gap-1">
-              <router-link :to="{ name: 'admin-blog-edit', params: { id: post.id } }" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Edit">
+              <router-link v-if="canEdit(post)" :to="{ name: 'admin-blog-edit', params: { id: post.id } }" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Edit">
                 <svg class="w-3.5 h-3.5 text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
               </router-link>
-              <button @click="confirmDelete(post)" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Delete">
+              <button v-if="canEdit(post)" @click="confirmDelete(post)" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Delete">
                 <svg class="w-3.5 h-3.5 text-gray-400 hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
               </button>
             </div>
@@ -294,11 +294,13 @@
 import { ref, computed, onMounted } from 'vue'
 import { adminApi } from '@/services/api'
 import { useUiStore } from '@/stores/ui'
+import { useAuthStore } from '@/stores/auth'
 import Pagination from '@/components/common/Pagination.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
 import CustomSelect from '@/components/common/CustomSelect.vue'
 
 const uiStore = useUiStore()
+const authStore = useAuthStore()
 const posts = ref([])
 const loading = ref(true)
 const search = ref('')
@@ -313,6 +315,7 @@ const deleting = ref(false)
 let debounceTimer = null
 
 const statusCount = (s) => posts.value.filter(p => p.status === s).length
+const canEdit = (post) => authStore.isSuperAdmin || post.author?.id === authStore.user?.id
 const totalViews = computed(() => posts.value.reduce((sum, p) => sum + (p.views_count || 0), 0))
 const allSelected = computed(() => posts.value.length > 0 && selectedIds.value.length === posts.value.length)
 
