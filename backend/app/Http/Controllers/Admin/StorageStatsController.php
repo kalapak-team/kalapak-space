@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Cloudinary\Cloudinary;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
 class StorageStatsController extends Controller
 {
@@ -37,6 +39,8 @@ class StorageStatsController extends Controller
         $compute = fn() => [
             'cloudinary' => $this->getCloudinaryStats(),
             'supabase' => $this->getSupabaseStats(),
+            'redis' => $this->getRedisStats(),
+            'database' => $this->getDatabaseStats(),
         ];
 
         try {
@@ -164,6 +168,103 @@ class StorageStatsController extends Controller
         } catch (\Throwable $e) {
             Log::error('Supabase stats error: ' . $e->getMessage());
             return $this->errorResult('Supabase', $e->getMessage());
+        }
+    }
+
+    private function getRedisStats(): array
+    {
+        try {
+            $host = env('REDIS_HOST', '');
+            if (empty($host)) {
+                return ['configured' => false, 'error' => 'Redis not configured'];
+            }
+
+            $info = Redis::connection()->info();
+
+            $usedMemory = (int) ($info['used_memory'] ?? 0);
+            // Upstash free tier limit: 256 MB
+            $maxMemory = (int) ($info['maxmemory'] ?? 0);
+            $memLimit = $maxMemory > 0 ? $maxMemory : (256 * 1024 * 1024);
+
+            // Key count across all DBs
+            $totalKeys = 0;
+            foreach ($info as $k => $v) {
+                if (str_starts_with($k, 'db')) {
+                    preg_match('/keys=(\d+)/', (string) $v, $m);
+                    $totalKeys += (int) ($m[1] ?? 0);
+                }
+            }
+
+            $isUpstash = str_contains($host, 'upstash.io');
+
+            return [
+                'configured' => true,
+                'provider' => $isUpstash ? 'Upstash' : 'Redis',
+                'version' => $info['redis_version'] ?? '?',
+                'memory' => [
+                    'used' => $usedMemory,
+                    'limit' => $memLimit,
+                    'used_formatted' => $this->formatBytes($usedMemory),
+                    'limit_formatted' => $this->formatBytes($memLimit),
+                    'percentage' => $memLimit > 0 ? round(($usedMemory / $memLimit) * 100, 1) : 0,
+                ],
+                'keys' => $totalKeys,
+                'commands_processed' => (int) ($info['total_commands_processed'] ?? 0),
+                'connected_clients' => (int) ($info['connected_clients'] ?? 0),
+                'uptime_seconds' => (int) ($info['uptime_in_seconds'] ?? 0),
+            ];
+        } catch (\Throwable $e) {
+            Log::error('Redis stats error: ' . $e->getMessage());
+            return ['configured' => false, 'error' => $e->getMessage()];
+        }
+    }
+
+    private function getDatabaseStats(): array
+    {
+        try {
+            $host = config('database.connections.pgsql.host', '');
+            $dbName = config('database.connections.pgsql.database', 'postgres');
+
+            $sizeRow = DB::selectOne('SELECT pg_database_size(current_database()) AS size_bytes');
+            $sizeBytes = (int) ($sizeRow->size_bytes ?? 0);
+
+            $tableRow = DB::selectOne(
+                "SELECT count(*) AS cnt FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE'"
+            );
+            $tableCount = (int) ($tableRow->cnt ?? 0);
+
+            $rowCounts = DB::select(
+                "SELECT relname AS table_name, n_live_tup AS row_count
+                 FROM pg_stat_user_tables
+                 ORDER BY n_live_tup DESC
+                 LIMIT 10"
+            );
+
+            // Neon free: 512 MB; Render/generic: 1 GB
+            $isNeon = str_contains($host, 'neon.tech');
+            $limit = $isNeon ? (512 * 1024 * 1024) : (1024 * 1024 * 1024);
+            $provider = $isNeon ? 'Neon' : 'PostgreSQL';
+
+            return [
+                'configured' => true,
+                'provider' => $provider,
+                'database' => $dbName,
+                'storage' => [
+                    'used' => $sizeBytes,
+                    'limit' => $limit,
+                    'used_formatted' => $this->formatBytes($sizeBytes),
+                    'limit_formatted' => $this->formatBytes($limit),
+                    'percentage' => $limit > 0 ? round(($sizeBytes / $limit) * 100, 1) : 0,
+                ],
+                'tables' => $tableCount,
+                'top_tables' => array_map(fn($r) => [
+                    'name' => $r->table_name,
+                    'rows' => (int) $r->row_count,
+                ], $rowCounts),
+            ];
+        } catch (\Throwable $e) {
+            Log::error('Database stats error: ' . $e->getMessage());
+            return ['configured' => false, 'error' => $e->getMessage()];
         }
     }
 

@@ -134,6 +134,101 @@
         </template>
         <p v-else class="text-sm text-gray-400 italic">{{ supabase.error || 'Not configured' }}</p>
       </div>
+
+      <!-- Redis Card -->
+      <div class="rounded-xl border border-gray-200 dark:border-gray-700 p-4 bg-white/50 dark:bg-white/5">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-lg">
+            ⚡
+          </div>
+          <div>
+            <p class="font-semibold dark:text-white">{{ redis.provider || 'Redis' }}</p>
+            <p class="text-xs text-gray-400">In-memory Cache &amp; Queue</p>
+          </div>
+        </div>
+
+        <template v-if="redis.configured">
+          <!-- Memory -->
+          <div class="mb-3">
+            <div class="flex justify-between text-sm mb-1">
+              <span class="text-gray-500 dark:text-gray-400">Memory</span>
+              <span class="dark:text-gray-300 font-medium">{{ redis.memory?.used_formatted }} / {{ redis.memory?.limit_formatted }}</span>
+            </div>
+            <div class="w-full h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+              <div
+                class="h-full rounded-full transition-all duration-500"
+                :class="getBarColor(redis.memory?.percentage)"
+                :style="{ width: redis.memory?.percentage + '%' }"
+              />
+            </div>
+            <p class="text-xs text-gray-400 mt-0.5 text-right">{{ redis.memory?.percentage }}%</p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 text-xs text-gray-500 dark:text-gray-400 mt-2">
+            <div class="bg-gray-100 dark:bg-white/5 rounded-lg px-3 py-2">
+              <p class="text-gray-400 mb-0.5">Keys</p>
+              <p class="font-semibold dark:text-white text-sm">{{ redis.keys?.toLocaleString() ?? 0 }}</p>
+            </div>
+            <div class="bg-gray-100 dark:bg-white/5 rounded-lg px-3 py-2">
+              <p class="text-gray-400 mb-0.5">Clients</p>
+              <p class="font-semibold dark:text-white text-sm">{{ redis.connected_clients ?? 0 }}</p>
+            </div>
+            <div class="bg-gray-100 dark:bg-white/5 rounded-lg px-3 py-2 col-span-2">
+              <p class="text-gray-400 mb-0.5">Commands Processed</p>
+              <p class="font-semibold dark:text-white text-sm">{{ redis.commands_processed?.toLocaleString() ?? 0 }}</p>
+            </div>
+          </div>
+          <p class="text-xs text-gray-400 mt-2">v{{ redis.version }}</p>
+        </template>
+        <p v-else class="text-sm text-gray-400 italic">{{ redis.error || 'Not configured' }}</p>
+      </div>
+
+      <!-- Database Card -->
+      <div class="rounded-xl border border-gray-200 dark:border-gray-700 p-4 bg-white/50 dark:bg-white/5">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-lg bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center text-lg">
+            🐘
+          </div>
+          <div>
+            <p class="font-semibold dark:text-white">{{ database.provider || 'PostgreSQL' }}</p>
+            <p class="text-xs text-gray-400">{{ database.database || 'Database' }}</p>
+          </div>
+        </div>
+
+        <template v-if="database.configured">
+          <!-- Storage -->
+          <div class="mb-3">
+            <div class="flex justify-between text-sm mb-1">
+              <span class="text-gray-500 dark:text-gray-400">Storage</span>
+              <span class="dark:text-gray-300 font-medium">{{ database.storage?.used_formatted }} / {{ database.storage?.limit_formatted }}</span>
+            </div>
+            <div class="w-full h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+              <div
+                class="h-full rounded-full transition-all duration-500"
+                :class="getBarColor(database.storage?.percentage)"
+                :style="{ width: database.storage?.percentage + '%' }"
+              />
+            </div>
+            <p class="text-xs text-gray-400 mt-0.5 text-right">{{ database.storage?.percentage }}%</p>
+          </div>
+
+          <p class="text-xs text-gray-400 mb-3">🗂 {{ database.tables?.toLocaleString() || 0 }} tables</p>
+
+          <!-- Top Tables -->
+          <div v-if="database.top_tables?.length" class="space-y-1.5">
+            <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Top Tables</p>
+            <div
+              v-for="t in database.top_tables.slice(0, 5)"
+              :key="t.name"
+              class="flex justify-between text-xs text-gray-500 dark:text-gray-400"
+            >
+              <span>📋 {{ t.name }}</span>
+              <span>{{ t.rows?.toLocaleString() }} rows</span>
+            </div>
+          </div>
+        </template>
+        <p v-else class="text-sm text-gray-400 italic">{{ database.error || 'Not configured' }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -147,6 +242,8 @@ const error = ref(null)
 
 const cloudinary = ref({ configured: false })
 const supabase = ref({ configured: false })
+const redis = ref({ configured: false })
+const database = ref({ configured: false })
 
 function getBarColor(percentage) {
   if (percentage >= 90) return 'bg-red-500'
@@ -163,6 +260,8 @@ async function fetchStats(isRefresh = false) {
       : await adminApi.getStorageStats()
     cloudinary.value = data.data?.cloudinary || { configured: false }
     supabase.value = data.data?.supabase || { configured: false }
+    redis.value = data.data?.redis || { configured: false }
+    database.value = data.data?.database || { configured: false }
   } catch (e) {
     error.value = 'Failed to load storage stats'
   } finally {
