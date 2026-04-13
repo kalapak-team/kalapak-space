@@ -30,8 +30,8 @@ jobs:
 
       - name: Push to Backup Repository
         run: |
-          git config --global user.name "Khat Vanna"
-          git config --global user.email "vanna@kalapak.space"
+          git config --global user.name "Kalapak Team"
+          git config --global user.email "teamvcnh@gmail.com"
           git clone https://x-access-token:${{ secrets.BACKUP_REPO_TOKEN }}@github.com/kalapak-team/kalapak-db-backups.git backup_repo
           cp ${{ env.BACKUP_FILE }} backup_repo/
           cd backup_repo
