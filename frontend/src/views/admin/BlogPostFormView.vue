@@ -197,12 +197,14 @@ import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { adminApi } from '@/services/api'
 import { useUiStore } from '@/stores/ui'
+import { useAuthStore } from '@/stores/auth'
 import ContentEditor from '@/components/common/ContentEditor.vue'
 import CustomSelect from '@/components/common/CustomSelect.vue'
 
 const route = useRoute()
 const router = useRouter()
 const uiStore = useUiStore()
+const authStore = useAuthStore()
 
 const isEdit = computed(() => !!route.params.id)
 const form = ref({ title: '', slug: '', excerpt: '', content: '', category_id: '', status: 'draft', is_featured: false, storage_provider: localStorage.getItem('media_storage_provider') || 'supabase' })
@@ -253,6 +255,12 @@ function removeImage() {
 }
 
 onMounted(async () => {
+  const neededAction = isEdit.value ? 'update' : 'create'
+  if (!authStore.canDo('blog_posts', neededAction)) {
+    uiStore.showToast(`You don't have permission to ${neededAction} blog posts`, 'error')
+    router.replace({ name: 'admin-blog' })
+    return
+  }
   try { const { data } = await adminApi.getBlogCategories(); categories.value = data.data || [] } catch {}
   if (isEdit.value) {
     try {
@@ -289,7 +297,12 @@ async function handleSubmit() {
     uiStore.showToast(`Post ${isEdit.value ? 'updated' : 'created'}!`)
     router.push({ name: 'admin-blog' })
   } catch (e) {
-    error.value = e.response?.data?.message || 'Failed to save'
+    if (e.response?.data?.intercepted) {
+      uiStore.showToast(e.response.data.message || 'Queued for approval', 'warning')
+      router.push({ name: 'admin-blog' })
+    } else {
+      error.value = e.response?.data?.message || 'Failed to save'
+    }
   } finally { saving.value = false }
 }
 </script>

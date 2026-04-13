@@ -3,11 +3,17 @@
 namespace App\Providers;
 
 use App\Models\BlogCategory;
+use App\Models\BlogPost;
+use App\Models\Media;
 use App\Models\Project;
 use App\Models\Tag;
+use App\Models\TeamMember;
 use App\Observers\BlogCategoryObserver;
+use App\Observers\BlogPostObserver;
+use App\Observers\MediaObserver;
 use App\Observers\ProjectObserver;
 use App\Observers\TagObserver;
+use App\Observers\TeamMemberObserver;
 use App\Services\SupabaseStorage;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -26,6 +32,9 @@ class AppServiceProvider extends ServiceProvider
         Project::observe(ProjectObserver::class);
         Tag::observe(TagObserver::class);
         BlogCategory::observe(BlogCategoryObserver::class);
+        TeamMember::observe(TeamMemberObserver::class);
+        BlogPost::observe(BlogPostObserver::class);
+        Media::observe(MediaObserver::class);
 
         // General API: 60 requests per minute per IP
         RateLimiter::for('api', function (Request $request) {

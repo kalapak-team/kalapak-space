@@ -12,6 +12,9 @@ export const useAuthStore = defineStore('auth', () => {
     projects: { can_create: false, can_update: false, can_delete: false },
     categories: { can_create: false, can_update: false, can_delete: false },
     tags: { can_create: false, can_update: false, can_delete: false },
+    team_members: { can_create: false, can_update: false, can_delete: false },
+    blog_posts: { can_create: false, can_update: false, can_delete: false },
+    media: { can_create: false, can_update: false, can_delete: false },
   })
 
   const isAuthenticated = computed(() => !!token.value)

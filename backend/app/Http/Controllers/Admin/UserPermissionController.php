@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class UserPermissionController extends Controller
 {
-    private const RESOURCES = ['projects', 'categories', 'tags'];
+    private const RESOURCES = ['projects', 'categories', 'tags', 'team_members', 'blog_posts', 'media'];
 
     /** GET /admin/my-permissions – current user's own permissions */
     public function mine(Request $request): JsonResponse

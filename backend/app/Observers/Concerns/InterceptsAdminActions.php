@@ -8,12 +8,12 @@ use App\Models\UserPermission;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Used by observers on Project, Tag, and BlogCategory.
+ * Used by observers on Project, Tag, BlogCategory, TeamMember, BlogPost, and Media.
  * When an admin lacks the per-resource permission, the mutation is intercepted
  * and queued as a pending approval request for Super Admin review.
  *
  * Each concrete observer must declare:
- *   protected string $resource = 'projects'; // or 'categories' or 'tags'
+ *   protected string $resource = 'projects'; // or 'categories', 'tags', 'team_members', 'blog_posts', 'media'
  */
 trait InterceptsAdminActions
 {

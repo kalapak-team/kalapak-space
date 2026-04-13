@@ -225,7 +225,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { adminApi } from '@/services/api'
 import { useUiStore } from '@/stores/ui'
 import { useAuthStore } from '@/stores/auth'
-import { FolderIcon, RectangleStackIcon, TagIcon } from '@heroicons/vue/24/outline'
+import { FolderIcon, RectangleStackIcon, TagIcon, UserGroupIcon, DocumentTextIcon, PhotoIcon } from '@heroicons/vue/24/outline'
 import CustomSelect from '@/components/common/CustomSelect.vue'
 
 const route = useRoute()
@@ -257,9 +257,12 @@ const isAdminUser = computed(() => {
 })
 
 const permissionResources = [
-  { key: 'projects',   label: 'Projects',   icon: FolderIcon,          bg: 'bg-brand-violet/10', iconColor: 'text-brand-violet dark:text-brand-cyan' },
-  { key: 'categories', label: 'Categories', icon: RectangleStackIcon,  bg: 'bg-blue-500/10',     iconColor: 'text-blue-500' },
-  { key: 'tags',       label: 'Tags',       icon: TagIcon,             bg: 'bg-green-500/10',    iconColor: 'text-green-500' },
+  { key: 'projects',     label: 'Projects',       icon: FolderIcon,          bg: 'bg-brand-violet/10', iconColor: 'text-brand-violet dark:text-brand-cyan' },
+  { key: 'categories',   label: 'Categories',     icon: RectangleStackIcon,  bg: 'bg-blue-500/10',     iconColor: 'text-blue-500' },
+  { key: 'tags',         label: 'Tags',           icon: TagIcon,             bg: 'bg-green-500/10',    iconColor: 'text-green-500' },
+  { key: 'team_members', label: 'Team Members',   icon: UserGroupIcon,       bg: 'bg-amber-500/10',    iconColor: 'text-amber-500' },
+  { key: 'blog_posts',   label: 'Blog Posts',     icon: DocumentTextIcon,    bg: 'bg-pink-500/10',     iconColor: 'text-pink-500' },
+  { key: 'media',        label: 'Media Library',  icon: PhotoIcon,           bg: 'bg-cyan-500/10',     iconColor: 'text-cyan-500' },
 ]
 
 function togglePerm(resource, field) {

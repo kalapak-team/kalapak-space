@@ -6,7 +6,7 @@
         <h1 class="text-2xl font-sans font-bold dark:text-white">Team Members</h1>
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Manage your team roster and member profiles</p>
       </div>
-      <button @click="openAddForm" class="btn-primary flex items-center gap-2 text-sm">
+      <button v-if="authStore.canDo('team_members', 'create')" @click="openAddForm" class="btn-primary flex items-center gap-2 text-sm">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         Add Member
       </button>
@@ -129,11 +129,11 @@
 
         <!-- Card Actions -->
         <div class="border-t border-gray-100 dark:border-dark-700 px-4 py-3 flex items-center justify-between">
-          <button @click="editMember(member)" class="text-xs font-medium text-brand-violet dark:text-brand-cyan hover:underline flex items-center gap-1">
+          <button v-if="authStore.canDo('team_members', 'update')" @click="editMember(member)" class="text-xs font-medium text-brand-violet dark:text-brand-cyan hover:underline flex items-center gap-1">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
             Edit
           </button>
-          <button @click="deleteTarget = member" class="text-xs font-medium text-red-500 hover:underline flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button v-if="authStore.canDo('team_members', 'delete')" @click="deleteTarget = member" class="text-xs font-medium text-red-500 hover:underline flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
             Delete
           </button>
@@ -209,10 +209,10 @@
               </td>
               <td class="px-5 py-3 text-right">
                 <div class="flex items-center justify-end gap-1">
-                  <button @click="editMember(member)" class="p-1.5 rounded-lg text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-brand-violet/10 dark:hover:bg-brand-cyan/10 transition-colors" title="Edit">
+                  <button v-if="authStore.canDo('team_members', 'update')" @click="editMember(member)" class="p-1.5 rounded-lg text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-brand-violet/10 dark:hover:bg-brand-cyan/10 transition-colors" title="Edit">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                   </button>
-                  <button @click="deleteTarget = member" class="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-500/10 transition-colors" title="Delete">
+                  <button v-if="authStore.canDo('team_members', 'delete')" @click="deleteTarget = member" class="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-500/10 transition-colors" title="Delete">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                   </button>
                 </div>
@@ -390,8 +390,10 @@
 import { ref, computed, onMounted } from 'vue'
 import { adminApi } from '@/services/api'
 import { useUiStore } from '@/stores/ui'
+import { useAuthStore } from '@/stores/auth'
 
 const uiStore = useUiStore()
+const authStore = useAuthStore()
 const members = ref([])
 const loading = ref(true)
 const showForm = ref(false)
@@ -500,9 +502,14 @@ async function handleSubmit() {
     showForm.value = false
     fetchMembers()
   } catch (err) {
-    const msg = err.response?.data?.message || 'Failed to save'
-    formError.value = msg
-    uiStore.showToast(msg, 'error')
+    if (err.response?.data?.intercepted) {
+      uiStore.showToast(err.response.data.message || 'Queued for approval', 'warning')
+      showForm.value = false
+    } else {
+      const msg = err.response?.data?.message || 'Failed to save'
+      formError.value = msg
+      uiStore.showToast(msg, 'error')
+    }
   } finally {
     saving.value = false
   }
@@ -514,8 +521,12 @@ async function confirmDelete() {
     await adminApi.deleteTeamMember(deleteTarget.value.id)
     members.value = members.value.filter(x => x.id !== deleteTarget.value.id)
     uiStore.showToast('Member removed')
-  } catch {
-    uiStore.showToast('Failed to remove', 'error')
+  } catch (e) {
+    if (e.response?.data?.intercepted) {
+      uiStore.showToast(e.response.data.message || 'Queued for approval', 'warning')
+    } else {
+      uiStore.showToast('Failed to remove', 'error')
+    }
   }
   deleteTarget.value = null
 }

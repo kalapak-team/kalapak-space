@@ -6,7 +6,7 @@
         <h1 class="text-2xl font-sans font-bold dark:text-white">Blog Posts</h1>
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Manage articles, tutorials, and announcements</p>
       </div>
-      <router-link :to="{ name: 'admin-blog-create' }" class="btn-primary flex items-center gap-2 text-sm">
+      <router-link v-if="authStore.canDo('blog_posts', 'create')" :to="{ name: 'admin-blog-create' }" class="btn-primary flex items-center gap-2 text-sm">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         New Post
       </router-link>
@@ -168,10 +168,10 @@
             </td>
             <td class="py-3 px-4 text-right">
               <div class="flex items-center justify-end gap-1">
-                <router-link v-if="canEdit(post)" :to="{ name: 'admin-blog-edit', params: { id: post.id } }" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Edit">
+                <router-link v-if="canEditPerm(post)" :to="{ name: 'admin-blog-edit', params: { id: post.id } }" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Edit">
                   <svg class="w-4 h-4 text-gray-400 group-hover:text-brand-violet dark:group-hover:text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                 </router-link>
-                <button v-if="canEdit(post)" @click="confirmDelete(post)" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Delete">
+                <button v-if="canDeletePerm(post)" @click="confirmDelete(post)" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Delete">
                   <svg class="w-4 h-4 text-gray-400 group-hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                 </button>
               </div>
@@ -181,7 +181,7 @@
       </table>
 
       <!-- Bulk Actions -->
-      <div v-if="selectedIds.length" class="flex items-center gap-3 px-4 py-3 bg-brand-violet/5 dark:bg-brand-cyan/5 border-t border-gray-200 dark:border-dark-600">
+      <div v-if="selectedIds.length && authStore.canDo('blog_posts', 'delete')" class="flex items-center gap-3 px-4 py-3 bg-brand-violet/5 dark:bg-brand-cyan/5 border-t border-gray-200 dark:border-dark-600">
         <span class="text-sm text-gray-600 dark:text-gray-400">{{ selectedIds.length }} selected</span>
         <button @click="bulkDelete" class="text-sm text-red-500 hover:text-red-600 font-medium">Delete Selected</button>
         <button @click="selectedIds = []" class="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">Clear</button>
@@ -239,10 +239,10 @@
           <div class="flex items-center justify-between mt-3">
             <span class="text-[10px] text-gray-400">{{ formatDate(post.published_at || post.created_at) }}</span>
             <div class="flex items-center gap-1">
-              <router-link v-if="canEdit(post)" :to="{ name: 'admin-blog-edit', params: { id: post.id } }" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Edit">
+              <router-link v-if="canEditPerm(post)" :to="{ name: 'admin-blog-edit', params: { id: post.id } }" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Edit">
                 <svg class="w-3.5 h-3.5 text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
               </router-link>
-              <button v-if="canEdit(post)" @click="confirmDelete(post)" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Delete">
+              <button v-if="canDeletePerm(post)" @click="confirmDelete(post)" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Delete">
                 <svg class="w-3.5 h-3.5 text-gray-400 hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
               </button>
             </div>
@@ -315,7 +315,13 @@ const deleting = ref(false)
 let debounceTimer = null
 
 const statusCount = (s) => posts.value.filter(p => p.status === s).length
-const canEdit = (post) => authStore.isSuperAdmin || post.author?.id === authStore.user?.id
+const canEdit = (post) => {
+  if (authStore.isSuperAdmin) return true
+  const isAuthor = post.author?.id === authStore.user?.id
+  return isAuthor
+}
+const canEditPerm = (post) => canEdit(post) && authStore.canDo('blog_posts', 'update')
+const canDeletePerm = (post) => canEdit(post) && authStore.canDo('blog_posts', 'delete')
 const totalViews = computed(() => posts.value.reduce((sum, p) => sum + (p.views_count || 0), 0))
 const allSelected = computed(() => posts.value.length > 0 && selectedIds.value.length === posts.value.length)
 
@@ -368,7 +374,14 @@ async function handleDelete() {
     posts.value = posts.value.filter(p => p.id !== deleteTarget.value.id)
     uiStore.showToast('Post deleted')
     deleteTarget.value = null
-  } catch { uiStore.showToast('Failed to delete', 'error') }
+  } catch (e) {
+    if (e.response?.data?.intercepted) {
+      uiStore.showToast(e.response.data.message || 'Queued for approval', 'warning')
+      deleteTarget.value = null
+    } else {
+      uiStore.showToast('Failed to delete', 'error')
+    }
+  }
   finally { deleting.value = false }
 }
 
