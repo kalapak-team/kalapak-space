@@ -13,25 +13,38 @@ class StorageStatsController extends Controller
 {
     public function index(): JsonResponse
     {
-        $data = Cache::remember('storage_stats', 3600, function () {
-            return [
-                'cloudinary' => $this->getCloudinaryStats(),
-                'supabase' => $this->getSupabaseStats(),
-            ];
-        });
+        $data = $this->getCachedStats();
 
         return response()->json([
             'success' => true,
             'data' => $data,
-            'cached_until' => Cache::get('storage_stats') ? now()->addHour()->toIso8601String() : null,
         ]);
     }
 
     public function refresh(): JsonResponse
     {
-        Cache::forget('storage_stats');
+        try {
+            Cache::forget('storage_stats');
+        } catch (\Throwable) {
+            // Cache unavailable — ignore
+        }
 
         return $this->index();
+    }
+
+    private function getCachedStats(): array
+    {
+        $compute = fn() => [
+            'cloudinary' => $this->getCloudinaryStats(),
+            'supabase' => $this->getSupabaseStats(),
+        ];
+
+        try {
+            return Cache::remember('storage_stats', 3600, $compute);
+        } catch (\Throwable $e) {
+            Log::warning('Cache unavailable for storage_stats, fetching directly: ' . $e->getMessage());
+            return $compute();
+        }
     }
 
     private function getCloudinaryStats(): array
