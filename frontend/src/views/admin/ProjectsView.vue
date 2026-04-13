@@ -6,7 +6,7 @@
         <h1 class="text-2xl font-sans font-bold dark:text-white">Projects</h1>
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Manage your team's portfolio and showcase projects</p>
       </div>
-      <router-link :to="{ name: 'admin-project-create' }" class="btn-primary flex items-center gap-2 text-sm">
+      <router-link v-if="authStore.canDo('projects', 'create')" :to="{ name: 'admin-project-create' }" class="btn-primary flex items-center gap-2 text-sm">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         New Project
       </router-link>
@@ -160,10 +160,10 @@
                 <a v-if="project.repo_url" :href="project.repo_url" target="_blank" rel="noopener" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="View Repo">
                   <svg class="w-4 h-4 text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-200" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
                 </a>
-                <router-link :to="{ name: 'admin-project-edit', params: { id: project.id } }" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Edit">
+                <router-link v-if="authStore.canDo('projects', 'update')" :to="{ name: 'admin-project-edit', params: { id: project.id } }" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Edit">
                   <svg class="w-4 h-4 text-gray-400 group-hover:text-brand-violet dark:group-hover:text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                 </router-link>
-                <button @click="confirmDelete(project)" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Delete">
+                <button v-if="authStore.canDo('projects', 'delete')" @click="confirmDelete(project)" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Delete">
                   <svg class="w-4 h-4 text-gray-400 group-hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                 </button>
               </div>
@@ -175,7 +175,7 @@
       <!-- Bulk Actions -->
       <div v-if="selectedIds.length" class="flex items-center gap-3 px-4 py-3 bg-brand-violet/5 dark:bg-brand-cyan/5 border-t border-gray-200 dark:border-dark-600">
         <span class="text-sm text-gray-600 dark:text-gray-400">{{ selectedIds.length }} selected</span>
-        <button @click="bulkDelete" class="text-sm text-red-500 hover:text-red-600 font-medium">Delete Selected</button>
+        <button v-if="authStore.canDo('projects', 'delete')" @click="bulkDelete" class="text-sm text-red-500 hover:text-red-600 font-medium">Delete Selected</button>
         <button @click="selectedIds = []" class="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">Clear</button>
       </div>
     </div>
@@ -217,10 +217,10 @@
               <a v-if="project.demo_url" :href="project.demo_url" target="_blank" rel="noopener" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Demo">
                 <svg class="w-3.5 h-3.5 text-gray-400 hover:text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
               </a>
-              <router-link :to="{ name: 'admin-project-edit', params: { id: project.id } }" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Edit">
+              <router-link v-if="authStore.canDo('projects', 'update')" :to="{ name: 'admin-project-edit', params: { id: project.id } }" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Edit">
                 <svg class="w-3.5 h-3.5 text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
               </router-link>
-              <button @click="confirmDelete(project)" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Delete">
+              <button v-if="authStore.canDo('projects', 'delete')" @click="confirmDelete(project)" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Delete">
                 <svg class="w-3.5 h-3.5 text-gray-400 hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
               </button>
             </div>
@@ -272,11 +272,13 @@
 import { ref, computed, onMounted } from 'vue'
 import { adminApi } from '@/services/api'
 import { useUiStore } from '@/stores/ui'
+import { useAuthStore } from '@/stores/auth'
 import Pagination from '@/components/common/Pagination.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
 import CustomSelect from '@/components/common/CustomSelect.vue'
 
 const uiStore = useUiStore()
+const authStore = useAuthStore()
 const projects = ref([])
 const loading = ref(true)
 const search = ref('')

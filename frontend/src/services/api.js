@@ -87,6 +87,9 @@ export const adminApi = {
   getDashboardStats: () => api.get('/admin/dashboard/stats'),
   getDashboardActivity: () => api.get('/admin/dashboard/activity'),
 
+  // Own permissions
+  getMyPermissions: () => api.get('/admin/my-permissions'),
+
   // Storage Stats
   getStorageStats: () => api.get('/admin/storage-stats'),
   refreshStorageStats: () => api.post('/admin/storage-stats/refresh'),

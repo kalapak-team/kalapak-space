@@ -6,7 +6,7 @@
         <h1 class="text-2xl font-sans font-bold dark:text-white">Categories</h1>
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Manage blog post categories</p>
       </div>
-      <button @click="openCreateModal" class="btn-primary flex items-center gap-2 text-sm">
+      <button v-if="authStore.canDo('categories', 'create')" @click="openCreateModal" class="btn-primary flex items-center gap-2 text-sm">
         <PlusIcon class="w-4 h-4" />
         Add Category
       </button>
@@ -84,7 +84,7 @@
       </div>
       <h3 class="text-lg font-semibold dark:text-white mb-2">No categories yet</h3>
       <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 max-w-sm mx-auto">Categories help organize your blog posts. Create your first category to get started.</p>
-      <button @click="openCreateModal" class="btn-primary inline-flex items-center gap-2 text-sm">
+      <button v-if="authStore.canDo('categories', 'create')" @click="openCreateModal" class="btn-primary inline-flex items-center gap-2 text-sm">
         <PlusIcon class="w-4 h-4" />
         Create First Category
       </button>
@@ -122,10 +122,10 @@
             </div>
             <!-- Actions -->
             <div class="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button @click="openEditModal(cat)" class="p-1.5 rounded-lg text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Edit">
+              <button v-if="authStore.canDo('categories', 'update')" @click="openEditModal(cat)" class="p-1.5 rounded-lg text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Edit">
                 <PencilSquareIcon class="w-4 h-4" />
               </button>
-              <button @click="confirmDelete(cat)" class="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors" title="Delete">
+              <button v-if="authStore.canDo('categories', 'delete')" @click="confirmDelete(cat)" class="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors" title="Delete">
                 <TrashIcon class="w-4 h-4" />
               </button>
             </div>
@@ -202,10 +202,10 @@
             </td>
             <td class="px-5 py-3.5 text-right">
               <div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button @click="openEditModal(cat)" class="p-1.5 rounded-lg text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Edit">
+                <button v-if="authStore.canDo('categories', 'update')" @click="openEditModal(cat)" class="p-1.5 rounded-lg text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Edit">
                   <PencilSquareIcon class="w-4 h-4" />
                 </button>
-                <button @click="confirmDelete(cat)" class="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors" title="Delete">
+                <button v-if="authStore.canDo('categories', 'delete')" @click="confirmDelete(cat)" class="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors" title="Delete">
                   <TrashIcon class="w-4 h-4" />
                 </button>
               </div>
@@ -460,6 +460,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { adminApi } from '@/services/api'
+import { useAuthStore } from '@/stores/auth'
 import {
   RectangleStackIcon,
   DocumentTextIcon,
@@ -475,6 +476,8 @@ import {
   CheckCircleIcon,
 } from '@heroicons/vue/24/outline'
 import CustomSelect from '@/components/common/CustomSelect.vue'
+
+const authStore = useAuthStore()
 
 const categories = ref([])
 const loading = ref(true)

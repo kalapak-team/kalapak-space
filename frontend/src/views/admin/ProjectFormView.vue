@@ -172,12 +172,14 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { adminApi, publicApi } from '@/services/api'
 import { useUiStore } from '@/stores/ui'
+import { useAuthStore } from '@/stores/auth'
 import ContentEditor from '@/components/common/ContentEditor.vue'
 import CustomSelect from '@/components/common/CustomSelect.vue'
 
 const route = useRoute()
 const router = useRouter()
 const uiStore = useUiStore()
+const authStore = useAuthStore()
 
 const isEdit = computed(() => !!route.params.id)
 const form = ref({
@@ -221,6 +223,14 @@ function autoSlug() {
 }
 
 onMounted(async () => {
+  // Check permission before loading form
+  const action = isEdit.value ? 'update' : 'create'
+  if (!authStore.canDo('projects', action)) {
+    uiStore.showToast('You do not have permission to ' + action + ' projects.', 'error')
+    router.replace({ name: 'admin-projects' })
+    return
+  }
+
   try {
     const { data } = await publicApi.getTags()
     availableTags.value = data.data || data
@@ -263,7 +273,12 @@ async function handleSubmit() {
     uiStore.showToast(`Project ${isEdit.value ? 'updated' : 'created'}!`)
     router.push({ name: 'admin-projects' })
   } catch (e) {
-    error.value = e.response?.data?.message || 'Failed to save'
+    if (e.response?.data?.intercepted) {
+      uiStore.showToast(e.response.data.message, 'warning')
+      router.push({ name: 'admin-projects' })
+    } else {
+      error.value = e.response?.data?.message || 'Failed to save'
+    }
   } finally { saving.value = false }
 }
 </script>

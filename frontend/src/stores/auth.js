@@ -1,16 +1,38 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { authApi, memberApi } from '@/services/api'
+import { authApi, memberApi, adminApi } from '@/services/api'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref(null)
   const token = ref(localStorage.getItem('auth_token'))
   const loading = ref(false)
 
+  // Per-resource permissions (fetched for admin users)
+  const permissions = ref({
+    projects: { can_create: false, can_update: false, can_delete: false },
+    categories: { can_create: false, can_update: false, can_delete: false },
+    tags: { can_create: false, can_update: false, can_delete: false },
+  })
+
   const isAuthenticated = computed(() => !!token.value)
   const isSuperAdmin = computed(() => user.value?.role?.name === 'superadmin')
   const isAdmin = computed(() => ['admin', 'superadmin'].includes(user.value?.role?.name))
   const isMember = computed(() => ['member', 'admin', 'superadmin'].includes(user.value?.role?.name))
+
+  function canDo(resource, action) {
+    if (isSuperAdmin.value) return true
+    return permissions.value[resource]?.['can_' + action] ?? false
+  }
+
+  async function fetchPermissions() {
+    if (!token.value || !isAdmin.value) return
+    try {
+      const { data } = await adminApi.getMyPermissions()
+      permissions.value = data.data
+    } catch {
+      // ignore – permissions stay at defaults (all false)
+    }
+  }
 
   async function login(credentials) {
     loading.value = true
@@ -44,6 +66,7 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const { data } = await authApi.me()
       user.value = data.data
+      await fetchPermissions()
     } catch {
       logout()
     } finally {
@@ -80,10 +103,13 @@ export const useAuthStore = defineStore('auth', () => {
     user,
     token,
     loading,
+    permissions,
     isAuthenticated,
     isSuperAdmin,
     isAdmin,
     isMember,
+    canDo,
+    fetchPermissions,
     login,
     register,
     fetchMe,

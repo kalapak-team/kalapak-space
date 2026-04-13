@@ -12,6 +12,41 @@ class UserPermissionController extends Controller
 {
     private const RESOURCES = ['projects', 'categories', 'tags'];
 
+    /** GET /admin/my-permissions – current user's own permissions */
+    public function mine(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        // Super admins have full access
+        if ($user->isSuperAdmin()) {
+            $result = [];
+            foreach (self::RESOURCES as $resource) {
+                $result[$resource] = [
+                    'can_create' => true,
+                    'can_update' => true,
+                    'can_delete' => true,
+                ];
+            }
+            return response()->json(['success' => true, 'data' => $result]);
+        }
+
+        $stored = UserPermission::where('user_id', $user->id)
+            ->get()
+            ->keyBy('resource');
+
+        $result = [];
+        foreach (self::RESOURCES as $resource) {
+            $row = $stored->get($resource);
+            $result[$resource] = [
+                'can_create' => $row?->can_create ?? false,
+                'can_update' => $row?->can_update ?? false,
+                'can_delete' => $row?->can_delete ?? false,
+            ];
+        }
+
+        return response()->json(['success' => true, 'data' => $result]);
+    }
+
     /** GET /admin/users/{id}/permissions */
     public function show(int $id): JsonResponse
     {

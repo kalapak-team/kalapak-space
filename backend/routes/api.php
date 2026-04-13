@@ -133,6 +133,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
         Route::get('/dashboard/activity', [DashboardController::class, 'activity']);
 
+        // Current user's own permissions
+        Route::get('/my-permissions', [UserPermissionController::class, 'mine']);
+
         // Projects (admin + superadmin)
         Route::get('/projects', [AdminProjectController::class, 'index']);
         Route::post('/projects', [AdminProjectController::class, 'store']);
