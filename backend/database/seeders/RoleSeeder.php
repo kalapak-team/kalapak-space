@@ -10,7 +10,8 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         $roles = [
-            ['name' => 'admin', 'display_name' => 'Administrator', 'description' => 'Full access to all features'],
+            ['name' => 'superadmin', 'display_name' => 'Super Admin', 'description' => 'Full unrestricted access to all system features'],
+            ['name' => 'admin', 'display_name' => 'Administrator', 'description' => 'Manage content: projects, blog, media, messages'],
             ['name' => 'member', 'display_name' => 'Member', 'description' => 'Team member with profile access'],
             ['name' => 'guest', 'display_name' => 'Guest', 'description' => 'Registered user with basic access'],
         ];

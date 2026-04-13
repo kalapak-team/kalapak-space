@@ -60,7 +60,7 @@
           <div v-else class="flex justify-center py-2"><span class="w-5 h-px bg-gray-200 dark:bg-white/10 rounded-full" /></div>
 
           <router-link
-            v-for="item in mainNavItems"
+            v-for="item in mainNavItems.filter(i => !i.superAdminOnly || authStore.isSuperAdmin)"
             :key="item.routeName"
             :to="item.to"
             :title="sidebarCollapsed ? item.label : undefined"
@@ -141,8 +141,8 @@
           </router-link>
         </div>
 
-        <!-- System section -->
-        <div class="mb-1">
+        <!-- System section (superadmin only) -->
+        <div v-if="authStore.isSuperAdmin" class="mb-1">
           <p v-if="!sidebarCollapsed" class="px-3 pt-3 pb-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-gray-400/80 dark:text-gray-500/80 select-none">System</p>
           <div v-else class="flex justify-center py-2"><span class="w-5 h-px bg-gray-200 dark:bg-white/10 rounded-full" /></div>
 
@@ -466,7 +466,7 @@ const searchOpen = ref(false)
 // ── Navigation groups ──
 const mainNavItems = [
   { label: 'Dashboard', to: '/admin', routeName: 'admin-dashboard', icon: HomeIcon },
-  { label: 'Users', to: '/admin/users', routeName: 'admin-users', icon: UsersIcon },
+  { label: 'Users', to: '/admin/users', routeName: 'admin-users', icon: UsersIcon, superAdminOnly: true },
   { label: 'Team', to: '/admin/team', routeName: 'admin-team', icon: UserGroupIcon },
 ]
 

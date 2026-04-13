@@ -61,13 +61,18 @@ class User extends Authenticatable
         return $this->hasMany(Media::class, 'uploaded_by');
     }
 
+    public function isSuperAdmin(): bool
+    {
+        return $this->role?->name === 'superadmin';
+    }
+
     public function isAdmin(): bool
     {
-        return $this->role?->name === 'admin';
+        return in_array($this->role?->name, ['admin', 'superadmin']);
     }
 
     public function isMember(): bool
     {
-        return in_array($this->role?->name, ['member', 'admin']);
+        return in_array($this->role?->name, ['member', 'admin', 'superadmin']);
     }
 }

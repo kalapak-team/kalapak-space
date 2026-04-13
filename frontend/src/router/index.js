@@ -50,8 +50,8 @@ const routes = [
     meta: { requiresAuth: true, requiresAdmin: true },
     children: [
       { path: '', name: 'admin-dashboard', component: () => import('@/views/admin/DashboardView.vue') },
-      { path: 'users', name: 'admin-users', component: () => import('@/views/admin/UsersView.vue') },
-      { path: 'users/:id', name: 'admin-user-edit', component: () => import('@/views/admin/UserEditView.vue') },
+      { path: 'users', name: 'admin-users', component: () => import('@/views/admin/UsersView.vue'), meta: { requiresSuperAdmin: true } },
+      { path: 'users/:id', name: 'admin-user-edit', component: () => import('@/views/admin/UserEditView.vue'), meta: { requiresSuperAdmin: true } },
       { path: 'projects', name: 'admin-projects', component: () => import('@/views/admin/ProjectsView.vue') },
       { path: 'projects/create', name: 'admin-project-create', component: () => import('@/views/admin/ProjectFormView.vue') },
       { path: 'projects/:id/edit', name: 'admin-project-edit', component: () => import('@/views/admin/ProjectFormView.vue') },
@@ -63,9 +63,9 @@ const routes = [
       { path: 'messages', name: 'admin-messages', component: () => import('@/views/admin/MessagesView.vue') },
       { path: 'team', name: 'admin-team', component: () => import('@/views/admin/TeamView.vue') },
       { path: 'media', name: 'admin-media', component: () => import('@/views/admin/MediaView.vue') },
-      { path: 'settings', name: 'admin-settings', component: () => import('@/views/admin/SettingsView.vue') },
-      { path: 'activity-logs', name: 'admin-activity-logs', component: () => import('@/views/admin/ActivityLogsView.vue') },
-      { path: 'roles', name: 'admin-roles', component: () => import('@/views/admin/RolesView.vue') },
+      { path: 'settings', name: 'admin-settings', component: () => import('@/views/admin/SettingsView.vue'), meta: { requiresSuperAdmin: true } },
+      { path: 'activity-logs', name: 'admin-activity-logs', component: () => import('@/views/admin/ActivityLogsView.vue'), meta: { requiresSuperAdmin: true } },
+      { path: 'roles', name: 'admin-roles', component: () => import('@/views/admin/RolesView.vue'), meta: { requiresSuperAdmin: true } },
       { path: 'tags', name: 'admin-tags', component: () => import('@/views/admin/TagsView.vue') },
     ],
   },
@@ -101,6 +101,10 @@ router.beforeEach(async (to, from, next) => {
 
   if (to.meta.requiresAdmin && !authStore.isAdmin) {
     return next({ name: 'home' })
+  }
+
+  if (to.meta.requiresSuperAdmin && !authStore.isSuperAdmin) {
+    return next({ name: 'admin-dashboard' })
   }
 
   if (to.meta.guestOnly && authStore.isAuthenticated) {

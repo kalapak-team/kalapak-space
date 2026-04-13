@@ -127,19 +127,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // ── ADMIN ROUTES ──────────────────────────────────
 
     Route::prefix('admin')->middleware('admin')->group(function () {
-        // Dashboard
+        // Dashboard (admin + superadmin)
         Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
         Route::get('/dashboard/activity', [DashboardController::class, 'activity']);
 
-        // Users
-        Route::get('/users', [UserController::class, 'index']);
-        Route::post('/users', [UserController::class, 'store']);
-        Route::get('/users/{id}', [UserController::class, 'show']);
-        Route::put('/users/{id}', [UserController::class, 'update']);
-        Route::delete('/users/{id}', [UserController::class, 'destroy']);
-        Route::put('/users/{id}/toggle-active', [UserController::class, 'toggleActive']);
-
-        // Projects
+        // Projects (admin + superadmin)
         Route::get('/projects', [AdminProjectController::class, 'index']);
         Route::post('/projects', [AdminProjectController::class, 'store']);
         Route::get('/projects/{id}', [AdminProjectController::class, 'show']);
@@ -147,7 +139,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/projects/{id}', [AdminProjectController::class, 'update']);
         Route::delete('/projects/{id}', [AdminProjectController::class, 'destroy']);
 
-        // Blog Posts
+        // Blog Posts (admin + superadmin)
         Route::get('/blog/posts', [BlogPostController::class, 'index']);
         Route::post('/blog/posts', [BlogPostController::class, 'store']);
         Route::get('/blog/posts/{id}', [BlogPostController::class, 'show']);
@@ -158,24 +150,24 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/blog/categories/{id}', [BlogPostController::class, 'updateCategory']);
         Route::delete('/blog/categories/{id}', [BlogPostController::class, 'destroyCategory']);
 
-        // Applications
+        // Applications (admin + superadmin)
         Route::get('/applications', [AdminApplicationController::class, 'index']);
         Route::get('/applications/{id}', [AdminApplicationController::class, 'show']);
         Route::put('/applications/{id}/status', [AdminApplicationController::class, 'updateStatus']);
 
-        // Messages
+        // Messages (admin + superadmin)
         Route::get('/messages', [MessageController::class, 'index']);
         Route::get('/messages/{id}', [MessageController::class, 'show']);
         Route::put('/messages/{id}/read', [MessageController::class, 'markRead']);
         Route::delete('/messages/{id}', [MessageController::class, 'destroy']);
 
-        // Team Members
+        // Team Members (admin + superadmin)
         Route::get('/team', [TeamMemberController::class, 'index']);
         Route::post('/team', [TeamMemberController::class, 'store']);
         Route::put('/team/{id}', [TeamMemberController::class, 'update']);
         Route::delete('/team/{id}', [TeamMemberController::class, 'destroy']);
 
-        // Tags
+        // Tags (admin + superadmin)
         Route::get('/tags', function () {
             return response()->json(['success' => true, 'data' => Tag::withCount('projects')->orderBy('name')->get()]);
         });
@@ -202,29 +194,39 @@ Route::middleware(['auth:sanctum'])->group(function () {
             return response()->json(['success' => true, 'message' => 'Tag deleted.']);
         });
 
-        // Roles
-        Route::get('/roles', [RoleController::class, 'index']);
-        Route::post('/roles', [RoleController::class, 'store']);
-        Route::put('/roles/{id}', [RoleController::class, 'update']);
-        Route::delete('/roles/{id}', [RoleController::class, 'destroy']);
-
-        // Media
+        // Media (admin + superadmin)
         Route::get('/media', [MediaController::class, 'index']);
         Route::post('/media/upload', [MediaController::class, 'upload']);
         Route::delete('/media/{id}', [MediaController::class, 'destroy']);
 
-        // Settings
-        Route::get('/settings', [SettingsController::class, 'index']);
-        Route::put('/settings', [SettingsController::class, 'update']);
-
-        // Activity Logs
-        Route::get('/activity-logs', [ActivityLogController::class, 'index']);
-
-        // Search
+        // Search (admin + superadmin)
         Route::get('/search', [SearchController::class, 'search']);
 
-        // Storage Stats
-        Route::get('/storage-stats', [StorageStatsController::class, 'index']);
-        Route::post('/storage-stats/refresh', [StorageStatsController::class, 'refresh']);
-    });
+        // ── Super Admin only routes ───────────────────────────────
+        Route::middleware('superadmin')->group(function () {
+            // Users
+            Route::get('/users', [UserController::class, 'index']);
+            Route::post('/users', [UserController::class, 'store']);
+            Route::get('/users/{id}', [UserController::class, 'show']);
+            Route::put('/users/{id}', [UserController::class, 'update']);
+            Route::delete('/users/{id}', [UserController::class, 'destroy']);
+            Route::put('/users/{id}/toggle-active', [UserController::class, 'toggleActive']);
+
+            // Roles
+            Route::get('/roles', [RoleController::class, 'index']);
+            Route::post('/roles', [RoleController::class, 'store']);
+            Route::put('/roles/{id}', [RoleController::class, 'update']);
+            Route::delete('/roles/{id}', [RoleController::class, 'destroy']);
+
+            // Settings
+            Route::get('/settings', [SettingsController::class, 'index']);
+            Route::put('/settings', [SettingsController::class, 'update']);
+
+            // Activity Logs
+            Route::get('/activity-logs', [ActivityLogController::class, 'index']);
+
+            // Storage Stats
+            Route::get('/storage-stats', [StorageStatsController::class, 'index']);
+            Route::post('/storage-stats/refresh', [StorageStatsController::class, 'refresh']);
+        }); // end superadmin
 });
