@@ -6,7 +6,6 @@ use App\Exceptions\ActionInterceptedException;
 use App\Models\ApprovalRequest;
 use App\Models\UserPermission;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * Used by observers on Project, Tag, and BlogCategory.
@@ -24,7 +23,7 @@ trait InterceptsAdminActions
      */
     private function shouldIntercept(string $action): bool
     {
-        $user = Auth::user();
+        $user = request()->user();
 
         if (!$user || !$user->isAdmin()) {
             return false;
@@ -38,13 +37,10 @@ trait InterceptsAdminActions
             ->where('resource', $this->resource)
             ->first();
 
-        $column = 'can_' . $action; // can_create | can_update | can_delete
+        $column = 'can_' . $action;
         return !($permission?->$column ?? false);
     }
 
-    /**
-     * Queue a create approval request and abort the actual save.
-     */
     public function creating(Model $model): void
     {
         if (!$this->shouldIntercept('create')) {
@@ -52,7 +48,7 @@ trait InterceptsAdminActions
         }
 
         ApprovalRequest::create([
-            'requested_by' => Auth::id(),
+            'requested_by' => request()->user()->id,
             'action' => 'create',
             'subject_type' => get_class($model),
             'subject_id' => null,
@@ -63,9 +59,6 @@ trait InterceptsAdminActions
         throw new ActionInterceptedException();
     }
 
-    /**
-     * Queue an update approval request and abort the actual save.
-     */
     public function updating(Model $model): void
     {
         if (!$this->shouldIntercept('update')) {
@@ -73,7 +66,7 @@ trait InterceptsAdminActions
         }
 
         ApprovalRequest::create([
-            'requested_by' => Auth::id(),
+            'requested_by' => request()->user()->id,
             'action' => 'update',
             'subject_type' => get_class($model),
             'subject_id' => $model->getKey(),
@@ -84,9 +77,6 @@ trait InterceptsAdminActions
         throw new ActionInterceptedException();
     }
 
-    /**
-     * Queue a delete approval request and abort the actual delete.
-     */
     public function deleting(Model $model): void
     {
         if (!$this->shouldIntercept('delete')) {
@@ -94,7 +84,7 @@ trait InterceptsAdminActions
         }
 
         ApprovalRequest::create([
-            'requested_by' => Auth::id(),
+            'requested_by' => request()->user()->id,
             'action' => 'delete',
             'subject_type' => get_class($model),
             'subject_id' => $model->getKey(),
