@@ -118,6 +118,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/password', [ProfileController::class, 'updatePassword']);
         Route::post('/avatar', [ProfileController::class, 'uploadAvatar']);
 
+        // Storage provider setting (accessible to all authenticated users)
+        Route::get('/storage-settings', function () {
+            $providers = \App\Models\Setting::getValue('allowed_storage_providers', 'both');
+            return response()->json(['success' => true, 'data' => ['allowed_storage_providers' => $providers]]);
+        });
+
         // Notifications
         Route::get('/notifications', [NotificationController::class, 'index']);
         Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount']);

@@ -12,7 +12,8 @@
       <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
         <div class="flex flex-col sm:flex-row items-start sm:items-end gap-6">
           <!-- Avatar -->
-          <div class="relative group">
+          <div class="flex flex-col items-center gap-2">
+            <div class="relative group">
             <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl bg-gradient-to-br from-brand-violet to-brand-cyan p-[3px] shadow-lg shadow-brand-violet/25">
               <div class="w-full h-full rounded-[13px] bg-dark-800 overflow-hidden">
                 <img
@@ -43,8 +44,27 @@
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
             </div>
+          </div>          <!-- Storage provider selector -->
+          <div v-if="allowedProviders !== 'both'" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 text-[11px] text-white/70">
+            <svg v-if="allowedProviders === 'supabase'" class="w-3 h-3 text-emerald-400" viewBox="0 0 109 113" fill="currentColor"><path d="M63.7 110.3c-2.6 3.1-7.8 3.1-10.4 0L2.5 49.2c-3.5-4.2-.3-10.4 5.2-10.4h100.6c5.5 0 8.7 6.2 5.2 10.4l-49.8 61.1z"/></svg>
+            <svg v-else class="w-3 h-3 text-blue-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            {{ allowedProviders === 'supabase' ? 'Supabase' : 'Cloudinary' }}
           </div>
-
+          <div v-else class="flex rounded-lg overflow-hidden border border-white/20">
+            <button type="button" @click="avatarStorageProvider = 'supabase'"
+              :class="avatarStorageProvider === 'supabase' ? 'bg-white/20 text-white' : 'text-white/50 hover:bg-white/10'"
+              class="px-2.5 py-1 flex items-center gap-1 transition-colors text-[11px] font-medium">
+              <svg class="w-3 h-3" viewBox="0 0 109 113" fill="currentColor"><path d="M63.7 110.3c-2.6 3.1-7.8 3.1-10.4 0L2.5 49.2c-3.5-4.2-.3-10.4 5.2-10.4h100.6c5.5 0 8.7 6.2 5.2 10.4l-49.8 61.1z"/></svg>
+              Supabase
+            </button>
+            <button type="button" @click="avatarStorageProvider = 'cloudinary'"
+              :class="avatarStorageProvider === 'cloudinary' ? 'bg-white/20 text-white' : 'text-white/50 hover:bg-white/10'"
+              class="px-2.5 py-1 flex items-center gap-1 transition-colors text-[11px] font-medium border-l border-white/20">
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              Cloudinary
+            </button>
+          </div>
+          </div>
           <!-- User Info -->
           <div class="flex-1 min-w-0">
             <div class="flex items-center gap-3 mb-1">
@@ -491,6 +511,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { memberApi } from '@/services/api'
 import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
 
@@ -530,6 +551,8 @@ const saving = ref(false)
 const profileMsg = ref('')
 const profileError = ref(false)
 const avatarUploading = ref(false)
+const allowedProviders = ref('both')
+const avatarStorageProvider = ref('supabase')
 
 // Password form
 const passwordForm = ref({ current_password: '', password: '', password_confirmation: '' })
@@ -566,7 +589,13 @@ const pwStrength = computed(() => {
   return levels[score] || levels[0]
 })
 
-onMounted(() => {
+onMounted(async () => {
+  try {
+    const { data } = await memberApi.getStorageSettings()
+    const allowed = data?.data?.allowed_storage_providers || 'both'
+    allowedProviders.value = allowed
+    if (allowed !== 'both') avatarStorageProvider.value = allowed
+  } catch { /* ignore */ }
   if (authStore.user) {
     profileForm.value = {
       name: authStore.user.name || '',
@@ -640,6 +669,7 @@ async function uploadAvatar(event) {
   avatarUploading.value = true
   const formData = new FormData()
   formData.append('avatar', file)
+  formData.append('storage_provider', avatarStorageProvider.value)
   try {
     await authStore.uploadAvatar(formData)
     uiStore.showToast('Avatar updated!', 'success')

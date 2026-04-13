@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Member;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Services\SupabaseStorage;
+use Cloudinary\Cloudinary;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -64,18 +65,33 @@ class ProfileController extends Controller
     {
         $request->validate([
             'avatar' => ['required', 'image', 'max:2048'],
+            'storage_provider' => ['nullable', 'in:supabase,cloudinary'],
         ]);
 
         $user = $request->user();
-        $storage = app(SupabaseStorage::class);
+        $provider = $request->input('storage_provider', 'supabase');
 
         try {
+            // Delete old avatar from the correct provider
             if ($user->avatar) {
-                $storage->delete($user->avatar);
+                if ($user->avatar_disk === 'cloudinary') {
+                    $this->cloudinary()->uploadApi()->destroy($user->avatar);
+                } else {
+                    app(SupabaseStorage::class)->delete($user->avatar);
+                }
             }
 
-            $path = $storage->upload($request->file('avatar'), 'avatars');
-            $user->update(['avatar' => $path]);
+            if ($provider === 'cloudinary') {
+                $result = $this->cloudinary()->uploadApi()->upload($request->file('avatar')->getRealPath(), [
+                    'folder' => 'kalapak/avatars',
+                    'resource_type' => 'image',
+                ]);
+                $path = $result['public_id'];
+            } else {
+                $path = app(SupabaseStorage::class)->upload($request->file('avatar'), 'avatars');
+            }
+
+            $user->update(['avatar' => $path, 'avatar_disk' => $provider]);
 
             return response()->json([
                 'success' => true,
@@ -91,5 +107,10 @@ class ProfileController extends Controller
                 'message' => 'Storage error: ' . $e->getMessage(),
             ], 500);
         }
+    }
+
+    private function cloudinary(): Cloudinary
+    {
+        return new Cloudinary(config('cloudinary.cloud_url'));
     }
 }

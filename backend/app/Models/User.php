@@ -19,6 +19,7 @@ class User extends Authenticatable
         'password',
         'role_id',
         'avatar',
+        'avatar_disk',
         'bio',
         'github_url',
         'linkedin_url',

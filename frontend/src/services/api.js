@@ -69,6 +69,7 @@ export const memberApi = {
   getProfile: () => api.get('/member/profile'),
   updateProfile: (data) => api.put('/member/profile', data),
   updatePassword: (data) => api.put('/member/password', data),
+  getStorageSettings: () => api.get('/member/storage-settings'),
   uploadAvatar: (formData) =>
     api.post('/member/avatar', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
