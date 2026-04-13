@@ -311,8 +311,6 @@
                     <p class="text-base font-medium text-gray-600 dark:text-gray-400 text-center">No notifications yet</p>
                     <p class="text-xs text-gray-500 dark:text-gray-500 text-center mt-1.5">Check back later for new updates</p>
                   </div>
-                    <p class="text-sm text-gray-400 dark:text-gray-500">No notifications yet</p>
-                  </div>
                   <div v-else>
                     <div
                       v-for="notif in notifStore.notifications"
