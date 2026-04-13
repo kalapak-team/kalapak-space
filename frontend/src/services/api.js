@@ -20,7 +20,16 @@ api.interceptors.request.use((config) => {
 })
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // When an admin action is intercepted (queued for approval), treat it as an error
+    // so existing catch blocks in views show the right message.
+    if (response.status === 202 && response.data?.intercepted) {
+      const err = new Error(response.data.message || 'Your action has been queued for super-admin approval.')
+      err.response = response
+      return Promise.reject(err)
+    }
+    return response
+  },
   (error) => {
     if (error.response?.status === 401) {
       const authStore = useAuthStore()

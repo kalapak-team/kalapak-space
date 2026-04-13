@@ -2,6 +2,7 @@
 
 namespace App\Observers\Concerns;
 
+use App\Exceptions\ActionInterceptedException;
 use App\Models\ApprovalRequest;
 use App\Models\UserPermission;
 use Illuminate\Database\Eloquent\Model;
@@ -44,10 +45,10 @@ trait InterceptsAdminActions
     /**
      * Queue a create approval request and abort the actual save.
      */
-    public function creating(Model $model): bool
+    public function creating(Model $model): void
     {
         if (!$this->shouldIntercept('create')) {
-            return true;
+            return;
         }
 
         ApprovalRequest::create([
@@ -59,16 +60,16 @@ trait InterceptsAdminActions
             'status' => 'pending',
         ]);
 
-        return false;
+        throw new ActionInterceptedException();
     }
 
     /**
      * Queue an update approval request and abort the actual save.
      */
-    public function updating(Model $model): bool
+    public function updating(Model $model): void
     {
         if (!$this->shouldIntercept('update')) {
-            return true;
+            return;
         }
 
         ApprovalRequest::create([
@@ -80,16 +81,16 @@ trait InterceptsAdminActions
             'status' => 'pending',
         ]);
 
-        return false;
+        throw new ActionInterceptedException();
     }
 
     /**
      * Queue a delete approval request and abort the actual delete.
      */
-    public function deleting(Model $model): bool
+    public function deleting(Model $model): void
     {
         if (!$this->shouldIntercept('delete')) {
-            return true;
+            return;
         }
 
         ApprovalRequest::create([
@@ -101,7 +102,7 @@ trait InterceptsAdminActions
             'status' => 'pending',
         ]);
 
-        return false;
+        throw new ActionInterceptedException();
     }
 }
 
