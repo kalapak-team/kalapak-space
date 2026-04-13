@@ -36,6 +36,7 @@ class ProjectRequest extends FormRequest
             'is_open_source' => ['boolean'],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['exists:tags,id'],
+            'storage_provider' => ['nullable', 'in:supabase,cloudinary'],
         ];
 
         if (!$isUpdate) {

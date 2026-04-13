@@ -25,6 +25,7 @@ class Project extends Model
         'stars_count',
         'forks_count',
         'created_by',
+        'storage_provider',
     ];
 
     protected function casts(): array

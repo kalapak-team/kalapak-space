@@ -8,6 +8,7 @@ use App\Http\Resources\ProjectResource;
 use App\Models\ActivityLog;
 use App\Models\Project;
 use App\Services\SupabaseStorage;
+use Cloudinary\Cloudinary;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -49,7 +50,9 @@ class ProjectController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('cover_image')) {
-            $data['cover_image'] = app(SupabaseStorage::class)->upload($request->file('cover_image'), 'projects');
+            $provider = $request->input('storage_provider', 'supabase');
+            $data['cover_image'] = $this->uploadCoverImage($request->file('cover_image'), $provider);
+            $data['storage_provider'] = $provider;
         }
 
         $data['created_by'] = auth()->id();
@@ -86,10 +89,10 @@ class ProjectController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('cover_image')) {
-            if ($project->cover_image) {
-                app(SupabaseStorage::class)->delete($project->cover_image);
-            }
-            $data['cover_image'] = app(SupabaseStorage::class)->upload($request->file('cover_image'), 'projects');
+            $this->deleteCoverImage($project->cover_image, $project->storage_provider ?? 'supabase');
+            $provider = $request->input('storage_provider', 'supabase');
+            $data['cover_image'] = $this->uploadCoverImage($request->file('cover_image'), $provider);
+            $data['storage_provider'] = $provider;
         }
 
         $tags = $data['tags'] ?? [];
@@ -121,5 +124,43 @@ class ProjectController extends Controller
             'success' => true,
             'message' => 'Project deleted successfully.',
         ]);
+    }
+
+    // ─── Storage Helpers ─────────────────────────────────────
+
+    private function cloudinary(): Cloudinary
+    {
+        return new Cloudinary(config('cloudinary.cloud_url'));
+    }
+
+    private function uploadCoverImage($file, string $provider): string
+    {
+        if ($provider === 'cloudinary') {
+            $result = $this->cloudinary()->uploadApi()->upload($file->getRealPath(), [
+                'folder' => 'kalapak/projects',
+                'resource_type' => 'image',
+            ]);
+            return $result['secure_url'];
+        }
+
+        return app(SupabaseStorage::class)->upload($file, 'projects');
+    }
+
+    private function deleteCoverImage(?string $url, ?string $provider): void
+    {
+        if (!$url)
+            return;
+
+        try {
+            if ($provider === 'cloudinary') {
+                if (preg_match('/upload\/(?:v\d+\/)?(.+)\.\w+$/', $url, $m)) {
+                    $this->cloudinary()->uploadApi()->destroy($m[1]);
+                }
+            } else {
+                app(SupabaseStorage::class)->delete($url);
+            }
+        } catch (\Throwable $e) {
+            \Log::warning("Failed to delete project cover image: {$e->getMessage()}");
+        }
     }
 }
