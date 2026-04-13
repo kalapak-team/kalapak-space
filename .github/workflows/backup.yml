@@ -19,12 +19,9 @@ jobs:
           sudo apt-get install -y postgresql-client
 
       - name: Create Database Backup
-        env:
-          PGPASSWORD: ${{ secrets.DB_PASS }}
-          PGSSLMODE: require
         run: |
           filename="backup-$(date +'%Y-%m-%d-%H%M').sql"
-          pg_dump -h "${{ secrets.DB_HOST }}" -p 5432 -U "${{ secrets.DB_USER }}" -d "${{ secrets.DB_NAME }}" > "$filename"
+          pg_dump "${{ secrets.DB_URL }}" > "$filename"
           echo "BACKUP_FILE=$filename" >> $GITHUB_ENV
 
       - name: Push to Backup Repository
