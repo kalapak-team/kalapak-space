@@ -19,6 +19,12 @@ class BlogPostController extends Controller
     {
         $query = BlogPost::with(['author', 'category']);
 
+        // Regular admins only see their own posts; superadmins see all
+        $user = $request->user();
+        if ($user && $user->isAdmin() && !$user->isSuperAdmin()) {
+            $query->where('author_id', $user->id);
+        }
+
         if ($search = $request->get('search')) {
             $query->where('title', 'ilike', "%{$search}%");
         }
