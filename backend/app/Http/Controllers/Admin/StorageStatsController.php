@@ -179,7 +179,20 @@ class StorageStatsController extends Controller
                 return ['configured' => false, 'error' => 'Redis not configured'];
             }
 
-            $info = Redis::connection()->info();
+            $rawInfo = Redis::connection()->info();
+
+            // Predis 2.x returns INFO as nested sections e.g. ['Server' => ['redis_version' => ...], 'Memory' => [...]]
+            // Flatten all sections into a single associative array
+            $info = [];
+            foreach ($rawInfo as $sectionKey => $sectionVal) {
+                if (is_array($sectionVal)) {
+                    foreach ($sectionVal as $k => $v) {
+                        $info[$k] = $v;
+                    }
+                } else {
+                    $info[$sectionKey] = $sectionVal;
+                }
+            }
 
             $usedMemory = (int) ($info['used_memory'] ?? 0);
             // Upstash free tier limit: 256 MB
@@ -189,7 +202,7 @@ class StorageStatsController extends Controller
             // Key count across all DBs
             $totalKeys = 0;
             foreach ($info as $k => $v) {
-                if (str_starts_with($k, 'db')) {
+                if (str_starts_with((string) $k, 'db')) {
                     preg_match('/keys=(\d+)/', (string) $v, $m);
                     $totalKeys += (int) ($m[1] ?? 0);
                 }
