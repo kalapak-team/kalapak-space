@@ -181,15 +181,17 @@ class StorageStatsController extends Controller
 
             $rawInfo = Redis::connection()->info();
 
-            // Predis 2.x returns INFO as nested sections e.g. ['Server' => ['redis_version' => ...], 'Memory' => [...]]
-            // Flatten all sections into a single associative array
+            // Predis 2.x returns INFO as nested sections; flatten to a single array,
+            // skipping any values that are still arrays (e.g. keyspace sub-arrays).
             $info = [];
             foreach ($rawInfo as $sectionKey => $sectionVal) {
                 if (is_array($sectionVal)) {
                     foreach ($sectionVal as $k => $v) {
-                        $info[$k] = $v;
+                        if (!is_array($v)) {
+                            $info[$k] = $v;
+                        }
                     }
-                } else {
+                } elseif (!is_array($sectionVal)) {
                     $info[$sectionKey] = $sectionVal;
                 }
             }
@@ -199,11 +201,11 @@ class StorageStatsController extends Controller
             $maxMemory = (int) ($info['maxmemory'] ?? 0);
             $memLimit = $maxMemory > 0 ? $maxMemory : (256 * 1024 * 1024);
 
-            // Key count across all DBs
+            // Key count across all DBs (keyspace section e.g. db0 => "keys=3,expires=0")
             $totalKeys = 0;
             foreach ($info as $k => $v) {
-                if (str_starts_with((string) $k, 'db')) {
-                    preg_match('/keys=(\d+)/', (string) $v, $m);
+                if (is_string($v) && is_string($k) && str_starts_with($k, 'db')) {
+                    preg_match('/keys=(\d+)/', $v, $m);
                     $totalKeys += (int) ($m[1] ?? 0);
                 }
             }
