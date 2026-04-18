@@ -185,6 +185,7 @@ export const adminApi = {
   search: (params) => api.get('/admin/search', { params }),
 
   getDocs: (params) => api.get('/admin/docs', { params }),
+  getAllDocs: () => api.get('/admin/docs/all'),
   getDoc: (id) => api.get(`/admin/docs/${id}`),
   createDoc: (data) => api.post('/admin/docs', data),
   updateDoc: (id, data) => api.put(`/admin/docs/${id}`, data),

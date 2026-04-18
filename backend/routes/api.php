@@ -220,6 +220,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/docs', [DocController::class, 'index']);
         Route::post('/docs', [DocController::class, 'store']);
         Route::get('/docs/categories', [DocController::class, 'categories']);
+        Route::get('/docs/all', [DocController::class, 'all']);
         Route::get('/docs/{id}', [DocController::class, 'show']);
         Route::put('/docs/{id}', [DocController::class, 'update']);
         Route::delete('/docs/{id}', [DocController::class, 'destroy']);

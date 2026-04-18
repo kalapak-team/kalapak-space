@@ -30,16 +30,31 @@
           <div v-for="(items, category) in filteredDocs" :key="category" class="mb-6">
             <p class="text-[11px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2 px-2">{{ category }}</p>
             <ul class="space-y-0.5">
-              <li v-for="doc in items" :key="doc.slug">
+              <li v-for="page in items" :key="page.slug">
+                <!-- Top-level page -->
                 <button
-                  @click="loadDoc(doc.slug)"
+                  @click="loadDoc(page.slug)"
                   class="w-full text-left px-3 py-1.5 rounded-lg text-[13.5px] transition-colors duration-150"
-                  :class="currentSlug === doc.slug
+                  :class="currentSlug === page.slug
                     ? 'bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan font-semibold border-l-2 border-brand-violet dark:border-brand-cyan'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.04]'"
                 >
-                  {{ doc.title }}
+                  {{ page.title }}
                 </button>
+                <!-- Subpages (indented) -->
+                <ul v-if="page.children && page.children.length" class="mt-0.5 ml-3 pl-3 border-l border-gray-200 dark:border-white/[0.07] space-y-0.5">
+                  <li v-for="sub in page.children" :key="sub.slug">
+                    <button
+                      @click="loadDoc(sub.slug)"
+                      class="w-full text-left px-2 py-1.5 rounded-lg text-[13px] transition-colors duration-150"
+                      :class="currentSlug === sub.slug
+                        ? 'bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan font-semibold border-l-2 border-brand-violet dark:border-brand-cyan'
+                        : 'text-gray-500 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.04]'"
+                    >
+                      {{ sub.title }}
+                    </button>
+                  </li>
+                </ul>
               </li>
             </ul>
           </div>
@@ -98,8 +113,17 @@
             <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">{{ currentDoc.title }}</h1>
           </div>
 
-          <!-- Rendered HTML content -->
-          <div class="prose-doc" v-html="currentDoc.content" />
+          <!-- Rendered content: sections-based or legacy single-content -->
+          <template v-if="currentDoc.sections && currentDoc.sections.length">
+            <div v-for="(section, idx) in currentDoc.sections" :key="idx" class="mb-10">
+              <h2
+                :id="sectionAnchor(section.heading, idx)"
+                class="text-2xl font-bold text-gray-900 dark:text-white mt-0 mb-4 pb-3 border-b border-gray-200 dark:border-white/[0.06] scroll-mt-24"
+              >{{ section.heading }}</h2>
+              <div class="prose-doc" v-html="section.content" />
+            </div>
+          </template>
+          <div v-else class="prose-doc" v-html="currentDoc.content" />
 
           <!-- Navigation: Prev / Next -->
           <div class="mt-16 pt-6 border-t border-gray-200 dark:border-white/[0.06] flex items-center justify-between gap-4">
@@ -140,6 +164,7 @@
             v-for="item in tocItems"
             :key="item.id"
             :href="`#${item.id}`"
+            @click.prevent="scrollToSection(item.id)"
             class="block text-[13px] py-1 transition-colors duration-150 hover:text-brand-violet dark:hover:text-brand-cyan"
             :class="[
               item.level === 2 ? 'pl-0 font-medium' : 'pl-3 text-[12px]',
@@ -174,11 +199,16 @@ const sidebarOpen = ref(false)
 const tocItems = ref([])
 const activeToc = ref('')
 
-// Flat ordered list of all docs
+// Flat ordered list (pages then their children)
 const flatDocs = computed(() => {
   const list = []
   for (const items of Object.values(allDocs.value)) {
-    list.push(...items)
+    for (const page of items) {
+      list.push(page)
+      if (page.children && page.children.length) {
+        list.push(...page.children)
+      }
+    }
   }
   return list
 })
@@ -188,7 +218,11 @@ const filteredDocs = computed(() => {
   const q = searchQuery.value.toLowerCase()
   const result = {}
   for (const [cat, items] of Object.entries(allDocs.value)) {
-    const filtered = items.filter(d => d.title.toLowerCase().includes(q))
+    const filtered = items.filter(page => {
+      if (page.title.toLowerCase().includes(q)) return true
+      if (page.children) return page.children.some(s => s.title.toLowerCase().includes(q))
+      return false
+    })
     if (filtered.length) result[cat] = filtered
   }
   return result
@@ -237,18 +271,42 @@ async function loadDoc(slug) {
   }
 }
 
+// Convert section heading to a stable DOM id
+function sectionAnchor(heading, idx) {
+  return heading
+    ? heading.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') || `section-${idx}`
+    : `section-${idx}`
+}
+
 function buildToc() {
-  const container = document.querySelector('.prose-doc')
-  if (!container) return
-  const headings = container.querySelectorAll('h2, h3')
-  tocItems.value = Array.from(headings).map((h, i) => {
-    const id = h.id || `heading-${i}`
-    h.id = id
-    return { id, text: h.textContent, level: parseInt(h.tagName[1]) }
-  })
+  if (currentDoc.value?.sections?.length) {
+    // Sections-based TOC (authoritative)
+    tocItems.value = currentDoc.value.sections.map((s, i) => ({
+      id: sectionAnchor(s.heading, i),
+      text: s.heading,
+      level: 2,
+    }))
+  } else {
+    // Legacy: auto-extract h2/h3 from rendered HTML
+    const container = document.querySelector('.prose-doc')
+    if (!container) { tocItems.value = []; return }
+    const headings = container.querySelectorAll('h2, h3')
+    tocItems.value = Array.from(headings).map((h, i) => {
+      const id = h.id || `heading-${i}`
+      h.id = id
+      return { id, text: h.textContent, level: parseInt(h.tagName[1]) }
+    })
+  }
+}
+
+function scrollToSection(id) {
+  const el = document.getElementById(id)
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  activeToc.value = id
 }
 
 function addHeadingIds() {
+  if (currentDoc.value?.sections?.length) return // sections use sectionAnchor, already have ids
   const container = document.querySelector('.prose-doc')
   if (!container) return
   container.querySelectorAll('h2, h3').forEach((h, i) => {
@@ -257,12 +315,23 @@ function addHeadingIds() {
 }
 
 function handleScroll() {
-  const headings = document.querySelectorAll('.prose-doc h2, .prose-doc h3')
-  let current = ''
-  headings.forEach(h => {
-    if (h.getBoundingClientRect().top < 120) current = h.id
-  })
-  activeToc.value = current
+  if (currentDoc.value?.sections?.length) {
+    // Use section heading anchors for scroll-spy
+    const ids = tocItems.value.map(t => t.id)
+    let current = ids[0] || ''
+    for (const id of ids) {
+      const el = document.getElementById(id)
+      if (el && el.getBoundingClientRect().top < 120) current = id
+    }
+    activeToc.value = current
+  } else {
+    const headings = document.querySelectorAll('.prose-doc h2, .prose-doc h3')
+    let current = ''
+    headings.forEach(h => {
+      if (h.getBoundingClientRect().top < 120) current = h.id
+    })
+    activeToc.value = current
+  }
 }
 
 function formatDate(str) {
@@ -438,5 +507,10 @@ onUnmounted(() => {
 
 .doc-article {
   min-height: 60vh;
+}
+
+/* Section headings created by the sections system */
+.doc-section-h2 {
+  scroll-margin-top: 90px;
 }
 </style>

@@ -18,10 +18,26 @@ class Doc extends Model
         'order_num',
         'status',
         'author_id',
+        'parent_id',
     ];
 
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Doc::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Doc::class, 'parent_id')->orderBy('order_num');
+    }
+
+    public function sections()
+    {
+        return $this->hasMany(DocSection::class)->orderBy('order_num');
     }
 }

@@ -25,7 +25,7 @@
           <div class="glass-card space-y-5">
             <h2 class="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <svg class="w-4 h-4 text-brand-violet dark:text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-              Doc Details
+              Page Details
             </h2>
 
             <div>
@@ -59,18 +59,86 @@
             </div>
           </div>
 
-          <!-- Content Editor -->
-          <div class="glass-card space-y-4">
-            <h2 class="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-              <svg class="w-4 h-4 text-brand-violet dark:text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-              Content <span class="text-red-400">*</span>
-            </h2>
-            <ContentEditor v-if="editorReady" v-model="form.content" />
-            <div v-else class="flex items-center justify-center h-48 text-gray-400">
-              <svg class="w-5 h-5 animate-spin mr-2" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
-              Loading editor...
+          <!-- ══ Sections ("On This Page") ══ -->
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <h2 class="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                <svg class="w-4 h-4 text-brand-violet dark:text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10"/></svg>
+                Sections
+                <span class="text-[10px] font-normal text-gray-400 dark:text-gray-500">(appear as "On this page" in public view)</span>
+              </h2>
+              <button type="button" @click="addSection"
+                class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan hover:bg-brand-violet/20 dark:hover:bg-brand-cyan/20 transition-colors">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                Add Section
+              </button>
             </div>
+
+            <!-- Empty state -->
+            <div v-if="form.sections.length === 0"
+              class="glass-card flex flex-col items-center justify-center py-10 text-center border-2 border-dashed border-gray-200 dark:border-white/[0.08]">
+              <svg class="w-10 h-10 text-gray-300 dark:text-gray-600 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">No sections yet</p>
+              <p class="text-xs text-gray-400 dark:text-gray-500">Click "Add Section" to add headings and content blocks.</p>
+            </div>
+
+            <!-- Section cards -->
+            <div v-for="(section, idx) in form.sections" :key="section._key" class="glass-card space-y-4">
+              <!-- Section header -->
+              <div class="flex items-center justify-between -mb-1">
+                <span class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+                  Section {{ idx + 1 }}
+                </span>
+                <div class="flex items-center gap-1">
+                  <button type="button" @click="moveSectionUp(idx)" :disabled="idx === 0"
+                    class="p-1.5 rounded-lg text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan disabled:opacity-30 disabled:cursor-not-allowed transition-colors" title="Move up">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+                  </button>
+                  <button type="button" @click="moveSectionDown(idx)" :disabled="idx === form.sections.length - 1"
+                    class="p-1.5 rounded-lg text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan disabled:opacity-30 disabled:cursor-not-allowed transition-colors" title="Move down">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                  </button>
+                  <button type="button" @click="removeSection(idx)"
+                    class="p-1.5 rounded-lg text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors ml-1" title="Remove section">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Section heading -->
+              <div>
+                <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">
+                  Heading <span class="text-red-400">*</span>
+                  <span class="ml-1 text-[10px] font-normal text-gray-400">(shown as TOC item in public view)</span>
+                </label>
+                <input
+                  v-model="section.heading"
+                  type="text"
+                  required
+                  class="input-field"
+                  :placeholder="`e.g. Installation`"
+                />
+              </div>
+
+              <!-- Tiptap content editor -->
+              <div>
+                <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Content</label>
+                <ContentEditor v-if="editorReady" v-model="section.content" />
+                <div v-else class="flex items-center justify-center h-32 text-gray-400 rounded-xl border border-gray-200 dark:border-dark-600">
+                  <svg class="w-4 h-4 animate-spin mr-2" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                  Loading editor...
+                </div>
+              </div>
+            </div>
+
+            <!-- Add another section shortcut (bottom) -->
+            <button v-if="form.sections.length > 0" type="button" @click="addSection"
+              class="w-full flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-dashed border-gray-200 dark:border-white/[0.08] text-sm text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:border-brand-violet dark:hover:border-brand-cyan transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+              Add Another Section
+            </button>
           </div>
+
         </div>
 
         <!-- ══ Right Column: Settings Sidebar ══ -->
@@ -120,12 +188,34 @@
               <datalist id="category-list">
                 <option v-for="cat in categories" :key="cat" :value="cat" />
               </datalist>
-              <p class="text-[10px] text-gray-400 mt-1">Used to group docs in the sidebar.</p>
+              <p class="text-[10px] text-gray-400 mt-1">Groups pages in the sidebar.</p>
+            </div>
+
+            <!-- Parent Page -->
+            <div>
+              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">
+                Parent Page
+                <span class="ml-1 font-normal text-gray-400">(optional — creates a subpage)</span>
+              </label>
+              <select v-model="form.parent_id" class="input-field">
+                <option :value="null">— None (top-level page) —</option>
+                <optgroup v-for="(group, cat) in groupedParentDocs" :key="cat" :label="cat">
+                  <option
+                    v-for="doc in group"
+                    :key="doc.id"
+                    :value="doc.id"
+                    :disabled="isEdit && doc.id === parseInt(route.params.id)"
+                  >
+                    {{ doc.title }}
+                  </option>
+                </optgroup>
+              </select>
+              <p class="text-[10px] text-gray-400 mt-1">Subpages appear indented under the parent in the sidebar.</p>
             </div>
 
             <!-- Order -->
             <div>
-              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Order (within category)</label>
+              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Order</label>
               <input v-model.number="form.order_num" type="number" min="0" class="input-field" placeholder="0" />
               <p class="text-[10px] text-gray-400 mt-1">Lower numbers appear first.</p>
             </div>
@@ -178,16 +268,32 @@ const slugEditing = ref(false)
 const slugManuallyEdited = ref(false)
 const slugInputRef = ref(null)
 const categories = ref([])
+const allParentDocs = ref([])
 
 const form = ref({
   title: '',
   slug: '',
-  content: '',
   category: '',
+  parent_id: null,
   order_num: 0,
   status: 'draft',
+  sections: [],
 })
 
+// Docs grouped by category for the parent-page selector
+const groupedParentDocs = computed(() => {
+  const groups = {}
+  for (const doc of allParentDocs.value) {
+    // Exclude the current doc (can't be its own parent)
+    if (isEdit.value && doc.id === parseInt(route.params.id)) continue
+    const cat = doc.category || 'General'
+    if (!groups[cat]) groups[cat] = []
+    groups[cat].push(doc)
+  }
+  return groups
+})
+
+// ── Slug helpers ──────────────────────────────────────────────────
 function slugify(text) {
   return text
     .toString()
@@ -210,12 +316,47 @@ function resetSlug() {
   slugManuallyEdited.value = false
 }
 
+// ── Sections ─────────────────────────────────────────────────────
+function addSection() {
+  form.value.sections.push({
+    _key: Date.now() + Math.random(),
+    heading: '',
+    content: '',
+  })
+}
+
+function removeSection(idx) {
+  form.value.sections.splice(idx, 1)
+}
+
+function moveSectionUp(idx) {
+  if (idx === 0) return
+  const arr = form.value.sections;
+  [arr[idx - 1], arr[idx]] = [arr[idx], arr[idx - 1]]
+}
+
+function moveSectionDown(idx) {
+  const arr = form.value.sections
+  if (idx >= arr.length - 1) return;
+  [arr[idx], arr[idx + 1]] = [arr[idx + 1], arr[idx]]
+}
+
+// ── API calls ────────────────────────────────────────────────────
 async function fetchCategories() {
   try {
     const { data } = await adminApi.getDocCategories()
     categories.value = data.data || []
   } catch {
     categories.value = []
+  }
+}
+
+async function fetchAllDocs() {
+  try {
+    const { data } = await adminApi.getAllDocs()
+    allParentDocs.value = data.data || []
+  } catch {
+    allParentDocs.value = []
   }
 }
 
@@ -226,12 +367,17 @@ async function fetchDoc() {
     form.value = {
       title: doc.title,
       slug: doc.slug,
-      content: doc.content,
       category: doc.category,
+      parent_id: doc.parent_id ?? null,
       order_num: doc.order_num ?? 0,
       status: doc.status,
+      sections: (doc.sections || []).map((s, i) => ({
+        _key: i + 1,
+        heading: s.heading,
+        content: s.content || '',
+      })),
     }
-    slugManuallyEdited.value = true // prevent auto-overwrite on edit
+    slugManuallyEdited.value = true
   } catch {
     error.value = 'Failed to load doc.'
   }
@@ -241,8 +387,18 @@ async function handleSubmit() {
   error.value = ''
   saving.value = true
   try {
-    const payload = { ...form.value }
-    if (!payload.slug) payload.slug = slugify(payload.title)
+    const payload = {
+      title: form.value.title,
+      slug: form.value.slug || slugify(form.value.title),
+      category: form.value.category,
+      parent_id: form.value.parent_id || null,
+      order_num: form.value.order_num,
+      status: form.value.status,
+      sections: form.value.sections.map(s => ({
+        heading: s.heading,
+        content: s.content,
+      })),
+    }
 
     if (isEdit.value) {
       await adminApi.updateDoc(route.params.id, payload)
@@ -258,7 +414,7 @@ async function handleSubmit() {
 }
 
 onMounted(async () => {
-  await fetchCategories()
+  await Promise.all([fetchCategories(), fetchAllDocs()])
   if (isEdit.value) {
     await fetchDoc()
   }

@@ -41,34 +41,61 @@ class DocController extends Controller
         ]);
     }
 
+    // Returns a flat list of all docs (id, title, slug, parent_id) for parent-page selectors
+    public function all(): JsonResponse
+    {
+        $docs = Doc::select('id', 'title', 'slug', 'parent_id', 'category')
+            ->orderBy('category')
+            ->orderBy('order_num')
+            ->get();
+
+        return response()->json(['success' => true, 'data' => $docs]);
+    }
+
     public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:docs,slug',
-            'content' => 'required|string',
+            'content' => 'nullable|string',
             'category' => 'required|string|max:100',
             'order_num' => 'integer|min:0',
             'status' => 'in:draft,published',
+            'parent_id' => 'nullable|integer|exists:docs,id',
+            'sections' => 'nullable|array',
+            'sections.*.heading' => 'required|string|max:255',
+            'sections.*.content' => 'nullable|string',
         ]);
 
         $data['slug'] = $data['slug'] ?? Str::slug($data['title']);
         $data['author_id'] = auth()->id();
+        $data['content'] = $data['content'] ?? '';
+
+        $sections = $data['sections'] ?? [];
+        unset($data['sections']);
 
         $doc = Doc::create($data);
+
+        foreach ($sections as $i => $section) {
+            $doc->sections()->create([
+                'heading' => $section['heading'],
+                'content' => $section['content'] ?? '',
+                'order_num' => $i,
+            ]);
+        }
 
         ActivityLog::log('created', "Created doc: {$doc->title}", $doc);
 
         return response()->json([
             'success' => true,
-            'data' => $doc->load('author'),
+            'data' => $doc->load(['author', 'sections']),
             'message' => 'Doc created successfully.',
         ], 201);
     }
 
     public function show(int $id): JsonResponse
     {
-        $doc = Doc::with('author')->findOrFail($id);
+        $doc = Doc::with(['author', 'sections'])->findOrFail($id);
 
         return response()->json(['success' => true, 'data' => $doc]);
     }
@@ -80,21 +107,43 @@ class DocController extends Controller
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:docs,slug,' . $id,
-            'content' => 'required|string',
+            'content' => 'nullable|string',
             'category' => 'required|string|max:100',
             'order_num' => 'integer|min:0',
             'status' => 'in:draft,published',
+            'parent_id' => 'nullable|integer|exists:docs,id',
+            'sections' => 'nullable|array',
+            'sections.*.heading' => 'required|string|max:255',
+            'sections.*.content' => 'nullable|string',
         ]);
 
         $data['slug'] = $data['slug'] ?? Str::slug($data['title']);
 
+        // Prevent a doc from being its own parent
+        if (!empty($data['parent_id']) && (int) $data['parent_id'] === $id) {
+            $data['parent_id'] = null;
+        }
+
+        $sections = $data['sections'] ?? [];
+        unset($data['sections']);
+
         $doc->update($data);
+
+        // Replace sections atomically
+        $doc->sections()->delete();
+        foreach ($sections as $i => $section) {
+            $doc->sections()->create([
+                'heading' => $section['heading'],
+                'content' => $section['content'] ?? '',
+                'order_num' => $i,
+            ]);
+        }
 
         ActivityLog::log('updated', "Updated doc: {$doc->title}", $doc);
 
         return response()->json([
             'success' => true,
-            'data' => $doc->load('author'),
+            'data' => $doc->load(['author', 'sections']),
             'message' => 'Doc updated successfully.',
         ]);
     }
@@ -103,6 +152,7 @@ class DocController extends Controller
     {
         $doc = Doc::findOrFail($id);
         ActivityLog::log('deleted', "Deleted doc: {$doc->title}", $doc);
+        $doc->sections()->delete();
         $doc->delete();
 
         return response()->json(['success' => true, 'message' => 'Doc deleted.']);
