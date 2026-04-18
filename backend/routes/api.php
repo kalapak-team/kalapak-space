@@ -51,6 +51,29 @@ Route::get('/diag-check/{secret}', function ($secret) {
     ]);
 });
 
+// TEMP: Diagnostic - check docs table existence and query errors
+Route::get('/diag-docs/{secret}', function ($secret) {
+    if ($secret !== 'kalapak2026diag')
+        abort(404);
+    try {
+        $hasDocs = \Illuminate\Support\Facades\Schema::hasTable('docs');
+        $hasDocSections = \Illuminate\Support\Facades\Schema::hasTable('doc_sections');
+        $count = $hasDocs ? \App\Models\Doc::count() : null;
+        return response()->json([
+            'docs_table_exists' => $hasDocs,
+            'doc_sections_table_exists' => $hasDocSections,
+            'docs_count' => $count,
+            'error' => null,
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'docs_table_exists' => false,
+            'error' => $e->getMessage(),
+            'class' => get_class($e),
+        ]);
+    }
+});
+
 // Auth
 Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
