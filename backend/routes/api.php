@@ -59,18 +59,52 @@ Route::get('/diag-docs/{secret}', function ($secret) {
         $hasDocs = \Illuminate\Support\Facades\Schema::hasTable('docs');
         $hasDocSections = \Illuminate\Support\Facades\Schema::hasTable('doc_sections');
         $count = $hasDocs ? \App\Models\Doc::count() : null;
+
+        // If tables are missing, create them directly
+        $created = [];
+        if (!$hasDocs) {
+            \Illuminate\Support\Facades\Schema::create('docs', function ($table) {
+                $table->id();
+                $table->string('title');
+                $table->string('slug')->unique();
+                $table->longText('content')->nullable();
+                $table->string('category')->default('General');
+                $table->integer('order_num')->default(0);
+                $table->enum('status', ['draft', 'published'])->default('draft');
+                $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
+                $table->unsignedBigInteger('parent_id')->nullable();
+                $table->timestamps();
+                $table->softDeletes();
+            });
+            \Illuminate\Support\Facades\Schema::table('docs', function ($table) {
+                $table->foreign('parent_id')->references('id')->on('docs')->nullOnDelete();
+            });
+            $created[] = 'docs';
+        }
+        if (!$hasDocSections) {
+            \Illuminate\Support\Facades\Schema::create('doc_sections', function ($table) {
+                $table->id();
+                $table->foreignId('doc_id')->constrained('docs')->cascadeOnDelete();
+                $table->string('heading');
+                $table->longText('content')->nullable();
+                $table->integer('order_num')->default(0);
+                $table->timestamps();
+            });
+            $created[] = 'doc_sections';
+        }
+
         return response()->json([
             'docs_table_exists' => $hasDocs,
             'doc_sections_table_exists' => $hasDocSections,
             'docs_count' => $count,
+            'tables_created_now' => $created,
             'error' => null,
         ]);
     } catch (\Throwable $e) {
         return response()->json([
-            'docs_table_exists' => false,
             'error' => $e->getMessage(),
             'class' => get_class($e),
-        ]);
+        ], 500);
     }
 });
 
