@@ -490,7 +490,7 @@ const contentNavItems = [
   { label: 'Tags', to: '/admin/tags', routeName: 'admin-tags', icon: TagIcon },
   { label: 'Messages', to: '/admin/messages', routeName: 'admin-messages', icon: EnvelopeIcon, badge: null, badgeColor: 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400' },
   { label: 'Applications', to: '/admin/applications', routeName: 'admin-applications', icon: InboxStackIcon },
-  { label: 'Docs', to: '/docs', routeName: 'docs', icon: BookOpenIcon },
+  { label: 'Docs', to: '/admin/docs', routeName: 'admin-docs', icon: BookOpenIcon },
 ]
 
 const systemNavItems = computed(() => [
