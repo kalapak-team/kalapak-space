@@ -27,9 +27,19 @@
         </div>
 
         <nav v-else>
-          <div v-for="(items, category) in filteredDocs" :key="category" class="mb-6">
-            <p class="text-[11px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2 px-2">{{ category }}</p>
-            <ul class="space-y-0.5">
+          <div v-for="(items, category) in filteredDocs" :key="category" class="mb-4">
+            <button
+              @click="toggleCategory(category)"
+              class="w-full flex items-center justify-between px-2 mb-2 group"
+            >
+              <span class="text-[11px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">{{ category }}</span>
+              <svg
+                class="w-3 h-3 text-gray-400 dark:text-gray-500 transition-transform duration-200"
+                :class="collapsedCategories.has(category) ? '' : '-rotate-90'"
+                fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"
+              ><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <ul v-show="collapsedCategories.has(category)" class="space-y-0.5">
               <li v-for="page in items" :key="page.slug">
                 <!-- Top-level page -->
                 <button
@@ -75,7 +85,7 @@
 
     <!-- ══ Main Content ══ -->
     <div class="flex-1 lg:ml-64 min-w-0">
-      <div class="max-w-[900px] mx-auto px-6 sm:px-10 py-12 xl:pr-80">
+      <div class="px-8 sm:px-10 py-10 xl:pr-[320px]">
 
         <!-- Mobile: sidebar toggle -->
         <button
@@ -120,10 +130,10 @@
                 :id="sectionAnchor(section.heading, idx)"
                 class="text-2xl font-bold text-gray-900 dark:text-white mt-0 mb-4 pb-3 border-b border-gray-200 dark:border-white/[0.06] scroll-mt-24"
               >{{ section.heading }}</h2>
-              <div class="prose-doc" v-html="section.content" />
+              <div class="prose-doc" v-html="renderContent(section.content)" />
             </div>
           </template>
-          <div v-else class="prose-doc" v-html="currentDoc.content" />
+          <div v-else class="prose-doc" v-html="renderContent(currentDoc.content)" />
 
           <!-- Navigation: Prev / Next -->
           <div class="mt-16 pt-6 border-t border-gray-200 dark:border-white/[0.06] flex items-center justify-between gap-4">
@@ -167,7 +177,9 @@
             @click.prevent="scrollToSection(item.id)"
             class="block text-[13px] py-1 transition-colors duration-150 hover:text-brand-violet dark:hover:text-brand-cyan"
             :class="[
-              item.level === 2 ? 'pl-0 font-medium' : 'pl-3 text-[12px]',
+              item.level === 2
+                ? 'pl-0 font-medium'
+                : 'pl-4 text-[12px] border-l border-gray-200 dark:border-white/[0.08] ml-1',
               activeToc === item.id
                 ? 'text-brand-violet dark:text-brand-cyan font-semibold'
                 : 'text-gray-500 dark:text-gray-400'
@@ -185,6 +197,55 @@
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { publicApi } from '@/services/api'
+import { marked } from 'marked'
+import { markedHighlight } from 'marked-highlight'
+import hljs from 'highlight.js'
+import DOMPurify from 'dompurify'
+
+// Configure marked to use highlight.js for syntax highlighting
+marked.use(markedHighlight({
+  langPrefix: 'hljs language-',
+  highlight(code, lang) {
+    const language = hljs.getLanguage(lang) ? lang : 'plaintext'
+    return hljs.highlight(code, { language }).value
+  }
+}))
+
+// Render content: detect whether it's rich HTML (Tiptap-formatted) or markdown typed as plain text
+function renderContent(content) {
+  if (!content) return ''
+  const trimmed = content.trim()
+
+  if (!trimmed.startsWith('<')) {
+    // Plain text — parse as markdown
+    return DOMPurify.sanitize(marked.parse(trimmed))
+  }
+
+  // If the HTML has actual formatting tags, it's genuine Tiptap rich HTML — use as-is
+  const hasRichHtml = /<(strong|em|b|i|h[1-6]|pre|code|ul|ol|li|blockquote|table|thead|tbody|tr|td|th|img|a)\b/i.test(trimmed)
+  if (hasRichHtml) {
+    return DOMPurify.sanitize(trimmed)
+  }
+
+  // Only bare <p> tags wrapping text — extract text preserving paragraph breaks
+  const textContent = trimmed
+    .replace(/<\/p>\s*<p[^>]*>/gi, '\n\n')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .trim()
+
+  const hasMarkdown = /(\*\*|#{1,6} |`|\[.+\]\(.+\))/.test(textContent)
+  if (hasMarkdown) {
+    return DOMPurify.sanitize(marked.parse(textContent))
+  }
+
+  return DOMPurify.sanitize(trimmed)
+}
 
 const route = useRoute()
 const router = useRouter()
@@ -198,6 +259,17 @@ const searchQuery = ref('')
 const sidebarOpen = ref(false)
 const tocItems = ref([])
 const activeToc = ref('')
+const collapsedCategories = ref(new Set())
+
+function toggleCategory(cat) {
+  if (collapsedCategories.value.has(cat)) {
+    collapsedCategories.value.delete(cat)
+  } else {
+    collapsedCategories.value.add(cat)
+  }
+  // trigger reactivity
+  collapsedCategories.value = new Set(collapsedCategories.value)
+}
 
 // Flat ordered list (pages then their children)
 const flatDocs = computed(() => {
@@ -243,6 +315,9 @@ async function fetchAllDocs() {
     loading.value = true
     const { data } = await publicApi.getDocs()
     allDocs.value = data.data || {}
+    // Only expand the first category by default
+    const cats = Object.keys(allDocs.value)
+    collapsedCategories.value = new Set(cats.slice(0, 1))
   } catch {
     allDocs.value = {}
   } finally {
@@ -261,8 +336,10 @@ async function loadDoc(slug) {
     const { data } = await publicApi.getDoc(slug)
     currentDoc.value = data.data
     await nextTick()
-    buildToc()
+    buildToc()        // initial h2-only pass (instant)
     addHeadingIds()
+    addCopyButtons()
+    setTimeout(() => buildToc(), 60) // re-run after v-html fully painted to pick up h3s
     window.scrollTo({ top: 0, behavior: 'smooth' })
   } catch {
     currentDoc.value = null
@@ -280,12 +357,21 @@ function sectionAnchor(heading, idx) {
 
 function buildToc() {
   if (currentDoc.value?.sections?.length) {
-    // Sections-based TOC (authoritative)
-    tocItems.value = currentDoc.value.sections.map((s, i) => ({
-      id: sectionAnchor(s.heading, i),
-      text: s.heading,
-      level: 2,
-    }))
+    // Sections-based TOC: h2 section headings + h3 sub-headings from each section's content
+    const items = []
+    const proseDocs = document.querySelectorAll('.doc-article .prose-doc')
+    currentDoc.value.sections.forEach((s, i) => {
+      const sectionId = sectionAnchor(s.heading, i)
+      items.push({ id: sectionId, text: s.heading, level: 2 })
+      if (proseDocs[i]) {
+        proseDocs[i].querySelectorAll('h3').forEach((h3, j) => {
+          const id = h3.id || `${sectionId}-sub-${j}`
+          h3.id = id
+          items.push({ id, text: h3.textContent.trim(), level: 3 })
+        })
+      }
+    })
+    tocItems.value = items
   } else {
     // Legacy: auto-extract h2/h3 from rendered HTML
     const container = document.querySelector('.prose-doc')
@@ -312,6 +398,51 @@ function addHeadingIds() {
   container.querySelectorAll('h2, h3').forEach((h, i) => {
     if (!h.id) h.id = `heading-${i}`
   })
+}
+
+function addCopyButtons() {
+  // Use setTimeout to ensure v-html DOM is fully painted
+  setTimeout(() => {
+    document.querySelectorAll('.prose-doc pre').forEach(pre => {
+      if (pre.parentElement?.classList.contains('code-block-wrapper')) return
+
+      // Detect language from hljs class
+      const codeEl = pre.querySelector('code')
+      const lang = (codeEl?.className.match(/language-(\w+)/) || [])[1] || ''
+
+      // Wrap pre in a container
+      const wrapper = document.createElement('div')
+      wrapper.className = 'code-block-wrapper'
+      pre.parentNode.insertBefore(wrapper, pre)
+      wrapper.appendChild(pre)
+
+      // Header bar with lang label + copy button
+      const header = document.createElement('div')
+      header.className = 'code-block-header'
+      header.innerHTML = `
+        <span class="code-block-lang">${lang}</span>
+        <button class="copy-code-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copy
+        </button>`
+
+      const btn = header.querySelector('.copy-code-btn')
+      btn.addEventListener('click', async () => {
+        const code = codeEl?.innerText || ''
+        try {
+          await navigator.clipboard.writeText(code)
+          btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Copied!`
+          btn.classList.add('copied')
+        } catch {}
+        setTimeout(() => {
+          btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy`
+          btn.classList.remove('copied')
+        }, 2000)
+      })
+
+      wrapper.insertBefore(header, pre)
+    })
+  }, 50)
 }
 
 function handleScroll() {
@@ -422,30 +553,35 @@ onUnmounted(() => {
 .prose-doc :deep(li) { margin-bottom: 0.4rem; }
 
 .prose-doc :deep(code):not(pre code) {
-  background: #f3f4f6;
   color: #7b2fff;
-  padding: 0.15em 0.45em;
-  border-radius: 4px;
   font-family: 'Fira Code', monospace;
   font-size: 0.875em;
 }
 :root.dark .prose-doc :deep(code):not(pre code) {
-  background: rgba(255,255,255,0.08);
   color: #00d4ff;
 }
 
+.prose-doc :deep(.code-block-wrapper) {
+  margin-bottom: 1.5rem;
+}
+
 .prose-doc :deep(pre) {
-  background: #1e1b2e;
-  color: #e2e8f0;
-  padding: 1.25rem 1.5rem;
-  border-radius: 10px;
+  background: #0d1117;
+  border-radius: 0;
   overflow-x: auto;
-  font-family: 'Fira Code', monospace;
+  font-family: 'Fira Code', 'Consolas', monospace;
   font-size: 0.875rem;
   line-height: 1.7;
-  margin-bottom: 1.5rem;
-  border: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 0;
 }
+
+.prose-doc :deep(pre code.hljs) {
+  background: transparent;
+  padding: 1.25rem 1.5rem;
+  display: block;
+}
+
+/* Copy button styles are in the global <style> block below (dynamically injected elements) */
 
 .prose-doc :deep(blockquote) {
   border-left: 3px solid #7b2fff;
@@ -512,5 +648,60 @@ onUnmounted(() => {
 /* Section headings created by the sections system */
 .doc-section-h2 {
   scroll-margin-top: 90px;
+}
+</style>
+
+<!-- Global styles for dynamically injected elements (copy button, wrapper) -->
+<style>
+.code-block-wrapper {
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #30363d;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+.code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background: #161b22;
+  border-bottom: 1px solid #30363d;
+}
+
+.code-block-lang {
+  font-size: 0.72rem;
+  font-family: ui-monospace, monospace;
+  color: #8b949e;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.copy-code-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.72rem;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-weight: 500;
+  color: #8b949e;
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  line-height: 1;
+}
+.copy-code-btn:hover {
+  background: #30363d;
+  color: #c9d1d9;
+  border-color: #8b949e;
+}
+.copy-code-btn.copied {
+  color: #3fb950;
+  border-color: rgba(63,185,80,0.4);
+  background: rgba(63,185,80,0.08);
 }
 </style>
