@@ -62,45 +62,43 @@ class DocController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        try {
-            $data = $request->validate([
-                'title' => 'required|string|max:255',
-                'slug' => 'nullable|string|max:255|unique:docs,slug',
-                'content' => 'nullable|string',
-                'category' => 'required|string|max:100',
-                'order_num' => 'integer|min:0',
-                'status' => 'in:draft,published',
-                'parent_id' => 'nullable|integer|exists:docs,id',
-                'sections' => 'nullable|array',
-                'sections.*.heading' => 'required|string|max:255',
-                'sections.*.content' => 'nullable|string',
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255|unique:docs,slug',
+            'content' => 'nullable|string',
+            'category' => 'required|string|max:100',
+            'order_num' => 'integer|min:0',
+            'status' => 'in:draft,published',
+            'parent_id' => 'nullable|integer|exists:docs,id',
+            'sections' => 'nullable|array',
+            'sections.*.heading' => 'required|string|max:255',
+            'sections.*.content' => 'nullable|string',
+        ]);
+
+        $data['slug'] = $data['slug'] ?? Str::slug($data['title']);
+        $data['author_id'] = auth()->id();
+        $data['content'] = $data['content'] ?? '';
+
+        $sections = $data['sections'] ?? [];
+        unset($data['sections']);
+
+        $doc = Doc::create($data);
+
+        foreach ($sections as $i => $section) {
+            $doc->sections()->create([
+                'heading' => $section['heading'],
+                'content' => $section['content'] ?? '',
+                'order_num' => $i,
             ]);
-
-            $data['slug'] = $data['slug'] ?? Str::slug($data['title']);
-            $data['author_id'] = auth()->id();
-            $data['content'] = $data['content'] ?? '';
-
-            $sections = $data['sections'] ?? [];
-            unset($data['sections']);
-
-            $doc = Doc::create($data);
-
-            foreach ($sections as $i => $section) {
-                $doc->sections()->create([
-                    'heading' => $section['heading'],
-                    'content' => $section['content'] ?? '',
-                    'order_num' => $i,
-                ]);
-            }
-
-            ActivityLog::log('created', "Created doc: {$doc->title}", $doc);
-
-            return response()->json([
-                'success' => true,
-                'data' => $doc->load(['author', 'sections']),
-                'message' => 'Doc created successfully.',
-            ], 201);
         }
+
+        ActivityLog::log('created', "Created doc: {$doc->title}", $doc);
+
+        return response()->json([
+            'success' => true,
+            'data' => $doc->load(['author', 'sections']),
+            'message' => 'Doc created successfully.',
+        ], 201);
     }
 
     public function show(int $id): JsonResponse
