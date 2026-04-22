@@ -8,6 +8,7 @@ use App\Models\Doc;
 use App\Models\DocCategory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -101,6 +102,9 @@ class DocController extends Controller
 
         ActivityLog::log('created', "Created doc: {$doc->title}", $doc);
 
+        Cache::forget('docs.nav');
+        Cache::forget("docs.show.{$doc->slug}");
+
         return response()->json([
             'success' => true,
             'data' => $doc->load(['author', 'sections']),
@@ -160,6 +164,9 @@ class DocController extends Controller
 
         ActivityLog::log('updated', "Updated doc: {$doc->title}", $doc);
 
+        Cache::forget('docs.nav');
+        Cache::forget("docs.show.{$doc->slug}");
+
         return response()->json([
             'success' => true,
             'data' => $doc->load(['author', 'sections']),
@@ -171,6 +178,8 @@ class DocController extends Controller
     {
         $doc = Doc::findOrFail($id);
         ActivityLog::log('deleted', "Deleted doc: {$doc->title}", $doc);
+        Cache::forget('docs.nav');
+        Cache::forget("docs.show.{$doc->slug}");
         $doc->sections()->delete();
         $doc->delete();
 

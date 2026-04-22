@@ -44,10 +44,9 @@ if [ $MIGRATE_EXIT -ne 0 ]; then
     echo "==> [DB] !!! Migration failed (exit code: $MIGRATE_EXIT) !!!"
 fi
 
-# Cache for production performance
+# Cache config and routes for performance
 php artisan config:cache 2>/dev/null || true
 php artisan route:cache 2>/dev/null || true
-php artisan cache:clear 2>/dev/null || true
 
 # Create storage link
 php artisan storage:link 2>/dev/null || true

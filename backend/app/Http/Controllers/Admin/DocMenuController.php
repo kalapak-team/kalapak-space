@@ -7,6 +7,7 @@ use App\Models\Doc;
 use App\Models\DocMenu;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -78,6 +79,8 @@ class DocMenuController extends Controller
 
             $menu = DocMenu::create($data);
 
+            Cache::forget('docs.nav');
+
             return response()->json(['success' => true, 'data' => $menu, 'message' => 'Menu created.'], 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
             throw $e;
@@ -107,6 +110,8 @@ class DocMenuController extends Controller
 
             $menu->doc_count = Doc::where('doc_menu_id', $menu->id)->count();
 
+            Cache::forget('docs.nav');
+
             return response()->json(['success' => true, 'data' => $menu, 'message' => 'Menu updated.']);
         } catch (\Illuminate\Validation\ValidationException $e) {
             throw $e;
@@ -120,6 +125,8 @@ class DocMenuController extends Controller
         try {
             $menu = DocMenu::findOrFail($id);
             $menu->delete();
+
+            Cache::forget('docs.nav');
 
             return response()->json(['success' => true, 'message' => 'Menu deleted.']);
         } catch (\Throwable $e) {
@@ -145,6 +152,8 @@ class DocMenuController extends Controller
                     ]);
                 }
             });
+
+            Cache::forget('docs.nav');
 
             return response()->json(['success' => true, 'message' => 'Menu order saved.']);
         } catch (\Throwable $e) {

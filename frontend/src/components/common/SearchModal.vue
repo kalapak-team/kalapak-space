@@ -192,6 +192,41 @@
                   </router-link>
                 </div>
 
+                <!-- Docs Section -->
+                <div v-if="filteredDocs.length">
+                  <div class="flex items-center gap-2 px-3 pt-2 pb-2">
+                    <svg class="w-3.5 h-3.5 text-brand-violet dark:text-brand-cyan" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/></svg>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.15em] text-gray-400 dark:text-gray-500">Docs</span>
+                    <span class="text-[9px] font-semibold text-gray-300 dark:text-gray-600">{{ filteredDocs.length }}</span>
+                  </div>
+                  <router-link
+                    v-for="(item, i) in filteredDocs"
+                    :key="'d' + item.slug"
+                    :to="{ name: 'docs', query: { page: item.slug } }"
+                    :ref="el => setItemRef(getGlobalIndex('doc', i), el)"
+                    class="search-result-item group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-150 cursor-pointer"
+                    :class="activeIndex === getGlobalIndex('doc', i)
+                      ? 'bg-brand-violet/8 dark:bg-brand-cyan/8 ring-1 ring-brand-violet/15 dark:ring-brand-cyan/15'
+                      : 'hover:bg-gray-50 dark:hover:bg-white/[0.03]'"
+                    @click="handleSelect(item)"
+                    @mouseenter="activeIndex = getGlobalIndex('doc', i)"
+                  >
+                    <div class="w-10 h-10 rounded-xl bg-gray-100/80 dark:bg-white/[0.04] flex items-center justify-center shrink-0">
+                      <svg class="w-4.5 h-4.5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/></svg>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                      <p class="text-sm font-semibold text-gray-900 dark:text-white truncate" v-html="highlight(item.title)" />
+                      <p class="text-xs text-gray-400 dark:text-gray-500">Documentation</p>
+                    </div>
+                    <div class="shrink-0 transition-all duration-150"
+                         :class="activeIndex === getGlobalIndex('doc', i) ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-1'">
+                      <svg class="w-4 h-4 text-brand-violet dark:text-brand-cyan" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                      </svg>
+                    </div>
+                  </router-link>
+                </div>
+
                 <!-- Pages Section (shown in filtered results when matching) -->
                 <div v-if="filteredPages.length">
                   <div class="flex items-center gap-2 px-3 pt-2 pb-2">
@@ -364,8 +399,10 @@ const activeIndex = ref(0)
 const activeFilter = ref('all')
 const projectResults = ref([])
 const postResults = ref([])
+const docResults = ref([])
 const recentSearches = ref([])
 let debounceTimer = null
+let allDocsCache = null
 
 const STORAGE_KEY = 'kalapak_recent_searches'
 const MAX_RECENT = 5
@@ -383,11 +420,15 @@ const IconArticle = () => h('svg', { fill: 'none', stroke: 'currentColor', 'stro
 const IconPage = () => h('svg', { fill: 'none', stroke: 'currentColor', 'stroke-width': '2', viewBox: '0 0 24 24', class: 'w-3 h-3' }, [
   h('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', d: 'M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25' })
 ])
+const IconDoc = () => h('svg', { fill: 'none', stroke: 'currentColor', 'stroke-width': '2', viewBox: '0 0 24 24', class: 'w-3 h-3' }, [
+  h('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', d: 'M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z' })
+])
 
 const filters = [
   { key: 'all', label: 'All', icon: IconAll },
   { key: 'projects', label: 'Projects', icon: IconProject },
   { key: 'articles', label: 'Articles', icon: IconArticle },
+  { key: 'docs', label: 'Docs', icon: IconDoc },
   { key: 'pages', label: 'Pages', icon: IconPage },
 ]
 
@@ -416,6 +457,7 @@ const allPages = [
   { to: '/about', label: 'About Us', description: 'Meet the team', icon: IconAbout },
   { to: '/projects', label: 'Portfolio', description: 'Our projects', icon: IconPortfolio },
   { to: '/blog', label: 'Blog & Insights', description: 'Articles & tutorials', icon: IconBlog },
+  { to: '/docs', label: 'Documentation', description: 'Guides & references', icon: IconDoc },
   { to: '/join', label: 'Careers', description: 'Join our team', icon: IconCareers },
   { to: '/contact', label: 'Contact', description: 'Get in touch', icon: IconContact },
 ]
@@ -423,26 +465,31 @@ const allPages = [
 const quickLinks = allPages
 
 // ── Computed ──
-const results = computed(() => [...projectResults.value, ...postResults.value])
+const results = computed(() => [...projectResults.value, ...postResults.value, ...docResults.value])
 
 const filteredProjects = computed(() => {
-  if (activeFilter.value === 'articles' || activeFilter.value === 'pages') return []
+  if (activeFilter.value === 'articles' || activeFilter.value === 'docs' || activeFilter.value === 'pages') return []
   return projectResults.value
 })
 
 const filteredPosts = computed(() => {
-  if (activeFilter.value === 'projects' || activeFilter.value === 'pages') return []
+  if (activeFilter.value === 'projects' || activeFilter.value === 'docs' || activeFilter.value === 'pages') return []
   return postResults.value
 })
 
+const filteredDocs = computed(() => {
+  if (activeFilter.value === 'projects' || activeFilter.value === 'articles' || activeFilter.value === 'pages') return []
+  return docResults.value
+})
+
 const filteredPages = computed(() => {
-  if (activeFilter.value === 'projects' || activeFilter.value === 'articles') return []
+  if (activeFilter.value === 'projects' || activeFilter.value === 'articles' || activeFilter.value === 'docs') return []
   if (query.value.length < 2) return []
   const q = query.value.toLowerCase()
   return allPages.filter(p => p.label.toLowerCase().includes(q) || p.description.toLowerCase().includes(q))
 })
 
-const filteredResults = computed(() => [...filteredProjects.value, ...filteredPosts.value, ...filteredPages.value])
+const filteredResults = computed(() => [...filteredProjects.value, ...filteredPosts.value, ...filteredDocs.value, ...filteredPages.value])
 
 const totalItems = computed(() => {
   if (query.value.length < 2) {
@@ -457,6 +504,7 @@ function getFilterCount(key) {
   if (key === 'all') return results.value.length + filteredPages.value.length
   if (key === 'projects') return projectResults.value.length
   if (key === 'articles') return postResults.value.length
+  if (key === 'docs') return docResults.value.length
   if (key === 'pages') return allPages.filter(p => {
     const q = query.value.toLowerCase()
     return p.label.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)
@@ -469,7 +517,8 @@ function getGlobalIndex(type, localIndex) {
   let offset = 0
   if (type === 'project') return localIndex
   if (type === 'post') { offset = filteredProjects.value.length; return offset + localIndex }
-  if (type === 'page') { offset = filteredProjects.value.length + filteredPosts.value.length; return offset + localIndex }
+  if (type === 'doc') { offset = filteredProjects.value.length + filteredPosts.value.length; return offset + localIndex }
+  if (type === 'page') { offset = filteredProjects.value.length + filteredPosts.value.length + filteredDocs.value.length; return offset + localIndex }
   return localIndex
 }
 
@@ -490,6 +539,7 @@ function clearQuery() {
   query.value = ''
   projectResults.value = []
   postResults.value = []
+  docResults.value = []
   activeIndex.value = 0
   nextTick(() => inputRef.value?.focus())
 }
@@ -499,6 +549,7 @@ function close() {
   query.value = ''
   projectResults.value = []
   postResults.value = []
+  docResults.value = []
   activeFilter.value = 'all'
   activeIndex.value = 0
 }
@@ -509,6 +560,7 @@ function onInput() {
   if (query.value.length < 2) {
     projectResults.value = []
     postResults.value = []
+    docResults.value = []
     loading.value = false
     return
   }
@@ -519,6 +571,31 @@ function onInput() {
 async function performSearch() {
   try {
     const q = query.value
+    // Load docs nav once, cache flat list for client-side filtering
+    if (!allDocsCache) {
+      try {
+        const { data } = await publicApi.getDocsNav()
+        const tree = data.data || []
+        const flat = []
+        for (const mainMenu of tree) {
+          for (const page of (mainMenu.pages || [])) {
+            flat.push({ slug: page.slug, title: page.title })
+            for (const sub of (page.children || [])) flat.push({ slug: sub.slug, title: sub.title })
+          }
+          for (const subMenu of (mainMenu.children || [])) {
+            for (const page of (subMenu.pages || [])) {
+              flat.push({ slug: page.slug, title: page.title })
+              for (const sub of (page.children || [])) flat.push({ slug: sub.slug, title: sub.title })
+            }
+          }
+        }
+        allDocsCache = flat
+      } catch {
+        allDocsCache = []
+      }
+    }
+    const ql = q.toLowerCase()
+    docResults.value = allDocsCache.filter(d => d.title.toLowerCase().includes(ql)).slice(0, 8)
     const [projectsRes, postsRes] = await Promise.all([
       publicApi.getProjects({ search: q, per_page: 6 }),
       publicApi.getBlogPosts({ search: q, per_page: 6 }),
@@ -528,6 +605,7 @@ async function performSearch() {
   } catch {
     projectResults.value = []
     postResults.value = []
+    docResults.value = []
   } finally {
     loading.value = false
   }
@@ -657,6 +735,15 @@ function selectActive() {
     return
   }
   offset += filteredPosts.value.length
+
+  if (idx < offset + filteredDocs.value.length) {
+    const item = filteredDocs.value[idx - offset]
+    saveRecent(query.value)
+    router.push({ name: 'docs', query: { page: item.slug } })
+    close()
+    return
+  }
+  offset += filteredDocs.value.length
 
   if (idx < offset + filteredPages.value.length) {
     const page = filteredPages.value[idx - offset]

@@ -2,9 +2,9 @@
   <nav
     class="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
     :class="[
-      scrolled
-        ? 'nav-scrolled'
-        : 'nav-top'
+      isDocsPage
+        ? 'docs-nav'
+        : (scrolled ? 'nav-scrolled' : 'nav-top')
     ]"
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -17,10 +17,24 @@
             <span class="text-[15px] font-sans font-bold tracking-tight text-gray-900 dark:text-white group-hover:text-brand-violet dark:group-hover:text-brand-cyan transition-colors duration-300">Kalapak</span>
             <span class="text-[9px] font-medium uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">Code Team</span>
           </div>
+          <template v-if="isDocsPage">
+            <span class="hidden sm:block text-gray-300 dark:text-white/20 mx-1 text-xl font-thin">/</span>
+            <span class="hidden sm:block text-[13px] font-semibold text-gray-500 dark:text-gray-300">Documentation</span>
+          </template>
         </router-link>
 
         <!-- ── Desktop Navigation ── -->
-        <div class="hidden lg:flex items-center">
+        <div v-if="isDocsPage" class="hidden lg:flex flex-1 items-center mx-6">
+          <button
+            @click="openSearch"
+            class="w-full max-w-xl flex items-center gap-3 px-4 py-2 rounded-xl text-sm text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-white/[0.08] bg-gray-50 dark:bg-white/[0.03] hover:border-brand-violet/40 dark:hover:border-brand-cyan/30 hover:bg-white dark:hover:bg-white/[0.05] transition-all duration-200 group"
+          >
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+            <span class="flex-1 text-left">Search everything...</span>
+            <kbd class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-gray-100 dark:bg-white/[0.06] text-[10px] font-code text-gray-400 border border-gray-200/50 dark:border-white/[0.06]">⌘K</kbd>
+          </button>
+        </div>
+        <div v-else class="hidden lg:flex items-center">
           <div class="nav-links-container flex items-center gap-0.5 px-1 py-1 rounded-2xl bg-gray-100/70 dark:bg-white/[0.04] border border-gray-200/50 dark:border-white/[0.06]">
             <router-link
               v-for="link in navLinks"
@@ -52,8 +66,9 @@
 
         <!-- ── Right Actions ── -->
         <div class="flex items-center gap-2">
-          <!-- Search button -->
+          <!-- Search button (hidden on docs page — search is in the center bar instead) -->
           <button
+            v-if="!isDocsPage"
             @click="openSearch"
             class="nav-action-btn hidden sm:flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-gray-400 dark:text-gray-500 border border-gray-200/70 dark:border-white/[0.06] bg-white/50 dark:bg-white/[0.02] hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 hover:text-gray-600 dark:hover:text-gray-300 transition-all duration-200"
             title="Search"
@@ -405,7 +420,7 @@
 </template>
 
 <script setup>
-import { ref, h, onMounted, onUnmounted, watch } from 'vue'
+import { ref, h, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useNotificationStore } from '@/stores/notifications'
@@ -422,6 +437,9 @@ const profileDropdownRef = ref(null)
 const notifDropdownRef = ref(null)
 const notifOpen = ref(false)
 const scrolled = ref(false)
+
+// ── Docs page detection ──
+const isDocsPage = computed(() => route.name === 'docs')
 
 // ── Search state ──
 const searchOpen = ref(false)
@@ -553,7 +571,6 @@ onUnmounted(() => {
 })
 
 const navLinks = [
-  { name: 'home', to: '/', label: 'Home', icon: IconHome },
   { name: 'about', to: '/about', label: 'About', icon: IconAbout },
   { name: 'projects', to: '/projects', label: 'Portfolio', icon: IconPortfolio },
   { name: 'blog', to: '/blog', label: 'Insights', icon: IconBlog },
@@ -569,6 +586,19 @@ function handleLogout() {
 </script>
 
 <style scoped>
+/* ── Docs mode: always-solid Laravel-style header ── */
+.docs-nav {
+  background: rgba(255, 255, 255, 0.98);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+:root.dark .docs-nav,
+.dark .docs-nav {
+  background: rgba(2, 0, 36, 0.98);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
 /* ── Nav background states ── */
 .nav-top {
   background: transparent;

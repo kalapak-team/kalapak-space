@@ -271,7 +271,7 @@
     </section>
 
     <!-- ═══════════════════ TECH STACK — MARQUEE ═══════════════════ -->
-    <section class="tech-section relative z-10 overflow-hidden">
+    <section class="tech-section relative z-10">
 
       <!-- Glow orbs -->
       <div class="absolute top-1/2 left-1/4 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-brand-violet/[0.07] blur-[120px] pointer-events-none" />
@@ -450,8 +450,7 @@ onMounted(async () => {
 }
 :root.dark .tech-section,
 .dark .tech-section {
-  --section-bg: #020024;
-  background: linear-gradient(180deg, #020024 0%, #050030 50%, #020024 100%);
+  background: #020024;
 }
 
 .marquee-wrapper {

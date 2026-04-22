@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Doc;
 use App\Models\DocMenu;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 
 class DocController extends Controller
 {
@@ -15,44 +16,45 @@ class DocController extends Controller
      */
     public function nav(): JsonResponse
     {
-        $mainMenus = DocMenu::whereNull('parent_id')
-            ->orderBy('order_num')
-            ->orderBy('name')
-            ->with([
-                'children' => function ($q) {
-                    $q->orderBy('order_num')->orderBy('name')
-                        ->with([
-                            'pages' => function ($q2) {
-                                $q2->where('status', 'published')
-                                    ->whereNull('parent_id')
-                                    ->select('id', 'title', 'slug', 'doc_menu_id', 'order_num', 'updated_at')
-                                    ->orderBy('order_num')
-                                    ->with([
-                                        'children' => function ($q3) {
-                                            $q3->where('status', 'published')
-                                                ->select('id', 'title', 'slug', 'parent_id', 'order_num', 'updated_at')
-                                                ->orderBy('order_num');
-                                        }
-                                    ]);
-                            }
-                        ]);
-                },
-                'pages' => function ($q) {
-                    // Pages directly under the main menu (no sub-menu)
-                    $q->where('status', 'published')
-                        ->whereNull('parent_id')
-                        ->select('id', 'title', 'slug', 'doc_menu_id', 'order_num', 'updated_at')
-                        ->orderBy('order_num')
-                        ->with([
-                            'children' => function ($q2) {
-                        $q2->where('status', 'published')
-                            ->select('id', 'title', 'slug', 'parent_id', 'order_num', 'updated_at')
-                            ->orderBy('order_num');
+        $mainMenus = Cache::remember('docs.nav', now()->addHour(), function () {
+            return DocMenu::whereNull('parent_id')
+                ->orderBy('order_num')
+                ->orderBy('name')
+                ->with([
+                    'children' => function ($q) {
+                        $q->orderBy('order_num')->orderBy('name')
+                            ->with([
+                                'pages' => function ($q2) {
+                                    $q2->where('status', 'published')
+                                        ->whereNull('parent_id')
+                                        ->select('id', 'title', 'slug', 'doc_menu_id', 'order_num', 'updated_at')
+                                        ->orderBy('order_num')
+                                        ->with([
+                                            'children' => function ($q3) {
+                                                $q3->where('status', 'published')
+                                                    ->select('id', 'title', 'slug', 'parent_id', 'order_num', 'updated_at')
+                                                    ->orderBy('order_num');
+                                            }
+                                        ]);
+                                }
+                            ]);
+                    },
+                    'pages' => function ($q) {
+                        $q->where('status', 'published')
+                            ->whereNull('parent_id')
+                            ->select('id', 'title', 'slug', 'doc_menu_id', 'order_num', 'updated_at')
+                            ->orderBy('order_num')
+                            ->with([
+                                'children' => function ($q2) {
+                                    $q2->where('status', 'published')
+                                        ->select('id', 'title', 'slug', 'parent_id', 'order_num', 'updated_at')
+                                        ->orderBy('order_num');
+                                }
+                            ]);
                     }
-                        ]);
-                }
-            ])
-            ->get();
+                ])
+                ->get();
+        });
 
         return response()->json(['success' => true, 'data' => $mainMenus]);
     }
@@ -88,10 +90,12 @@ class DocController extends Controller
 
     public function show(string $slug): JsonResponse
     {
-        $doc = Doc::where('slug', $slug)
-            ->where('status', 'published')
-            ->with(['sections' => fn($q) => $q->orderBy('order_num')])
-            ->firstOrFail();
+        $doc = Cache::remember("docs.show.{$slug}", now()->addHour(), function () use ($slug) {
+            return Doc::where('slug', $slug)
+                ->where('status', 'published')
+                ->with(['sections' => fn($q) => $q->orderBy('order_num')])
+                ->firstOrFail();
+        });
 
         return response()->json(['success' => true, 'data' => $doc]);
     }

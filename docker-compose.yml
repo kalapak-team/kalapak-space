@@ -37,6 +37,20 @@ services:
       - kalapak_network
     restart: unless-stopped
 
+  redis:
+    image: redis:7-alpine
+    container_name: kalapak_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - kalapak_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   backend:
     build:
       context: ./backend
@@ -50,6 +64,8 @@ services:
       - ./backend:/var/www/html
     depends_on:
       postgres:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     networks:
       - kalapak_network

@@ -3,21 +3,10 @@
 
     <!-- ══ Left Sidebar ══ -->
     <aside
-      class="fixed top-0 left-0 h-full w-64 flex-shrink-0 z-20 bg-white dark:bg-dark-800 border-r border-gray-200 dark:border-white/[0.06] overflow-y-auto pt-[68px] transition-transform duration-300"
+      class="fixed top-0 left-0 h-full w-64 flex-shrink-0 z-20 bg-white dark:bg-dark-900 border-r border-gray-200 dark:border-white/[0.06] overflow-y-auto pt-[68px] transition-transform duration-300"
       :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
     >
       <div class="px-4 py-6">
-        <!-- Search in docs -->
-        <div class="relative mb-6">
-          <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
-          <input
-            v-model="searchQuery"
-            type="text"
-            placeholder="Search docs..."
-            class="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-white/[0.08] bg-gray-50 dark:bg-white/[0.03] text-gray-700 dark:text-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan"
-          />
-        </div>
-
         <!-- Nav Groups -->
         <div v-if="loading" class="space-y-4">
           <div v-for="i in 4" :key="i" class="animate-pulse">
@@ -192,8 +181,22 @@
       </div>
     </div>
 
+    <!-- ══ Scroll to Top ══ -->
+    <Transition name="scroll-top">
+      <button
+        v-if="showScrollTop"
+        @click="scrollToTop"
+        aria-label="Scroll to top"
+        class="fixed bottom-8 right-8 z-50 w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-dark-800 border border-gray-200 dark:border-white/[0.10] shadow-md text-gray-500 dark:text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:border-brand-violet dark:hover:border-brand-cyan hover:shadow-lg transition-all duration-200"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/>
+        </svg>
+      </button>
+    </Transition>
+
     <!-- ══ Right: On this page (TOC) ══ -->
-    <aside v-if="currentDoc && tocItems.length" class="hidden xl:block fixed right-0 top-0 w-72 h-full overflow-y-auto pt-[68px] border-l border-gray-200 dark:border-white/[0.06] bg-white dark:bg-dark-800">
+    <aside v-if="currentDoc && tocItems.length" class="hidden xl:block fixed right-0 top-0 w-72 h-full overflow-y-auto pt-[68px] border-l border-gray-200 dark:border-white/[0.06] bg-white dark:bg-dark-900">
       <div class="px-6 py-8">
         <p class="text-[11px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-4">On this page</p>
         <nav class="space-y-1">
@@ -287,6 +290,8 @@ const sidebarOpen = ref(false)
 const tocItems = ref([])
 const activeToc = ref('')
 const collapsedMenus = ref(new Set())
+const showScrollTop = ref(false)
+const docCache = new Map()
 
 function toggleMenu(id) {
   if (collapsedMenus.value.has(id)) {
@@ -360,21 +365,52 @@ async function loadDoc(slug) {
   currentSlug.value = slug
   router.replace({ name: 'docs', query: { page: slug } })
   sidebarOpen.value = false
-  try {
-    docLoading.value = true
-    currentDoc.value = null
-    const { data } = await publicApi.getDoc(slug)
-    currentDoc.value = data.data
+
+  // Serve from cache instantly — zero API call, zero loading spinner
+  if (docCache.has(slug)) {
+    currentDoc.value = docCache.get(slug)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
     await nextTick()
-    buildToc()        // initial h2-only pass (instant)
+    buildToc()
     addHeadingIds()
     addCopyButtons()
-    setTimeout(() => buildToc(), 60) // re-run after v-html fully painted to pick up h3s
+    setTimeout(() => buildToc(), 60)
+    return
+  }
+
+  try {
+    docLoading.value = true
+    // Keep previous doc visible while loading (no blank flash)
+    const { data } = await publicApi.getDoc(slug)
+    const doc = data.data
+    docCache.set(slug, doc)   // cache for instant future access
+    currentDoc.value = doc
+    await nextTick()
+    buildToc()
+    addHeadingIds()
+    addCopyButtons()
+    setTimeout(() => buildToc(), 60)
     window.scrollTo({ top: 0, behavior: 'smooth' })
+    prefetchAdjacentDocs(slug)
   } catch {
     currentDoc.value = null
   } finally {
     docLoading.value = false
+  }
+}
+
+// Silently pre-fetch prev/next docs into cache so they open instantly
+function prefetchAdjacentDocs(slug) {
+  const idx = flatDocs.value.findIndex(d => d.slug === slug)
+  const toFetch = []
+  if (idx > 0) toFetch.push(flatDocs.value[idx - 1].slug)
+  if (idx >= 0 && idx < flatDocs.value.length - 1) toFetch.push(flatDocs.value[idx + 1].slug)
+  for (const s of toFetch) {
+    if (!docCache.has(s)) {
+      publicApi.getDoc(s).then(({ data }) => {
+        docCache.set(s, data.data)
+      }).catch(() => {})
+    }
   }
 }
 
@@ -476,6 +512,8 @@ function addCopyButtons() {
 }
 
 function handleScroll() {
+  showScrollTop.value = window.scrollY > 300
+
   if (currentDoc.value?.sections?.length) {
     // Use section heading anchors for scroll-spy
     const ids = tocItems.value.map(t => t.id)
@@ -495,19 +533,65 @@ function handleScroll() {
   }
 }
 
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
 function formatDate(str) {
   if (!str) return ''
   return new Date(str).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
 }
 
 onMounted(async () => {
-  await fetchAllDocs()
   const slug = route.query.page
+
   if (slug) {
-    await loadDoc(slug)
-  } else if (flatDocs.value.length) {
-    await loadDoc(flatDocs.value[0].slug)
+    // ── Fire nav + doc in PARALLEL — no sequential waiting ──
+    loading.value = true
+    docLoading.value = true
+    currentSlug.value = slug
+    router.replace({ name: 'docs', query: { page: slug } })
+
+    const [navResult, docResult] = await Promise.allSettled([
+      publicApi.getDocsNav(),
+      publicApi.getDoc(slug),
+    ])
+
+    // Process nav
+    if (navResult.status === 'fulfilled') {
+      navTree.value = navResult.value.data.data || []
+      if (navTree.value.length > 0) {
+        collapsedMenus.value = new Set([navTree.value[0].id])
+      }
+    } else {
+      navTree.value = []
+    }
+    loading.value = false
+
+    // Process doc
+    if (docResult.status === 'fulfilled') {
+      const doc = docResult.value.data.data
+      docCache.set(slug, doc)
+      currentDoc.value = doc
+      await nextTick()
+      buildToc()
+      addHeadingIds()
+      addCopyButtons()
+      setTimeout(() => buildToc(), 60)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      prefetchAdjacentDocs(slug)
+    } else {
+      currentDoc.value = null
+    }
+    docLoading.value = false
+  } else {
+    // No slug in URL — need nav first to find the first doc
+    await fetchAllDocs()
+    if (flatDocs.value.length) {
+      await loadDoc(flatDocs.value[0].slug)
+    }
   }
+
   window.addEventListener('scroll', handleScroll, { passive: true })
 })
 
@@ -693,6 +777,17 @@ onUnmounted(() => {
 /* Section headings created by the sections system */
 .doc-section-h2 {
   scroll-margin-top: 90px;
+}
+
+/* Scroll-to-top button transitions */
+.scroll-top-enter-active,
+.scroll-top-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.scroll-top-enter-from,
+.scroll-top-leave-to {
+  opacity: 0;
+  transform: translateY(8px);
 }
 </style>
 

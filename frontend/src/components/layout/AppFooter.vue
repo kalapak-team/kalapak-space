@@ -1,11 +1,11 @@
 <template>
-  <footer class="relative z-10">
+  <footer class="relative z-10 -mt-px">
 
     <div class="footer-main relative">
       <div class="relative max-w-7xl mx-auto px-6 lg:px-8">
 
         <!-- ── Top: Brand + Nav columns ── -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-20 pb-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-10 pb-16">
 
           <!-- Brand column (5 cols) -->
           <div class="lg:col-span-5 flex flex-col gap-6">
@@ -93,10 +93,10 @@ const d = computed(() => themeStore.isDark)
 // xAI-style: deep dark base + big vivid glowing orb from bottom-center
 const footerBg = computed(() =>
   d.value
-    ? `radial-gradient(ellipse 120% 90% at 50% 100%, rgba(123,47,255,0.90) 0%, rgba(0,212,255,0.35) 45%, rgba(0,212,255,0.05) 70%, transparent 85%),
+    ? `radial-gradient(ellipse 120% 120% at 50% 100%, rgba(123,47,255,0.90) 0%, rgba(0,212,255,0.35) 42%, rgba(0,212,255,0.05) 62%, transparent 78%),
        #020024`
-    : `radial-gradient(ellipse 120% 90% at 50% 100%, rgba(123,47,255,0.60) 0%, rgba(0,212,255,0.22) 45%, rgba(0,212,255,0.05) 70%, transparent 85%),
-       #f9fafb`
+    : `radial-gradient(ellipse 120% 120% at 50% 100%, rgba(123,47,255,0.60) 0%, rgba(0,212,255,0.22) 42%, rgba(0,212,255,0.05) 62%, transparent 78%),
+       #f8fafc`
 )
 
 const quickLinks = [
