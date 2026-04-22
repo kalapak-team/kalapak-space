@@ -134,7 +134,7 @@
           </div>
 
           <!-- Sidebar -->
-          <aside class="space-y-6 lg:sticky lg:top-24 lg:self-start">
+          <aside class="flex flex-col gap-6">
 
             <!-- Office info -->
             <div data-aos="fade-left" data-aos-delay="100"
@@ -172,7 +172,7 @@
 
             <!-- Social links -->
             <div data-aos="fade-left" data-aos-delay="200"
-              class="rounded-2xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm p-7">
+              class="flex-1 flex flex-col rounded-2xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm p-7">
               <h3 class="text-xs font-sans font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-5 flex items-center gap-2">
                 <svg class="w-4 h-4 text-brand-violet dark:text-brand-cyan" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" /></svg>
                 Follow Us
@@ -193,22 +193,6 @@
               </div>
             </div>
 
-            <!-- Quick response -->
-            <div data-aos="fade-left" data-aos-delay="300"
-              class="rounded-2xl border border-gray-100 dark:border-dark-600 bg-gradient-brand p-7 text-white">
-              <h3 class="text-xs font-sans font-bold uppercase tracking-wider mb-3 flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
-                Quick Response
-              </h3>
-              <p class="text-sm text-white/80 leading-relaxed">
-                Need a faster reply? Email us directly and we'll respond within a few hours.
-              </p>
-              <a href="mailto:kalapakteam@gmail.com"
-                class="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-white/15 rounded-xl text-sm font-medium hover:bg-white/25 transition-all duration-300 backdrop-blur-sm">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
-                kalapakteam@gmail.com
-              </a>
-            </div>
           </aside>
 
         </div>

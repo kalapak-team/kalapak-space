@@ -22,6 +22,20 @@
 
 ---
 
+## 🚀 Our Mission
+
+> *"Learning to be a pillar for one another, as we strive to become a leading student-driven tech team, inspiring the next generation of Cambodian developers and proving that world-class software can be built anywhere."*
+
+### 💎 Our Core Principles
+
+| Principle | Description |
+|:----------|:------------|
+| 🧠 **Common Thinking** | Harnessing collective wisdom to solve complex problems. |
+| 🤝 **Common Action** | Working in unity to transform ideas into reality. |
+| 🛡️ **Common Responsibility** | Standing together for every outcome we deliver. |
+
+---
+
 ## ✨ Features
 
 <table>

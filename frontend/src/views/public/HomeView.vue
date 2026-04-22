@@ -29,15 +29,9 @@
 
         <!-- Main heading -->
         <h1 data-aos="fade-up" data-aos-duration="1000" class="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-sans font-bold mb-4 sm:mb-6 leading-[1.1]">
-          <span class="text-gray-900 dark:text-white">We build</span><br />
-          <span class="gradient-text">digital futures</span>
+          <span class="text-gray-900 dark:text-white">Learning to be</span><br />
+          <span class="gradient-text">a pillar for one another</span>
         </h1>
-        <p data-aos="fade-up" data-aos-delay="200" class="text-base sm:text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto mb-3 sm:mb-4 font-sans leading-relaxed px-2 sm:px-0">
-          A passionate team of developers from Cambodia, crafting modern web & mobile applications with cutting-edge technology.
-        </p>
-        <p data-aos="fade-up" data-aos-delay="300" class="text-xs sm:text-sm font-code text-brand-violet/70 dark:text-brand-cyan/70 mb-8 sm:mb-10 tracking-wide">
-          &lt;Kalapak Code Team /&gt;
-        </p>
 
         <!-- CTA Buttons -->
         <div data-aos="fade-up" data-aos-delay="400" class="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4 mb-10 sm:mb-16 px-4 sm:px-0">

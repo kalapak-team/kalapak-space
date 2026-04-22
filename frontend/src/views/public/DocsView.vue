@@ -151,32 +151,6 @@
           </template>
           <div v-else class="prose-doc" v-html="renderContent(currentDoc.content)" />
 
-          <!-- Navigation: Prev / Next -->
-          <div class="mt-16 pt-6 border-t border-gray-200 dark:border-white/[0.06] flex items-center justify-between gap-4">
-            <button
-              v-if="prevDoc"
-              @click="loadDoc(prevDoc.slug)"
-              class="group flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-200 dark:border-white/[0.08] hover:border-brand-violet dark:hover:border-brand-cyan hover:bg-gray-50 dark:hover:bg-white/[0.03] transition-all"
-            >
-              <svg class="w-4 h-4 text-gray-400 group-hover:text-brand-violet dark:group-hover:text-brand-cyan transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
-              <div class="text-left">
-                <p class="text-[10px] text-gray-400 uppercase tracking-wide">Previous</p>
-                <p class="text-sm font-semibold text-gray-700 dark:text-gray-200">{{ prevDoc.title }}</p>
-              </div>
-            </button>
-            <div v-else />
-            <button
-              v-if="nextDoc"
-              @click="loadDoc(nextDoc.slug)"
-              class="group flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-200 dark:border-white/[0.08] hover:border-brand-violet dark:hover:border-brand-cyan hover:bg-gray-50 dark:hover:bg-white/[0.03] transition-all text-right ml-auto"
-            >
-              <div>
-                <p class="text-[10px] text-gray-400 uppercase tracking-wide">Next</p>
-                <p class="text-sm font-semibold text-gray-700 dark:text-gray-200">{{ nextDoc.title }}</p>
-              </div>
-              <svg class="w-4 h-4 text-gray-400 group-hover:text-brand-violet dark:group-hover:text-brand-cyan transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
-            </button>
-          </div>
         </article>
       </div>
     </div>

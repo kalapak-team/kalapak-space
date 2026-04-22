@@ -39,12 +39,12 @@
             </h2>
             <div class="space-y-4 text-gray-600 dark:text-gray-400 leading-relaxed">
               <p>
-                Kalapak Code Team was founded by a group of Year-4 IT engineering students at the Royal University of Phnom Penh.
+                Kalapak Code Team was founded by a group of Year-4 IT engineering students at the Norton University.
                 United by the shared vision of using technology to create positive impact, we came together to build real-world projects,
                 learn from each other, and contribute to the Cambodian tech ecosystem.
               </p>
               <p>
-                Our name <strong class="text-gray-900 dark:text-white">"Kalapak" (កាលាប៉ាក់)</strong> reflects our mission: to package knowledge and deliver it through code.
+                Our name <strong class="text-gray-900 dark:text-white">"Kalapak" (កលាបៈ)</strong> reflects our mission: to package knowledge and deliver it through code.
                 From web applications to mobile apps, we tackle challenges with a cosmic-level ambition.
               </p>
             </div>
@@ -65,7 +65,7 @@
                 <p class="pl-6"><span class="text-brand-violet dark:text-brand-cyan">name</span>: <span class="text-green-600 dark:text-green-400">'Kalapak Code'</span>,</p>
                 <p class="pl-6"><span class="text-brand-violet dark:text-brand-cyan">founded</span>: <span class="text-amber-600 dark:text-amber-400">2024</span>,</p>
                 <p class="pl-6"><span class="text-brand-violet dark:text-brand-cyan">location</span>: <span class="text-green-600 dark:text-green-400">'Phnom Penh, Cambodia'</span>,</p>
-                <p class="pl-6"><span class="text-brand-violet dark:text-brand-cyan">university</span>: <span class="text-green-600 dark:text-green-400">'RUPP'</span>,</p>
+                <p class="pl-6"><span class="text-brand-violet dark:text-brand-cyan">university</span>: <span class="text-green-600 dark:text-green-400">'Norton University'</span>,</p>
                 <p class="pl-6"><span class="text-brand-violet dark:text-brand-cyan">mission</span>: <span class="text-green-600 dark:text-green-400">'Package knowledge, deliver through code'</span>,</p>
                 <p class="pl-6"><span class="text-brand-violet dark:text-brand-cyan">stack</span>: [<span class="text-green-600 dark:text-green-400">'Vue'</span>, <span class="text-green-600 dark:text-green-400">'Laravel'</span>, <span class="text-green-600 dark:text-green-400">'Flutter'</span>, <span class="text-green-600 dark:text-green-400">'Docker'</span>],</p>
                 <p class="pl-6"><span class="text-brand-violet dark:text-brand-cyan">passion</span>: <span class="text-amber-600 dark:text-amber-400">Infinity</span>,</p>
@@ -101,9 +101,23 @@
               <span class="mission-glow absolute inset-0 rounded-2xl" />
             </div>
             <h3 class="text-xl font-sans font-bold text-gray-900 dark:text-white mb-3">Our Mission</h3>
-            <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
-              To package knowledge and deliver it through code. We build practical, real-world applications that solve genuine problems while fostering growth within Cambodia's tech community.
+            <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+              Learning to be a pillar for one another, as we strive to become a leading student-driven tech team, inspiring the next generation of Cambodian developers and proving that world-class software can be built anywhere through:
             </p>
+            <ul class="space-y-2">
+              <li class="flex items-start gap-2 text-gray-600 dark:text-gray-400 text-sm">
+                <span class="mt-0.5 text-brand-violet dark:text-brand-cyan font-bold shrink-0">💎</span>
+                <span><span class="font-semibold text-gray-800 dark:text-gray-200">Common Thinking</span> – Harnessing collective wisdom to solve complex problems.</span>
+              </li>
+              <li class="flex items-start gap-2 text-gray-600 dark:text-gray-400 text-sm">
+                <span class="mt-0.5 text-brand-violet dark:text-brand-cyan font-bold shrink-0">💎</span>
+                <span><span class="font-semibold text-gray-800 dark:text-gray-200">Common Action</span> – Working in unity to transform ideas into reality.</span>
+              </li>
+              <li class="flex items-start gap-2 text-gray-600 dark:text-gray-400 text-sm">
+                <span class="mt-0.5 text-brand-violet dark:text-brand-cyan font-bold shrink-0">💎</span>
+                <span><span class="font-semibold text-gray-800 dark:text-gray-200">Common Responsibility</span> – Standing together for every outcome we deliver.</span>
+              </li>
+            </ul>
           </div>
           <!-- Vision -->
           <div data-aos="fade-up" data-aos-delay="100" class="group relative p-6 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10">
@@ -113,7 +127,51 @@
             </div>
             <h3 class="text-xl font-sans font-bold text-gray-900 dark:text-white mb-3">Our Vision</h3>
             <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
-              To become a leading student-driven tech team in Southeast Asia, inspiring the next generation of Cambodian developers and proving that world-class software can be built anywhere.
+              Learning to be a pillar for one another, as we strive to become a leading student-driven tech team, inspiring the next generation of Cambodian developers and proving that world-class software can be built anywhere.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ CORE PRINCIPLES ═══════════════════ -->
+    <section class="py-14 sm:py-18 lg:py-24 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-16" data-aos="fade-up">
+          <span class="inline-block text-xs font-code text-brand-violet dark:text-brand-cyan uppercase tracking-widest mb-3">// Values</span>
+          <h2 class="text-2xl sm:text-3xl md:text-5xl font-sans font-bold text-gray-900 dark:text-white leading-tight">
+            Our Core <span class="gradient-text">Principles</span>
+          </h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
+          <!-- Common Thinking -->
+          <div data-aos="fade-up" data-aos-delay="0" class="group relative p-6 sm:p-8 rounded-2xl sm:rounded-3xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10">
+            <div class="relative w-14 h-14 rounded-2xl mb-6 flex items-center justify-center bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>
+            </div>
+            <h3 class="text-lg font-sans font-bold text-gray-900 dark:text-white mb-3">Common Thinking</h3>
+            <p class="text-gray-600 dark:text-gray-400 leading-relaxed text-sm">
+              Harnessing collective wisdom to solve complex problems.
+            </p>
+          </div>
+          <!-- Common Action -->
+          <div data-aos="fade-up" data-aos-delay="100" class="group relative p-6 sm:p-8 rounded-2xl sm:rounded-3xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10">
+            <div class="relative w-14 h-14 rounded-2xl mb-6 flex items-center justify-center bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>
+            </div>
+            <h3 class="text-lg font-sans font-bold text-gray-900 dark:text-white mb-3">Common Action</h3>
+            <p class="text-gray-600 dark:text-gray-400 leading-relaxed text-sm">
+              Working in unity to transform ideas into reality.
+            </p>
+          </div>
+          <!-- Common Responsibility -->
+          <div data-aos="fade-up" data-aos-delay="200" class="group relative p-6 sm:p-8 rounded-2xl sm:rounded-3xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10">
+            <div class="relative w-14 h-14 rounded-2xl mb-6 flex items-center justify-center bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+            </div>
+            <h3 class="text-lg font-sans font-bold text-gray-900 dark:text-white mb-3">Common Responsibility</h3>
+            <p class="text-gray-600 dark:text-gray-400 leading-relaxed text-sm">
+              Standing together for every outcome we deliver.
             </p>
           </div>
         </div>
@@ -444,7 +502,7 @@ onMounted(async () => {
 const miniStats = [
   { value: '4+', label: 'Team Members' },
   { value: '2024', label: 'Founded' },
-  { value: 'RUPP', label: 'University' },
+  { value: 'Norton University', label: 'University' },
 ]
 
 const values = [
@@ -487,7 +545,7 @@ const values = [
 ]
 
 const timeline = [
-  { date: 'Early 2024', title: 'The Idea', description: 'Four IT engineering students at RUPP started discussing forming a team to build real-world projects together.' },
+  { date: 'Early 2024', title: 'The Idea', description: 'Four IT engineering students at Norton University started discussing forming a team to build real-world projects together.' },
   { date: 'Mid 2024', title: 'Team Formation', description: 'Kalapak Code Team was officially formed. We chose our name to represent packaging knowledge through code.' },
   { date: 'Late 2024', title: 'First Projects', description: 'We began building our first collaborative projects, learning modern tech stacks and agile workflows.' },
   { date: '2025', title: 'Growing & Shipping', description: 'Launched our team website, expanded our portfolio, and started contributing to the Cambodian tech community.' },
