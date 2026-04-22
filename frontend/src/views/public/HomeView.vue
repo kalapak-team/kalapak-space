@@ -55,12 +55,17 @@
     </section>
 
     <!-- ═══════════════════ TRUSTED BY / STATS BAR ═══════════════════ -->
-    <section class="relative z-10 -mt-6 sm:-mt-8">
+    <section class="relative z-10 -mt-6 sm:-mt-8 stats-section">
       <div class="max-w-6xl mx-auto px-4">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-0 bg-white/80 dark:bg-dark-800/80 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-dark-600 shadow-glass dark:shadow-glass-dark overflow-hidden" data-aos="fade-up">
-          <div v-for="(stat, i) in stats" :key="i" class="group px-4 sm:px-6 py-6 sm:py-8 text-center hover:bg-brand-violet/5 dark:hover:bg-brand-cyan/5 transition-colors duration-300 border-gray-100 dark:border-dark-600"
+        <div class="stats-shell grid grid-cols-2 md:grid-cols-4 gap-0 bg-white/80 dark:bg-dark-800/80 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-dark-600 shadow-glass dark:shadow-glass-dark overflow-hidden" data-aos="fade-up">
+          <div class="stats-orb stats-orb-violet" />
+          <div class="stats-orb stats-orb-cyan" />
+          <div v-for="(stat, i) in stats" :key="i" class="group stat-card px-4 sm:px-6 py-6 sm:py-8 text-center hover:bg-brand-violet/5 dark:hover:bg-brand-cyan/5 transition-colors duration-300 border-gray-100 dark:border-dark-600"
             :class="[i >= 2 ? 'border-t md:border-t-0' : '', i % 2 !== 0 ? '' : '', i > 0 ? 'border-l md:border-l' : '']">
-            <p class="text-2xl sm:text-3xl md:text-4xl font-sans font-bold gradient-text mb-1 group-hover:scale-110 transition-transform duration-300">{{ stat.value }}</p>
+            <div class="stat-shine" />
+            <p class="text-2xl sm:text-3xl md:text-4xl font-sans font-bold gradient-text mb-1 group-hover:scale-110 transition-transform duration-300">
+              {{ animatedStats[i]?.display || stat.value }}
+            </p>
             <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider">{{ stat.label }}</p>
           </div>
         </div>
@@ -324,6 +329,7 @@ const stats = [
   { value: '100%', label: 'Passion' },
   { value: '∞', label: 'Lines of Code' },
 ]
+const animatedStats = ref(stats.map((stat) => ({ ...stat, display: stat.value })))
 
 const services = [
   {
@@ -400,6 +406,41 @@ function formatDate(date) {
   return date ? dayjs(date).format('MMM D, YYYY') : ''
 }
 
+function animateStatValue(index, finalValue) {
+  const matched = finalValue.match(/^(\d+)(.*)$/)
+  if (!matched) {
+    animatedStats.value[index].display = finalValue
+    return
+  }
+
+  const target = Number.parseInt(matched[1], 10)
+  const suffix = matched[2] || ''
+  const duration = 1300
+  const start = performance.now()
+
+  const tick = (now) => {
+    const progress = Math.min((now - start) / duration, 1)
+    // Ease out for a smoother finish
+    const eased = 1 - Math.pow(1 - progress, 3)
+    const current = Math.max(1, Math.round(target * eased))
+    animatedStats.value[index].display = `${current}${suffix}`
+
+    if (progress < 1) {
+      requestAnimationFrame(tick)
+    } else {
+      animatedStats.value[index].display = finalValue
+    }
+  }
+
+  requestAnimationFrame(tick)
+}
+
+function runStatsAnimation() {
+  stats.forEach((stat, index) => {
+    setTimeout(() => animateStatValue(index, stat.value), 150 * index)
+  })
+}
+
 onMounted(async () => {
   try {
     const [projectsRes, postsRes, teamRes] = await Promise.all([
@@ -413,6 +454,7 @@ onMounted(async () => {
   } catch {
     // Silently fail for public page
   }
+  runStatsAnimation()
 })
 </script>
 
@@ -429,6 +471,99 @@ onMounted(async () => {
   25% { transform: translateY(-15px) rotate(2deg); }
   50% { transform: translateY(-25px) rotate(-1deg); }
   75% { transform: translateY(-10px) rotate(1deg); }
+}
+
+/* ── Modern Stats Bar Effects ── */
+.stats-section {
+  isolation: isolate;
+}
+
+.stats-shell {
+  position: relative;
+}
+
+.stats-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.35) 45%, transparent 65%);
+  transform: translateX(-130%);
+  animation: statsSweep 9s ease-in-out infinite;
+}
+
+.dark .stats-shell::before {
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.08) 45%, transparent 65%);
+}
+
+.stats-orb {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 999px;
+  filter: blur(70px);
+  opacity: 0.25;
+  pointer-events: none;
+  animation: statOrbFloat 7s ease-in-out infinite;
+}
+
+.stats-orb-violet {
+  top: -70px;
+  left: -40px;
+  background: rgba(123, 47, 255, 0.35);
+}
+
+.stats-orb-cyan {
+  bottom: -80px;
+  right: -30px;
+  background: rgba(0, 212, 255, 0.32);
+  animation-delay: 2.5s;
+}
+
+.stat-card {
+  position: relative;
+  overflow: hidden;
+  animation: statCardPop 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.stat-card:nth-child(3) { animation-delay: 90ms; }
+.stat-card:nth-child(4) { animation-delay: 170ms; }
+.stat-card:nth-child(5) { animation-delay: 250ms; }
+.stat-card:nth-child(6) { animation-delay: 330ms; }
+
+.stat-shine {
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 70%;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-22deg);
+  transition: left 700ms ease;
+}
+
+.dark .stat-shine {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+}
+
+.stat-card:hover .stat-shine {
+  left: 180%;
+}
+
+@keyframes statCardPop {
+  0% { opacity: 0; transform: translateY(16px) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes statsSweep {
+  0%, 70%, 100% { transform: translateX(-130%); }
+  35% { transform: translateX(130%); }
+}
+
+@keyframes statOrbFloat {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-12px) scale(1.06); }
 }
 
 /* ── Tech Stack Marquee ── */
@@ -581,6 +716,14 @@ onMounted(async () => {
 @media (prefers-reduced-motion: reduce) {
   .marquee-track {
     animation: none;
+  }
+  .stats-shell::before,
+  .stats-orb,
+  .stat-card {
+    animation: none;
+  }
+  .stat-shine {
+    display: none;
   }
 }
 </style>
