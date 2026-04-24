@@ -1,6 +1,6 @@
 <template>
   <div :class="{ dark: isDark }" class="min-h-screen">
-    <RouterView />
+    <NuxtPage />
     <ToastNotification />
   </div>
 </template>
