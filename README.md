@@ -6,7 +6,8 @@
 
 **A modern full-stack team portfolio & CMS platform**
 
-[![Vue.js](https://img.shields.io/badge/Vue.js-3.4-4FC08D?style=for-the-badge&logo=vuedotjs&logoColor=white)](https://vuejs.org/)
+[![Nuxt](https://img.shields.io/badge/Nuxt-3-00DC82?style=for-the-badge&logo=nuxtdotjs&logoColor=white)](https://nuxt.com/)
+[![Vue.js](https://img.shields.io/badge/Vue.js-3.5-4FC08D?style=for-the-badge&logo=vuedotjs&logoColor=white)](https://vuejs.org/)
 [![Laravel](https://img.shields.io/badge/Laravel-11-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
@@ -95,11 +96,12 @@
 
 | Technology | Version | Purpose |
 |:-----------|:--------|:--------|
-| [Vue.js](https://vuejs.org/) | 3.4 | Reactive UI framework (Composition API) |
-| [Vite](https://vitejs.dev/) | 5.x | Lightning-fast build tool & dev server |
+| [Nuxt](https://nuxt.com/) | 3.x | Full-stack Vue framework (SSR, SEO, routing, auto-imports) |
+| [Vue.js](https://vuejs.org/) | 3.5 | Reactive UI framework (Composition API in `.vue` files) |
+| [Nitro](https://nitro.build/) | 2.x | Nuxt production server runtime |
 | [Tailwind CSS](https://tailwindcss.com/) | 3.4 | Utility-first CSS framework |
 | [Pinia](https://pinia.vuejs.org/) | 2.x | State management (auth, theme, notifications, UI) |
-| [Vue Router](https://router.vuejs.org/) | 4.x | Client-side routing with guards |
+| [Nuxt Router](https://nuxt.com/docs/getting-started/routing) | Built-in | File-based / custom routing with middleware and guards |
 | [Tiptap](https://tiptap.dev/) | 3.22 | Rich text editor (20+ extensions) |
 | [Chart.js](https://www.chartjs.org/) | 4.x | Dashboard analytics charts |
 | [GSAP](https://gsap.com/) | 3.12 | High-performance animations |
@@ -176,6 +178,33 @@ exit
 | 🗄️ pgAdmin | [`localhost:5050`](http://localhost:5050) | `admin@kalapak.dev` / `admin123` |
 | 🔑 Admin Panel | [`localhost:3000/auth/login`](http://localhost:3000/auth/login) | `admin@kalapak.dev` / `password` |
 
+### Frontend local scripts (Nuxt 3)
+
+```bash
+cd frontend
+
+# Development server
+npm run dev
+
+# SSR production build
+npm run build
+
+# Optional static generation
+npm run generate
+
+# Preview production output
+npm run preview
+```
+
+### Frontend environment variables
+
+Set these in `frontend/.env` (or deployment environment):
+
+```bash
+NUXT_PUBLIC_API_URL=http://localhost:8000/api
+NUXT_PUBLIC_SITE_URL=http://localhost:3000
+```
+
 ### Useful Commands
 
 ```bash
@@ -210,8 +239,8 @@ docker exec -it kalapak_postgres psql -U kalapak_user -d kalapak_db
 │                                                              │
 │  ┌─────────────┐  ┌──────────────┐  ┌─────────────────────┐ │
 │  │   Frontend   │  │   Backend    │  │     PostgreSQL       │ │
-│  │  Vue 3 +     │  │  Laravel 11  │  │     16-alpine        │ │
-│  │  Vite        │──│  PHP 8.3 FPM │──│                     │ │
+│  │  Nuxt 3 +    │  │  Laravel 11  │  │     16-alpine        │ │
+│  │  Vue 3 SSR   │──│  PHP 8.3 FPM │──│                     │ │
 │  │  :3000       │  │  :8000       │  │  :5432              │ │
 │  │  Node 20     │  │  Sanctum     │  │  kalapak_db         │ │
 │  └─────────────┘  └──────────────┘  └─────────────────────┘ │
@@ -229,23 +258,18 @@ docker exec -it kalapak_postgres psql -U kalapak_user -d kalapak_db
 kalapak-website/
 ├── docker-compose.yml          # Container orchestration
 │
-├── frontend/                   # Vue 3 SPA
+├── frontend/                   # Nuxt 3 application
+│   ├── app/                    # Nuxt app-level config (router options)
+│   ├── composables/            # Auto-imported Nuxt composables (useApi, useKalapakSeo)
+│   ├── plugins/                # Nuxt plugins (AOS, router guards)
 │   ├── src/
 │   │   ├── assets/             # Styles, fonts, images
-│   │   ├── components/         # 12 reusable Vue components
-│   │   │   ├── common/         # ContentEditor, Pagination, Toast...
-│   │   │   ├── layout/         # AppNavbar, AppFooter
-│   │   │   └── admin/          # AdminSearchModal
+│   │   ├── components/         # Reusable Vue components
 │   │   ├── layouts/            # Public, Auth, Admin layouts
-│   │   ├── router/             # 30 routes with auth guards
-│   │   ├── services/           # Axios API layer (4 namespaces)
 │   │   ├── stores/             # Pinia stores (auth, theme, UI, notifications)
-│   │   └── views/              # Page components
-│   │       ├── public/         # 8 public pages
-│   │       ├── auth/           # Login, Register, Password Reset
-│   │       ├── member/         # Profile, Settings
-│   │       └── admin/          # 15 admin pages
+│   │   └── views/              # Route view components
 │   ├── Dockerfile
+│   ├── nuxt.config.ts
 │   └── package.json
 │
 ├── backend/                    # Laravel 11 API
