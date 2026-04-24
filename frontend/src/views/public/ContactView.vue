@@ -27,17 +27,17 @@
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           <div v-for="(info, i) in contactInfo" :key="i"
             data-aos="fade-up" :data-aos-delay="i * 80"
-            class="group rounded-2xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm p-6 text-center hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl dark:hover:shadow-glow/10">
+            class="group rounded-2xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm p-6 text-center hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl dark:hover:shadow-glow/10">
             <div class="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center transition-transform duration-500 group-hover:scale-110"
               :class="info.bgClass">
               <div v-html="info.icon" />
             </div>
             <h3 class="text-xs font-sans font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-1.5">{{ info.label }}</h3>
             <a v-if="info.href" :href="info.href" target="_blank" rel="noopener noreferrer"
-              class="text-sm text-gray-500 dark:text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan transition-colors break-all">
+              class="text-sm text-gray-700 dark:text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan transition-colors break-all">
               {{ info.value }}
             </a>
-            <p v-else class="text-sm text-gray-500 dark:text-gray-400">{{ info.value }}</p>
+            <p v-else class="text-sm text-gray-700 dark:text-gray-400">{{ info.value }}</p>
             <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-brand opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-b-2xl" />
           </div>
         </div>
@@ -50,7 +50,7 @@
         <div class="grid lg:grid-cols-[1fr_400px] gap-8 lg:gap-10">
 
           <!-- Contact Form -->
-          <div class="rounded-2xl sm:rounded-3xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden">
+          <div class="rounded-2xl sm:rounded-3xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden">
             <div class="relative p-5 sm:p-8 md:p-10 pb-0">
               <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-brand" />
               <div class="flex items-center gap-3 mb-1">
@@ -59,7 +59,7 @@
                 </div>
                 <div>
                   <h2 class="text-2xl font-sans font-bold text-gray-900 dark:text-white">Send a Message</h2>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">We typically respond within 24 hours</p>
+                  <p class="text-xs text-gray-700 dark:text-gray-400">We typically respond within 24 hours</p>
                 </div>
               </div>
             </div>
@@ -138,13 +138,13 @@
 
             <!-- Office info -->
             <div data-aos="fade-left" data-aos-delay="100"
-              class="rounded-2xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm p-7">
+              class="rounded-2xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm p-7">
               <h3 class="text-xs font-sans font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-5 flex items-center gap-2">
                 <svg class="w-4 h-4 text-brand-violet dark:text-brand-cyan" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
                 Our Location
               </h3>
               <!-- Embedded map -->
-              <div class="rounded-xl overflow-hidden mb-5 border border-gray-100 dark:border-dark-600">
+              <div class="rounded-xl overflow-hidden mb-5 border border-gray-200 dark:border-dark-600">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125422.55623628148!2d104.84837849726563!3d11.5563738!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3109513dc76a6be3%3A0x9c010ee85ab525bb!2sPhnom%20Penh%2C%20Cambodia!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
                   width="100%" height="180" style="border:0;" allowfullscreen="" loading="lazy"
@@ -157,14 +157,14 @@
                   <svg class="w-4 h-4 text-brand-violet dark:text-brand-cyan mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 0V5.625c0-.621.504-1.125 1.125-1.125h.375" /></svg>
                   <div>
                     <p class="text-sm font-medium text-gray-900 dark:text-white">Phnom Penh, Cambodia</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">Kingdom of Cambodia</p>
+                    <p class="text-xs text-gray-700 dark:text-gray-400">Kingdom of Cambodia</p>
                   </div>
                 </div>
                 <div class="flex items-start gap-3">
                   <svg class="w-4 h-4 text-brand-violet dark:text-brand-cyan mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                   <div>
                     <p class="text-sm font-medium text-gray-900 dark:text-white">Available Hours</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">Mon - Sat, 8:00 AM - 8:00 PM (ICT)</p>
+                    <p class="text-xs text-gray-700 dark:text-gray-400">Mon - Sat, 8:00 AM - 8:00 PM (ICT)</p>
                   </div>
                 </div>
               </div>
@@ -172,7 +172,7 @@
 
             <!-- Social links -->
             <div data-aos="fade-left" data-aos-delay="200"
-              class="flex-1 flex flex-col rounded-2xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm p-7">
+              class="flex-1 flex flex-col rounded-2xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm p-7">
               <h3 class="text-xs font-sans font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-5 flex items-center gap-2">
                 <svg class="w-4 h-4 text-brand-violet dark:text-brand-cyan" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" /></svg>
                 Follow Us
@@ -180,13 +180,13 @@
               <div class="space-y-2">
                 <a v-for="social in socials" :key="social.name"
                   :href="social.url" target="_blank" rel="noopener noreferrer"
-                  class="group flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 dark:border-dark-600 hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 hover:bg-brand-violet/5 dark:hover:bg-brand-cyan/5 transition-all duration-300">
+                  class="group flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-200 dark:border-dark-600 hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 hover:bg-brand-violet/5 dark:hover:bg-brand-cyan/5 transition-all duration-300">
                   <div class="w-8 h-8 rounded-lg flex items-center justify-center" :class="social.bgClass">
                     <div v-html="social.icon" />
                   </div>
                   <div class="flex-1 min-w-0">
                     <p class="text-sm font-medium text-gray-900 dark:text-white">{{ social.name }}</p>
-                    <p class="text-xs text-gray-400 truncate">{{ social.handle }}</p>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 truncate">{{ social.handle }}</p>
                   </div>
                   <svg class="w-4 h-4 text-gray-300 dark:text-dark-500 group-hover:text-brand-violet dark:group-hover:text-brand-cyan group-hover:translate-x-0.5 transition-all duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg>
                 </a>
@@ -216,10 +216,10 @@ const turnstileToken = ref('')
 const error = ref('')
 
 const contactInfo = [
-  { label: 'Email', value: 'kalapakteam@gmail.com', href: 'mailto:kalapakteam@gmail.com', bgClass: 'bg-violet-50 dark:bg-violet-900/20', icon: '<svg class="w-5 h-5 text-brand-violet" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>' },
-  { label: 'Location', value: 'Phnom Penh, Cambodia', href: null, bgClass: 'bg-cyan-50 dark:bg-cyan-900/20', icon: '<svg class="w-5 h-5 text-brand-cyan" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>' },
-  { label: 'GitHub', value: 'Kalapak Code', href: 'https://github.com', bgClass: 'bg-violet-50 dark:bg-violet-900/20', icon: '<svg class="w-5 h-5 text-brand-violet" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>' },
-  { label: 'Availability', value: 'Mon - Sat, 8AM - 8PM', href: null, bgClass: 'bg-cyan-50 dark:bg-cyan-900/20', icon: '<svg class="w-5 h-5 text-brand-cyan" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' },
+  { label: 'Email', value: 'kalapakteam@gmail.com', href: 'mailto:kalapakteam@gmail.com', bgClass: 'bg-violet-100 dark:bg-violet-900/20', icon: '<svg class="w-5 h-5 text-brand-violet" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>' },
+  { label: 'Location', value: 'Phnom Penh, Cambodia', href: null, bgClass: 'bg-cyan-100 dark:bg-cyan-900/20', icon: '<svg class="w-5 h-5 text-brand-cyan" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>' },
+  { label: 'GitHub', value: 'Kalapak Code', href: 'https://github.com', bgClass: 'bg-violet-100 dark:bg-violet-900/20', icon: '<svg class="w-5 h-5 text-brand-violet" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>' },
+  { label: 'Availability', value: 'Mon - Sat, 8AM - 8PM', href: null, bgClass: 'bg-cyan-100 dark:bg-cyan-900/20', icon: '<svg class="w-5 h-5 text-brand-cyan" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' },
 ]
 
 const socials = [

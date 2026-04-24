@@ -57,16 +57,16 @@
     <!-- ═══════════════════ TRUSTED BY / STATS BAR ═══════════════════ -->
     <section class="relative z-10 -mt-6 sm:-mt-8 stats-section">
       <div class="max-w-6xl mx-auto px-4">
-        <div class="stats-shell grid grid-cols-2 md:grid-cols-4 gap-0 bg-white/80 dark:bg-dark-800/80 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-dark-600 shadow-glass dark:shadow-glass-dark overflow-hidden" data-aos="fade-up">
+        <div class="stats-shell grid grid-cols-2 md:grid-cols-4 gap-0 bg-white/95 dark:bg-dark-800/80 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-dark-600 shadow-glass dark:shadow-glass-dark overflow-hidden" data-aos="fade-up">
           <div class="stats-orb stats-orb-violet" />
           <div class="stats-orb stats-orb-cyan" />
-          <div v-for="(stat, i) in stats" :key="i" class="group stat-card px-4 sm:px-6 py-6 sm:py-8 text-center hover:bg-brand-violet/5 dark:hover:bg-brand-cyan/5 transition-colors duration-300 border-gray-100 dark:border-dark-600"
+          <div v-for="(stat, i) in stats" :key="i" class="group stat-card px-4 sm:px-6 py-6 sm:py-8 text-center hover:bg-brand-violet/5 dark:hover:bg-brand-cyan/5 transition-colors duration-300 border-gray-200 dark:border-dark-600"
             :class="[i >= 2 ? 'border-t md:border-t-0' : '', i % 2 !== 0 ? '' : '', i > 0 ? 'border-l md:border-l' : '']">
             <div class="stat-shine" />
             <p class="text-2xl sm:text-3xl md:text-4xl font-sans font-bold gradient-text mb-1 group-hover:scale-110 transition-transform duration-300">
               {{ animatedStats[i]?.display || stat.value }}
             </p>
-            <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider">{{ stat.label }}</p>
+            <p class="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 font-semibold uppercase tracking-wider">{{ stat.label }}</p>
           </div>
         </div>
       </div>
@@ -91,14 +91,14 @@
         <!-- Service cards -->
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           <div v-for="(service, i) in services" :key="i" data-aos="fade-up" :data-aos-delay="i * 100"
-            class="group relative p-8 rounded-2xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10">
+            class="group relative p-8 rounded-2xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10">
             <!-- Icon -->
             <div class="w-14 h-14 rounded-2xl mb-6 flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
               :class="service.bgClass">
               <span v-html="service.icon" />
             </div>
             <h3 class="text-lg font-sans font-bold text-gray-900 dark:text-white mb-3 group-hover:text-brand-violet dark:group-hover:text-brand-cyan transition-colors">{{ service.title }}</h3>
-            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{{ service.description }}</p>
+            <p class="text-sm text-gray-700 dark:text-gray-400 leading-relaxed">{{ service.description }}</p>
             <!-- Hover gradient line -->
             <div class="absolute bottom-0 left-0 h-0.5 w-0 bg-gradient-brand group-hover:w-full transition-all duration-700 rounded-full" />
           </div>
@@ -204,13 +204,13 @@
           <!-- Right: Values grid -->
           <div class="grid grid-cols-2 gap-4" data-aos="fade-left">
             <div v-for="(val, i) in values" :key="i"
-              class="p-6 rounded-2xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-300 hover:-translate-y-1"
+              class="p-6 rounded-2xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-300 hover:-translate-y-1"
               :class="i === 0 ? 'col-span-2' : ''">
               <div class="w-10 h-10 rounded-xl mb-4 flex items-center justify-center" :class="val.bgClass">
                 <span class="text-lg">{{ val.icon }}</span>
               </div>
               <h4 class="font-sans font-bold text-gray-900 dark:text-white mb-1.5">{{ val.title }}</h4>
-              <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{{ val.desc }}</p>
+              <p class="text-xs text-gray-700 dark:text-gray-400 leading-relaxed">{{ val.desc }}</p>
             </div>
           </div>
         </div>
@@ -335,46 +335,46 @@ const services = [
   {
     title: 'Web Development',
     description: 'Modern, responsive web applications built with Vue.js, Laravel, and cutting-edge frameworks for optimal user experience.',
-    bgClass: 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400',
+    bgClass: 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400',
     icon: '<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5a17.92 17.92 0 01-8.716-2.247m0 0A8.966 8.966 0 013 12c0-1.264.26-2.467.732-3.558"/></svg>',
   },
   {
     title: 'Mobile Apps',
     description: 'Cross-platform mobile applications with Flutter, delivering native performance on iOS and Android from a single codebase.',
-    bgClass: 'bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400',
+    bgClass: 'bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400',
     icon: '<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg>',
   },
   {
     title: 'API & Backend',
     description: 'Scalable RESTful APIs and robust backend systems with Laravel, PostgreSQL, and Docker for enterprise-grade reliability.',
-    bgClass: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400',
+    bgClass: 'bg-emerald-100 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400',
     icon: '<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7m0 0a3 3 0 01-3 3m0 3h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008zm-3 6h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008z"/></svg>',
   },
   {
     title: 'UI/UX Design',
     description: 'Beautiful, intuitive interfaces designed with Tailwind CSS, focusing on accessibility, responsiveness, and delightful interactions.',
-    bgClass: 'bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400',
+    bgClass: 'bg-pink-100 dark:bg-pink-900/20 text-pink-700 dark:text-pink-400',
     icon: '<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42"/></svg>',
   },
   {
     title: 'DevOps & Cloud',
     description: 'Containerized deployments with Docker, CI/CD pipelines, and cloud infrastructure management for seamless operations.',
-    bgClass: 'bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400',
+    bgClass: 'bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400',
     icon: '<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z"/></svg>',
   },
   {
     title: 'Open Source',
     description: 'Contributing to the developer community with open-source projects, libraries, and tools that solve real problems.',
-    bgClass: 'bg-cyan-50 dark:bg-cyan-900/20 text-cyan-600 dark:text-cyan-400',
+    bgClass: 'bg-cyan-100 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-400',
     icon: '<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"/></svg>',
   },
 ]
 
 const values = [
-  { icon: '🚀', title: 'Innovation First', desc: 'We push boundaries with modern tech, always exploring new solutions to challenge the status quo.', bgClass: 'bg-brand-violet/10 dark:bg-brand-violet/20' },
-  { icon: '🤝', title: 'Collaboration', desc: 'Open-source mindset, team-driven development.', bgClass: 'bg-brand-cyan/10 dark:bg-brand-cyan/20' },
-  { icon: '🎓', title: 'Continuous Learning', desc: 'Always growing through mentorship & practice.', bgClass: 'bg-amber-100 dark:bg-amber-900/20' },
-  { icon: '🇰🇭', title: 'Cambodia Proud', desc: 'Building world-class tech from Phnom Penh.', bgClass: 'bg-emerald-100 dark:bg-emerald-900/20' },
+  { icon: '🚀', title: 'Innovation First', desc: 'We push boundaries with modern tech, always exploring new solutions to challenge the status quo.', bgClass: 'bg-brand-violet/15 dark:bg-brand-violet/20' },
+  { icon: '🤝', title: 'Collaboration', desc: 'Open-source mindset, team-driven development.', bgClass: 'bg-brand-cyan/20 dark:bg-brand-cyan/20' },
+  { icon: '🎓', title: 'Continuous Learning', desc: 'Always growing through mentorship & practice.', bgClass: 'bg-amber-200 dark:bg-amber-900/20' },
+  { icon: '🇰🇭', title: 'Cambodia Proud', desc: 'Building world-class tech from Phnom Penh.', bgClass: 'bg-emerald-200 dark:bg-emerald-900/20' },
 ]
 
 const techStack = [
@@ -480,6 +480,9 @@ onMounted(async () => {
 
 .stats-shell {
   position: relative;
+  box-shadow:
+    0 14px 35px rgba(15, 23, 42, 0.08),
+    0 2px 10px rgba(15, 23, 42, 0.05);
 }
 
 .stats-shell::before {
@@ -487,7 +490,7 @@ onMounted(async () => {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.35) 45%, transparent 65%);
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.55) 45%, transparent 65%);
   transform: translateX(-130%);
   animation: statsSweep 9s ease-in-out infinite;
 }
@@ -523,7 +526,12 @@ onMounted(async () => {
 .stat-card {
   position: relative;
   overflow: hidden;
+  background: rgba(255, 255, 255, 0.88);
   animation: statCardPop 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.dark .stat-card {
+  background: transparent;
 }
 
 .stat-card:nth-child(3) { animation-delay: 90ms; }
