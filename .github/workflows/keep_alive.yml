@@ -1,0 +1,16 @@
+name: Website Keep Alive
+
+on:
+  schedule:
+    # ប្តូរពី */15 មកជា */5 ដើម្បីឱ្យវាបាញ់រៀងរាល់ ៥ នាទីម្តង
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping_server:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Kalapak Team Website
+        run: |
+          curl -I https://kalapak-team.space
+          curl -I https://kalapakspace-backends.onrender.com/api/health-check
