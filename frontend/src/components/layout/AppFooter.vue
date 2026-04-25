@@ -93,7 +93,7 @@ const { isDark } = storeToRefs(themeStore)
 
 const footerBg = computed(() =>
   isDark.value
-    ? `radial-gradient(ellipse 130% 140% at 50% 110%, rgba(123,47,255,0.22) 0%, rgba(0,212,255,0.12) 36%, rgba(2,0,36,0.98) 68%, #020024 100%),
+    ? `radial-gradient(ellipse 130% 150% at 50% 130%, rgba(123,47,255,0.2) 0%, rgba(0,212,255,0.1) 32%, rgba(2,0,36,0) 62%),
        #020024`
     : `radial-gradient(ellipse 130% 140% at 50% 110%, rgba(123,47,255,0.58) 0%, rgba(0,212,255,0.20) 48%, rgba(248,250,252,0.98) 78%, #f8fafc 100%),
        #f8fafc`
@@ -129,11 +129,11 @@ const resourceLinks = [
   right: 0;
   height: 4px;
   pointer-events: none;
-  background: #f8fafc;
+  background: transparent;
 }
 
 .dark .footer-main::before {
-  background: #020024;
+  background: transparent;
 }
 
 /* ── Social icon button ── */
