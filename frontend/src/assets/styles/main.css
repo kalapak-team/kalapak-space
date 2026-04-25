@@ -16,17 +16,19 @@
   }
 
   *:not(code):not(pre):not(kbd):not(samp):not(var) {
-    font-family: 'Google Sans', 'Noto Sans Khmer', sans-serif;
+    font-family: 'Google Sans', sans-serif;
+    font-optical-sizing: auto;
+    font-variation-settings: 'GRAD' 0;
   }
 
   code, pre, kbd, samp, var,
   pre *, code *, .prose pre *, .prose code * {
-    font-family: 'Fira Code', 'JetBrains Mono', 'Google Sans', monospace !important;
+    font-family: 'Fira Code', 'JetBrains Mono', monospace !important;
   }
 
   body {
     @apply bg-white text-gray-900 dark:bg-dark-900 dark:text-gray-100 transition-colors duration-300;
-    font-family: 'Google Sans', 'Noto Sans Khmer', sans-serif;
+    font-family: 'Google Sans', sans-serif;
     overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
   }
@@ -36,7 +38,9 @@
   }
 
   input, textarea, select, button {
-    font-family: 'Google Sans', 'Noto Sans Khmer', sans-serif;
+    font-family: 'Google Sans', sans-serif;
+    font-optical-sizing: auto;
+    font-variation-settings: 'GRAD' 0;
   }
 
   ::selection {
@@ -831,7 +835,7 @@
   color: #7b2fff;
   padding: 2px 6px;
   border-radius: 6px;
-  font-family: 'Fira Code', 'Google Sans', monospace;
+  font-family: 'Fira Code', monospace;
   font-size: 0.85em;
 }
 .dark .prose :not(pre) > code {

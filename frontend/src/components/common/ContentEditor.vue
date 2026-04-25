@@ -695,9 +695,9 @@ const ToolBtn = defineComponent({
 }
 
 /* Headings */
-.tiptap-content .tiptap h1 { font-size: 2em; font-weight: 700; margin: 1em 0 0.5em; font-family: 'Google Sans', 'Noto Sans Khmer', sans-serif; }
-.tiptap-content .tiptap h2 { font-size: 1.5em; font-weight: 700; margin: 1em 0 0.4em; font-family: 'Google Sans', 'Noto Sans Khmer', sans-serif; }
-.tiptap-content .tiptap h3 { font-size: 1.25em; font-weight: 600; margin: 0.8em 0 0.3em; font-family: 'Google Sans', 'Noto Sans Khmer', sans-serif; }
+.tiptap-content .tiptap h1 { font-size: 2em; font-weight: 700; margin: 1em 0 0.5em; font-family: 'Google Sans', sans-serif; font-optical-sizing: auto; font-variation-settings: "GRAD" 0; }
+.tiptap-content .tiptap h2 { font-size: 1.5em; font-weight: 700; margin: 1em 0 0.4em; font-family: 'Google Sans', sans-serif; font-optical-sizing: auto; font-variation-settings: "GRAD" 0; }
+.tiptap-content .tiptap h3 { font-size: 1.25em; font-weight: 600; margin: 0.8em 0 0.3em; font-family: 'Google Sans', sans-serif; font-optical-sizing: auto; font-variation-settings: "GRAD" 0; }
 .dark .tiptap-content .tiptap h1,
 .dark .tiptap-content .tiptap h2,
 .dark .tiptap-content .tiptap h3 { color: #fff; }
