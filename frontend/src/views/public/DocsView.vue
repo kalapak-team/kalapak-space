@@ -131,12 +131,26 @@
         <article v-else-if="currentDoc" class="doc-article">
           <!-- Header -->
           <div class="mb-8 pb-6 border-b border-gray-200 dark:border-white/[0.06]">
-            <div class="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 mb-3">
-              <span>{{ currentDoc.category }}</span>
-              <span>·</span>
-              <span>Updated {{ formatDate(currentDoc.updated_at) }}</span>
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 mb-3">
+                  <span>{{ currentDoc.category }}</span>
+                  <span>·</span>
+                  <span>Updated {{ formatDate(currentDoc.updated_at) }}</span>
+                </div>
+                <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">{{ currentDoc.title }}</h1>
+              </div>
+              <button
+                type="button"
+                class="xl:hidden shrink-0 inline-flex items-center gap-2 text-[13px] text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors self-start"
+                @click="copyDocAsMarkdown"
+              >
+                <svg class="w-4 h-4 shrink-0 opacity-80" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                {{ copyMarkdownStatus === 'copied' ? 'Copied!' : copyMarkdownStatus === 'error' ? 'Copy failed' : 'Copy as markdown' }}
+              </button>
             </div>
-            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">{{ currentDoc.title }}</h1>
           </div>
 
           <!-- Rendered content: sections-based or legacy single-content -->
@@ -169,29 +183,42 @@
       </button>
     </Transition>
 
-    <!-- ══ Right: On this page (TOC) ══ -->
-    <aside v-if="currentDoc && tocItems.length" class="hidden xl:block fixed right-0 top-0 w-72 h-full overflow-y-auto pt-[68px] border-l border-gray-200 dark:border-white/[0.06] bg-white dark:bg-dark-900">
+    <!-- ══ Right: Copy markdown + On this page (TOC) ══ -->
+    <aside v-if="currentDoc" class="hidden xl:block fixed right-0 top-0 w-72 h-full overflow-y-auto pt-[68px] border-l border-gray-200 dark:border-white/[0.06] bg-white dark:bg-dark-900">
       <div class="px-6 py-8">
-        <p class="text-[11px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-4">On this page</p>
-        <nav class="space-y-1">
-          <a
-            v-for="item in tocItems"
-            :key="item.id"
-            :href="`#${item.id}`"
-            @click.prevent="scrollToSection(item.id)"
-            class="block text-[13px] py-1 transition-colors duration-150 hover:text-brand-violet dark:hover:text-brand-cyan"
-            :class="[
-              item.level === 2
-                ? 'pl-0 font-medium'
-                : 'pl-4 text-[12px] border-l border-gray-200 dark:border-white/[0.08] ml-1',
-              activeToc === item.id
-                ? 'text-brand-violet dark:text-brand-cyan font-semibold'
-                : 'text-gray-500 dark:text-gray-400'
-            ]"
-          >
-            {{ item.text }}
-          </a>
-        </nav>
+        <button
+          type="button"
+          class="w-full flex items-center gap-2 text-left text-[13px] text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors mb-6 group"
+          @click="copyDocAsMarkdown"
+        >
+          <svg class="w-4 h-4 shrink-0 opacity-80 group-hover:opacity-100" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+          </svg>
+          <span>{{ copyMarkdownStatus === 'copied' ? 'Copied!' : copyMarkdownStatus === 'error' ? 'Copy failed' : 'Copy as markdown' }}</span>
+        </button>
+
+        <template v-if="tocItems.length">
+          <p class="text-[11px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-4">On this page</p>
+          <nav class="space-y-1">
+            <a
+              v-for="item in tocItems"
+              :key="item.id"
+              :href="`#${item.id}`"
+              @click.prevent="scrollToSection(item.id)"
+              class="block text-[13px] py-1 transition-colors duration-150 hover:text-brand-violet dark:hover:text-brand-cyan"
+              :class="[
+                item.level === 2
+                  ? 'pl-0 font-medium'
+                  : 'pl-4 text-[12px] border-l border-gray-200 dark:border-white/[0.08] ml-1',
+                activeToc === item.id
+                  ? 'text-brand-violet dark:text-brand-cyan font-semibold'
+                  : 'text-gray-500 dark:text-gray-400'
+              ]"
+            >
+              {{ item.text }}
+            </a>
+          </nav>
+        </template>
       </div>
     </aside>
   </div>
@@ -205,6 +232,15 @@ import { marked } from 'marked'
 import { markedHighlight } from 'marked-highlight'
 import hljs from 'highlight.js'
 import DOMPurify from 'dompurify'
+import TurndownService from 'turndown'
+import { gfm } from 'turndown-plugin-gfm'
+
+const turndownService = new TurndownService({
+  headingStyle: 'atx',
+  codeBlockStyle: 'fenced',
+  bulletListMarker: '-',
+})
+turndownService.use(gfm)
 
 // Configure marked to use highlight.js for syntax highlighting
 marked.use(markedHighlight({
@@ -249,6 +285,78 @@ function renderContent(content) {
   }
 
   return DOMPurify.sanitize(trimmed)
+}
+
+/** Turn stored doc body (markdown or Tiptap HTML) into markdown for clipboard — mirrors renderContent branching. */
+function rawStorageToMarkdown(raw) {
+  if (!raw) return ''
+  const trimmed = String(raw).trim()
+  if (!trimmed) return ''
+
+  if (!trimmed.startsWith('<')) {
+    return trimmed
+  }
+
+  const hasRichHtml = /<(strong|em|b|i|h[1-6]|pre|code|ul|ol|li|blockquote|table|thead|tbody|tr|td|th|img|a)\b/i.test(trimmed)
+  if (hasRichHtml) {
+    return turndownService.turndown(trimmed)
+  }
+
+  const textContent = trimmed
+    .replace(/<\/p>\s*<p[^>]*>/gi, '\n\n')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .trim()
+
+  const hasMarkdown = /(\*\*|#{1,6} |`|\[.+\]\(.+\))/.test(textContent)
+  if (hasMarkdown) {
+    return textContent
+  }
+
+  return turndownService.turndown(trimmed)
+}
+
+function buildDocMarkdown() {
+  const doc = currentDoc.value
+  if (!doc) return ''
+  const chunks = [`# ${doc.title}`, '']
+
+  if (doc.sections?.length) {
+    for (const section of doc.sections) {
+      const heading = (section.heading || '').trim()
+      const body = rawStorageToMarkdown(section.content || '').trim()
+      if (heading) {
+        chunks.push(`## ${heading}`, '')
+      }
+      if (body) {
+        chunks.push(body, '')
+      }
+    }
+  } else {
+    const body = rawStorageToMarkdown(doc.content || '').trim()
+    if (body) chunks.push(body, '')
+  }
+
+  return chunks.join('\n').trimEnd() + '\n'
+}
+
+const copyMarkdownStatus = ref('idle')
+
+async function copyDocAsMarkdown() {
+  try {
+    await navigator.clipboard.writeText(buildDocMarkdown())
+    copyMarkdownStatus.value = 'copied'
+  } catch {
+    copyMarkdownStatus.value = 'error'
+  }
+  setTimeout(() => {
+    copyMarkdownStatus.value = 'idle'
+  }, 2000)
 }
 
 const route = useRoute()
