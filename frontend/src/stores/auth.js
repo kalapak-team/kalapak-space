@@ -73,6 +73,9 @@ export const useAuthStore = defineStore('auth', () => {
         localStorage.setItem('auth_token', data.data.token)
         localStorage.setItem('auth_user', JSON.stringify(data.data.user))
       }
+      if (isAdmin.value) {
+        await fetchPermissions()
+      }
       return data
     } finally {
       loading.value = false
@@ -88,6 +91,9 @@ export const useAuthStore = defineStore('auth', () => {
       if (isClient) {
         localStorage.setItem('auth_token', data.data.token)
         localStorage.setItem('auth_user', JSON.stringify(data.data.user))
+      }
+      if (isAdmin.value) {
+        await fetchPermissions()
       }
       return data
     } finally {

@@ -15,6 +15,25 @@ export default defineNuxtPlugin((nuxtApp) => {
       }
     }
 
+    // Per-resource permissions live only in memory (not localStorage). Refetch on
+    // every admin navigation so changes made by Super Admin apply immediately
+    // without the target admin refreshing repeatedly.
+    const enteringAdminArea = to.matched.some(
+      (record) => record.meta.requiresAdmin,
+    );
+    if (
+      enteringAdminArea &&
+      authStore.isAuthenticated &&
+      authStore.isAdmin &&
+      !authStore.isSuperAdmin
+    ) {
+      try {
+        await authStore.fetchPermissions();
+      } catch {
+        /* keep previous permissions on transient errors */
+      }
+    }
+
     if (to.meta.requiresAuth && !authStore.isAuthenticated) {
       return { name: "login", query: { redirect: to.fullPath } };
     }

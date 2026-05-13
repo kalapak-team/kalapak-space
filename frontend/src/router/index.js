@@ -127,6 +127,20 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 
+  const enteringAdminArea = to.matched.some((record) => record.meta.requiresAdmin)
+  if (
+    enteringAdminArea &&
+    authStore.isAuthenticated &&
+    authStore.isAdmin &&
+    !authStore.isSuperAdmin
+  ) {
+    try {
+      await authStore.fetchPermissions()
+    } catch {
+      /* keep previous permissions on transient errors */
+    }
+  }
+
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     return next({ name: 'login', query: { redirect: to.fullPath } })
   }

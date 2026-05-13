@@ -1140,15 +1140,24 @@ function handleSearchKeydown(e) {
   }
 }
 
+function onDocumentVisibilityChange() {
+  if (typeof document === "undefined") return;
+  if (document.visibilityState !== "visible") return;
+  if (!authStore.isAdmin || authStore.isSuperAdmin) return;
+  authStore.fetchPermissions();
+}
+
 onMounted(() => {
   adminShellReady.value = true;
   document.addEventListener("click", handleClickOutside);
   document.addEventListener("keydown", handleSearchKeydown);
+  document.addEventListener("visibilitychange", onDocumentVisibilityChange);
   fetchPendingApprovals();
 });
 onUnmounted(() => {
   document.removeEventListener("click", handleClickOutside);
   document.removeEventListener("keydown", handleSearchKeydown);
+  document.removeEventListener("visibilitychange", onDocumentVisibilityChange);
   notifStore.stopPolling();
 });
 
