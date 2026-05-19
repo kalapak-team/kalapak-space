@@ -1,6 +1,12 @@
 import axios from 'axios'
 import { useAuthStore } from '@/stores/auth'
 
+const PRODUCTION_SITE_HOSTS = ['kalapak-team.space', 'www.kalapak-team.space']
+
+function isProductionSiteHost(hostname) {
+  return PRODUCTION_SITE_HOSTS.includes(hostname)
+}
+
 function normalizeDevApiUrl(url) {
   if (!url) return url
 
@@ -17,6 +23,10 @@ function normalizeDevApiUrl(url) {
 }
 
 function resolveApiBaseURL() {
+  // Production frontend: same-origin /api (nginx proxies to Laravel — avoids CORS)
+  if (typeof window !== 'undefined' && isProductionSiteHost(window.location.hostname)) {
+    return '/api'
+  }
   // Server runtime (Nuxt SSR on Node/Render)
   if (typeof window === 'undefined') {
     return process.env.NUXT_PUBLIC_API_URL || process.env.VITE_API_URL || 'http://127.0.0.1:8000/api'

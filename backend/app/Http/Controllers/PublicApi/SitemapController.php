@@ -11,7 +11,7 @@ class SitemapController extends Controller
 {
     public function sitemap(): Response
     {
-        $baseUrl = rtrim(env('SITE_URL', 'https://www.kalapak-team.space'), '/');
+        $baseUrl = rtrim(env('SITE_URL', 'https://kalapak-team.space'), '/');
 
         $urls = [];
 
@@ -89,7 +89,7 @@ class SitemapController extends Controller
 
     public function robots(): Response
     {
-        $baseUrl = rtrim(env('SITE_URL', 'https://www.kalapak-team.space'), '/');
+        $baseUrl = rtrim(env('SITE_URL', 'https://kalapak-team.space'), '/');
 
         $content = "User-agent: *\n";
         $content .= "Allow: /\n";

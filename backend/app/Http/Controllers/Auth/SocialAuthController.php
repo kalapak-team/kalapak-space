@@ -22,7 +22,7 @@ class SocialAuthController extends Controller
         try {
             $googleUser = Socialite::driver('google')->stateless()->user();
         } catch (\Exception $e) {
-            $frontendUrl = env('FRONTEND_URL', 'https://www.kalapak-team.space');
+            $frontendUrl = env('FRONTEND_URL', 'https://kalapak-team.space');
             return redirect($frontendUrl . '/auth/login?error=google_auth_failed');
         }
 
@@ -60,7 +60,7 @@ class SocialAuthController extends Controller
         }
 
         $token = $user->createToken('auth-token')->plainTextToken;
-        $frontendUrl = env('FRONTEND_URL', 'https://www.kalapak-team.space');
+        $frontendUrl = env('FRONTEND_URL', 'https://kalapak-team.space');
 
         return redirect($frontendUrl . '/auth/google/callback?token=' . $token);
     }
@@ -75,7 +75,7 @@ class SocialAuthController extends Controller
         try {
             $githubUser = Socialite::driver('github')->stateless()->user();
         } catch (\Exception $e) {
-            $frontendUrl = env('FRONTEND_URL', 'https://www.kalapak-team.space');
+            $frontendUrl = env('FRONTEND_URL', 'https://kalapak-team.space');
             return redirect($frontendUrl . '/auth/login?error=github_auth_failed');
         }
 
@@ -115,7 +115,7 @@ class SocialAuthController extends Controller
         }
 
         $token = $user->createToken('auth-token')->plainTextToken;
-        $frontendUrl = env('FRONTEND_URL', 'https://www.kalapak-team.space');
+        $frontendUrl = env('FRONTEND_URL', 'https://kalapak-team.space');
 
         return redirect($frontendUrl . '/auth/github/callback?token=' . $token);
     }

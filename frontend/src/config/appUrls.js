@@ -1,6 +1,6 @@
 /** Production origins (override via NUXT_PUBLIC_* / VITE_* when set). */
-export const BACKEND_ORIGIN = 'https://www.api.kalapak-team.space'
-export const SITE_ORIGIN = 'https://www.kalapak-team.space'
+export const BACKEND_ORIGIN = 'https://api.kalapak-team.space'
+export const SITE_ORIGIN = 'https://kalapak-team.space'
 
 /** Base URL for OAuth redirects (no /api suffix). */
 export function resolveBackendOrigin() {

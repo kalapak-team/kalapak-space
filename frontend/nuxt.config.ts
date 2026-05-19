@@ -32,7 +32,7 @@ export default defineNuxtConfig({
     public: {
       // Prefer explicit env; in local dev fall back to Laravel directly to avoid /api 404 when proxy/env is missing.
       apiUrl: process.env.NUXT_PUBLIC_API_URL || process.env.VITE_API_URL || (isDev ? 'http://127.0.0.1:8000/api' : '/api'),
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://www.kalapak-team.space",
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://kalapak-team.space",
     },
   },
   // Local dev: keep frontend requests at /api and forward them to Laravel.
