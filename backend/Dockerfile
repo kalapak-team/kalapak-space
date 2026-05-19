@@ -1,5 +1,4 @@
-# Render-recommended stack: nginx + PHP-FPM (not php artisan serve).
-# https://render.com/docs/deploy-php-laravel-docker
+# Render: nginx + PHP-FPM — https://render.com/docs/deploy-php-laravel-docker
 FROM richarvey/nginx-php-fpm:3.1.6
 
 USER root
@@ -9,9 +8,17 @@ RUN apk add --no-cache \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_pgsql pgsql gd zip intl bcmath exif pcntl mbstring
 
-COPY . /var/www/html
-
 WORKDIR /var/www/html
+
+# Install dependencies at build time (fast container start on Render).
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-scripts --optimize-autoloader --no-interaction
+
+COPY . .
+
+ENV APP_KEY=base64:ZW1wdHkta2V5LWZvci1kb2NrZXItYnVpbGQ=
+RUN composer install --no-dev --optimize-autoloader --no-interaction \
+    && php artisan package:discover --ansi
 
 ENV SKIP_COMPOSER=1
 ENV WEBROOT=/var/www/html/public

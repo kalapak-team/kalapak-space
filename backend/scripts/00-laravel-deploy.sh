@@ -1,13 +1,7 @@
 #!/usr/bin/env bash
-set -e
+# Runs once before nginx starts. Keep this fast — slow starts look like "infinite loading".
 
 cd /var/www/html
-
-echo "==> Composer install"
-composer install --no-dev --optimize-autoloader --no-interaction
-
-echo "==> Laravel bootstrap"
-php artisan package:discover --ansi || true
 
 if [ -z "$REDIS_PASSWORD" ]; then
   if [ "$CACHE_DRIVER" = "redis" ] || [ "$SESSION_DRIVER" = "redis" ]; then
@@ -24,6 +18,6 @@ if [ "$APP_ENV" = "production" ]; then
 fi
 
 echo "==> Migrations"
-php artisan migrate --force --no-interaction || echo "==> WARN: migrations failed (service will still start)"
+php artisan migrate --force --no-interaction || echo "==> WARN: migrations failed"
 
 echo "==> Deploy script done"

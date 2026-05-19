@@ -1,4 +1,4 @@
-# Render: Docker context = repo root (.), Dockerfile path = Dockerfile
+# Render: Docker context = repo root (.)
 FROM richarvey/nginx-php-fpm:3.1.6
 
 USER root
@@ -8,9 +8,16 @@ RUN apk add --no-cache \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_pgsql pgsql gd zip intl bcmath exif pcntl mbstring
 
-COPY backend/ /var/www/html
-
 WORKDIR /var/www/html
+
+COPY backend/composer.json backend/composer.lock ./
+RUN composer install --no-dev --no-scripts --optimize-autoloader --no-interaction
+
+COPY backend/ .
+
+ENV APP_KEY=base64:ZW1wdHkta2V5LWZvci1kb2NrZXItYnVpbGQ=
+RUN composer install --no-dev --optimize-autoloader --no-interaction \
+    && php artisan package:discover --ansi
 
 ENV SKIP_COMPOSER=1
 ENV WEBROOT=/var/www/html/public
