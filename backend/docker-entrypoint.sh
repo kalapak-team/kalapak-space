@@ -40,16 +40,26 @@ if [ -z "${RUN_MIGRATIONS}" ] && [ "${APP_ENV}" = "production" ]; then
     RUN_MIGRATIONS=1
 fi
 if [ "${RUN_MIGRATIONS}" = "1" ] || [ "${RUN_MIGRATIONS}" = "true" ]; then
-    echo "==> [DB] Running pending migrations..."
-    php artisan migrate --force --no-interaction 2>&1
-    MIGRATE_EXIT=$?
-
-    if [ $MIGRATE_EXIT -ne 0 ]; then
-        echo ""
-        echo "==> [DB] !!! Migration failed (exit code: $MIGRATE_EXIT) !!!"
+  (
+    echo "==> [DB] Running pending migrations (background, max ${MIGRATE_TIMEOUT:-90}s)..."
+    if command -v timeout >/dev/null 2>&1; then
+      timeout "${MIGRATE_TIMEOUT:-90}" php artisan migrate --force --no-interaction 2>&1
+    else
+      php artisan migrate --force --no-interaction 2>&1
     fi
+    code=$?
+    if [ "$code" -eq 124 ] || [ "$code" -eq 143 ]; then
+      echo "==> [DB] !!! Migration timed out — API still running; retry deploy or run migrate manually !!!"
+    elif [ "$code" -ne 0 ]; then
+      echo "==> [DB] !!! Migration failed (exit code: $code) !!!"
+    else
+      echo "==> [DB] Migrations finished successfully."
+    fi
+  ) &
+  MIGRATE_PID=$!
+  echo "==> [DB] Migration PID: ${MIGRATE_PID} (server will start without waiting)"
 else
-    echo "==> [DB] Skipping migrations (set RUN_MIGRATIONS=1 to enable on startup)."
+  echo "==> [DB] Skipping migrations (set RUN_MIGRATIONS=1 to enable on startup)."
 fi
 
 # Optional local seed (enabled in docker-compose via RUN_DB_SEED=1).
@@ -63,6 +73,16 @@ fi
 # Skip storage:link on startup to avoid local container hangs.
 
 # Skip chown on startup (can hang on Windows bind mounts).
+
+# Avoid Redis connection errors when REDIS_PASSWORD is not configured on Render.
+if [ -z "$REDIS_PASSWORD" ]; then
+    if [ "$CACHE_DRIVER" = "redis" ] || [ "$SESSION_DRIVER" = "redis" ]; then
+        echo "==> [Redis] REDIS_PASSWORD is empty; falling back to file/session and sync queue."
+        export CACHE_DRIVER=file
+        export SESSION_DRIVER=file
+        export QUEUE_CONNECTION=sync
+    fi
+fi
 
 echo "==> Starting Laravel on port ${PORT}..."
 exec php artisan serve --host=0.0.0.0 --port=${PORT}

@@ -23,6 +23,7 @@ services:
     dockerfilePath: ./backend/Dockerfile
     dockerContext: ./backend
     plan: free
+    healthCheckPath: /up
     envVars:
       - key: APP_NAME
         value: "Kalapak Code Team"
@@ -67,15 +68,13 @@ services:
         fromDatabase:
           name: kalapak-db
           property: password
+      - key: DB_SSLMODE
+        value: require
       - key: SANCTUM_STATEFUL_DOMAINS
         value: kalapak-team.space,www.kalapak-team.space
-      - key: SESSION_DRIVER
-        value: file
-      - key: CACHE_DRIVER
-        value: file
       - key: FILESYSTEM_DISK
         value: local
-      # ── Upstash Redis ──
+      # ── Upstash Redis (set REDIS_PASSWORD in Render dashboard) ──
       - key: REDIS_CLIENT
         value: predis
       - key: REDIS_SCHEME
