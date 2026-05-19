@@ -56,12 +56,11 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: kalapak_backend
-    entrypoint: ["sh", "/var/www/html/docker-entrypoint.sh"]
     environment:
+      PORT: "8000"
       APP_ENV: local
+      RUN_SCRIPTS: "1"
       RUN_DB_SEED: "0"
-      # Run pending migrations on each backend start (idempotent). Disable with RUN_MIGRATIONS=0 if needed.
-      RUN_MIGRATIONS: "1"
       DB_CONNECTION: pgsql
       DB_HOST: postgres
       DB_PORT: "5432"
@@ -76,6 +75,7 @@ services:
       - ./backend/.env
     ports:
       - "8000:8000"
+    # nginx-php-fpm image listens on $PORT (8000 above)
     volumes:
       - ./backend/.env:/var/www/html/.env
       # Sync app + routes + database from host so new migrations apply without rebuilding the image.

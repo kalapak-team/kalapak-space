@@ -18,6 +18,7 @@ use App\Services\SupabaseStorage;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,8 +29,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(SupabaseStorage::class);
     }
 
-    public function boot(): void
+    public function boot(UrlGenerator $url): void
     {
+        if (env('APP_ENV') === 'production') {
+            $url->forceScheme('https');
+        }
+
         Project::observe(ProjectObserver::class);
         Tag::observe(TagObserver::class);
         BlogCategory::observe(BlogCategoryObserver::class);
