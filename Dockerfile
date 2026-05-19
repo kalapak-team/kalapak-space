@@ -1,3 +1,8 @@
+# Use this Dockerfile when Render "Docker context" is the repo root (.)
+# Settings: Dockerfile Path = Dockerfile, Docker context = .
+#
+# If Docker context is "backend", use backend/Dockerfile instead.
+
 FROM php:8.3-cli-alpine
 
 RUN apk add --no-cache \
@@ -17,12 +22,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-COPY composer.json composer.lock ./
+COPY backend/composer.json backend/composer.lock ./
 RUN composer install --no-dev --no-scripts --optimize-autoloader --no-interaction
 
-COPY . .
+COPY backend/ .
 
-# Temporary key so artisan can run during image build (runtime uses Render APP_KEY).
 ENV APP_KEY=base64:ZW1wdHkta2V5LWZvci1kb2NrZXItYnVpbGQ=
 RUN composer install --no-dev --optimize-autoloader --no-interaction \
     && php artisan package:discover --ansi
@@ -34,7 +38,7 @@ RUN mkdir -p storage/framework/cache/data \
     bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY backend/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 10000

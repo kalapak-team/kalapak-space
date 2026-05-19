@@ -23,7 +23,8 @@ services:
     dockerfilePath: ./backend/Dockerfile
     dockerContext: ./backend
     plan: free
-    healthCheckPath: /up
+    # Static file — passes as soon as PHP is listening (no full Laravel boot).
+    healthCheckPath: /ping.php
     envVars:
       - key: APP_NAME
         value: "Kalapak Code Team"
