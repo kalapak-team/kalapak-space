@@ -13,7 +13,7 @@ class OgMetaController extends Controller
 
     public function blogPost(string $slug): Response
     {
-        $baseUrl = rtrim(env('SITE_URL', 'https://kalapak-team.space'), '/');
+        $baseUrl = rtrim(env('SITE_URL', 'https://www.kalapak-team.space'), '/');
 
         $post = BlogPost::with('author')
             ->where('slug', $slug)

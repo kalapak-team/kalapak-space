@@ -12,5 +12,5 @@ jobs:
     steps:
       - name: Ping Kalapak Team Website
         run: |
-          curl -I https://kalapak-team.space
-          curl -I https://kalapakspace-backends.onrender.com/api/health-check
+          curl -I https://www.kalapak-team.space
+          curl -I https://www.api.kalapak-team.space/up

@@ -38,7 +38,7 @@
               <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Permalink</label>
               <div v-if="!slugEditing" class="flex items-center gap-2 px-3 py-2 bg-gray-50 dark:bg-dark-700/40 border border-gray-200 dark:border-dark-600 rounded-lg">
                 <svg class="w-3.5 h-3.5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
-                <span class="text-xs text-gray-500 dark:text-gray-400 truncate">kalapak-team.space/docs?page=<span class="text-brand-violet dark:text-brand-cyan font-medium">{{ form.slug || slugify(form.title || 'doc-title') }}</span></span>
+                <span class="text-xs text-gray-500 dark:text-gray-400 truncate">www.kalapak-team.space/docs?page=<span class="text-brand-violet dark:text-brand-cyan font-medium">{{ form.slug || slugify(form.title || 'doc-title') }}</span></span>
                 <button type="button" @click="slugEditing = true" class="ml-auto shrink-0 text-[10px] font-semibold text-brand-violet dark:text-brand-cyan hover:underline">Edit</button>
               </div>
               <div v-else class="space-y-2">

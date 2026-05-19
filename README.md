@@ -205,6 +205,20 @@ NUXT_PUBLIC_API_URL=http://localhost:8000/api
 NUXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
+Production (custom domains):
+
+```bash
+# Backend (Render / server .env)
+APP_URL=https://www.api.kalapak-team.space
+FRONTEND_URL=https://www.kalapak-team.space
+SITE_URL=https://www.kalapak-team.space
+SANCTUM_STATEFUL_DOMAINS=www.kalapak-team.space,kalapak-team.space
+
+# Frontend (see frontend/.env.production)
+NUXT_PUBLIC_SITE_URL=https://www.kalapak-team.space
+BACKEND_URL=https://www.api.kalapak-team.space
+```
+
 ### Useful Commands
 
 ```bash

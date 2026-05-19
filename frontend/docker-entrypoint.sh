@@ -5,7 +5,7 @@ set -e
 PORT=${PORT:-10000}
 
 # Backend URL for nginx proxy (set in Render dashboard)
-# On Render, set BACKEND_URL to the backend's public URL (e.g. https://kalapakspace-backend.onrender.com)
+# On Render, set BACKEND_URL to the backend's public URL (e.g. https://www.api.kalapak-team.space)
 # Locally with docker-compose, defaults to http://backend:8000
 BACKEND_URL=${BACKEND_URL:-http://backend:8000}
 

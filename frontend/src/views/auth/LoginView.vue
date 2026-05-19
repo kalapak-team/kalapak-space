@@ -161,6 +161,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { resolveBackendOrigin } from '@/config/appUrls'
 import VueTurnstile from 'vue-turnstile'
 
 const router = useRouter()
@@ -180,13 +181,11 @@ onMounted(() => {
 })
 
 function loginWithGoogle() {
-  const backendUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'https://kalapakspace-backends.onrender.com'
-  window.location.href = `${backendUrl}/auth/google/redirect`
+  window.location.href = `${resolveBackendOrigin()}/auth/google/redirect`
 }
 
 function loginWithGithub() {
-  const backendUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'https://kalapakspace-backends.onrender.com'
-  window.location.href = `${backendUrl}/auth/github/redirect`
+  window.location.href = `${resolveBackendOrigin()}/auth/github/redirect`
 }
 
 async function handleLogin() {

@@ -17,7 +17,7 @@
           <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">1. Acceptance of Terms</h2>
           <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
             By accessing or using the Kalapak Code Team website at
-            <a href="https://kalapak-team.space" class="text-brand-violet dark:text-brand-cyan hover:underline">kalapak-team.space</a>
+            <a href="https://www.kalapak-team.space" class="text-brand-violet dark:text-brand-cyan hover:underline">www.kalapak-team.space</a>
             ("the Service"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the Service.
           </p>
         </div>

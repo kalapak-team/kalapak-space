@@ -17,7 +17,7 @@
           <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">1. Introduction</h2>
           <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
             Welcome to Kalapak Code Team ("we", "our", or "us"). We are committed to protecting your personal information and your right to privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website
-            <a href="https://kalapak-team.space" class="text-brand-violet dark:text-brand-cyan hover:underline">kalapak-team.space</a>.
+            <a href="https://www.kalapak-team.space" class="text-brand-violet dark:text-brand-cyan hover:underline">www.kalapak-team.space</a>.
           </p>
         </div>
 
