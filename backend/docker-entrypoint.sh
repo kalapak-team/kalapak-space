@@ -7,6 +7,15 @@ PORT=${PORT:-10000}
 
 export PGSSLMODE="${DB_SSLMODE:-prefer}"
 
+if [ -z "$REDIS_PASSWORD" ]; then
+  if [ "$CACHE_DRIVER" = "redis" ] || [ "$SESSION_DRIVER" = "redis" ]; then
+    echo "==> [Redis] No REDIS_PASSWORD — using file/sync drivers."
+    export CACHE_DRIVER=file
+    export SESSION_DRIVER=file
+    export QUEUE_CONNECTION=sync
+  fi
+fi
+
 if [ ! -f vendor/autoload.php ]; then
   echo "==> Installing composer dependencies..."
   composer install --no-dev --optimize-autoloader --no-interaction
@@ -19,6 +28,11 @@ fi
 
 php artisan package:discover --ansi 2>&1 || true
 chmod -R 775 storage bootstrap/cache 2>/dev/null || true
+
+if [ "$APP_ENV" = "production" ]; then
+  php artisan config:cache 2>&1 || true
+  php artisan route:cache 2>&1 || true
+fi
 
 echo "==> [DB] DB_HOST=${DB_HOST} DB_DATABASE=${DB_DATABASE} DB_SSLMODE=${DB_SSLMODE:-prefer}"
 
@@ -34,15 +48,6 @@ if [ "${RUN_MIGRATIONS}" = "1" ] || [ "${RUN_MIGRATIONS}" = "true" ]; then
       php artisan migrate --force --no-interaction 2>&1
     fi
   ) &
-fi
-
-if [ -z "$REDIS_PASSWORD" ]; then
-  if [ "$CACHE_DRIVER" = "redis" ] || [ "$SESSION_DRIVER" = "redis" ]; then
-    echo "==> [Redis] No REDIS_PASSWORD — using file/sync drivers."
-    export CACHE_DRIVER=file
-    export SESSION_DRIVER=file
-    export QUEUE_CONNECTION=sync
-  fi
 fi
 
 php artisan --version 2>&1 || echo "==> WARN: artisan not ready (server will still start)"

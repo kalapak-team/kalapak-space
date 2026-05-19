@@ -20,12 +20,18 @@ fi
 echo "==> Migrations"
 php artisan migrate --force --no-interaction || echo "==> WARN: migrations failed"
 
-# Render routes traffic to $PORT (e.g. 10000); default site config listens on 80.
+# Render routes traffic to $PORT (e.g. 10000). start.sh copies conf before scripts run,
+# so patch the live nginx config as well as the repo copy.
 PORT="${PORT:-10000}"
-NGINX_CONF="/var/www/html/conf/nginx/nginx-site.conf"
-if [ -f "$NGINX_CONF" ]; then
-  sed -i "s/listen 80;/listen ${PORT};/" "$NGINX_CONF"
-  echo "==> nginx site listen port -> ${PORT}"
-fi
+for NGINX_CONF in \
+  "/etc/nginx/sites-available/default.conf" \
+  "/var/www/html/conf/nginx/nginx-site.conf"
+do
+  if [ -f "$NGINX_CONF" ]; then
+    sed -i "s/listen 80;/listen ${PORT};/" "$NGINX_CONF"
+    sed -i "s/listen \[::\]:80 default ipv6only=on;/listen [::]:${PORT} default ipv6only=on;/" "$NGINX_CONF" 2>/dev/null || true
+    echo "==> nginx listen port -> ${PORT} (${NGINX_CONF})"
+  fi
+done
 
 echo "==> Deploy script done"
