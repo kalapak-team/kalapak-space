@@ -20,4 +20,12 @@ fi
 echo "==> Migrations"
 php artisan migrate --force --no-interaction || echo "==> WARN: migrations failed"
 
+# Render routes traffic to $PORT (e.g. 10000); default site config listens on 80.
+PORT="${PORT:-10000}"
+NGINX_CONF="/var/www/html/conf/nginx/nginx-site.conf"
+if [ -f "$NGINX_CONF" ]; then
+  sed -i "s/listen 80;/listen ${PORT};/" "$NGINX_CONF"
+  echo "==> nginx site listen port -> ${PORT}"
+fi
+
 echo "==> Deploy script done"
