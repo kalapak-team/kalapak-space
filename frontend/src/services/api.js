@@ -23,12 +23,16 @@ function normalizeDevApiUrl(url) {
 }
 
 function resolveApiBaseURL() {
-  // Production frontend: same-origin /api (nginx proxies to Laravel — avoids CORS)
+  // Production frontend: same-origin /api (Nitro proxies to Laravel — avoids CORS)
   if (typeof window !== 'undefined' && isProductionSiteHost(window.location.hostname)) {
     return '/api'
   }
-  // Server runtime (Nuxt SSR on Node/Render)
+  // Server runtime (Nuxt SSR on Render)
   if (typeof window === 'undefined') {
+    const proxyTarget = process.env.NUXT_API_PROXY_TARGET || process.env.BACKEND_URL
+    if (proxyTarget) {
+      return `${String(proxyTarget).replace(/\/$/, '')}/api`
+    }
     return process.env.NUXT_PUBLIC_API_URL || process.env.VITE_API_URL || 'http://127.0.0.1:8000/api'
   }
 

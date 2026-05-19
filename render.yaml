@@ -149,6 +149,8 @@ services:
     envVars:
       - key: BACKEND_URL
         value: https://api.kalapak-team.space
+      - key: NUXT_API_PROXY_TARGET
+        value: https://api.kalapak-team.space
       - key: NUXT_PUBLIC_API_URL
         value: /api
       - key: NUXT_PUBLIC_SITE_URL

@@ -1,6 +1,12 @@
 const devApiProxyTarget =
   process.env.NUXT_DEV_API_PROXY || process.env.VITE_DEV_API_PROXY || 'http://127.0.0.1:8000'
 const isDev = process.env.NODE_ENV !== 'production'
+// Production SSR (Render): Nuxt serves the site — proxy /api to Laravel (no nginx in production Dockerfile).
+const apiProxyBase = (
+  process.env.NUXT_API_PROXY_TARGET ||
+  process.env.BACKEND_URL ||
+  'https://api.kalapak-team.space'
+).replace(/\/$/, '')
 
 export default defineNuxtConfig({
   ssr: true,
@@ -29,6 +35,8 @@ export default defineNuxtConfig({
     storesDirs: ['./src/stores/**'],
   },
   runtimeConfig: {
+    // Server-only: direct Laravel URL for SSR fetches (optional; routeRules proxy handles /api too).
+    apiProxyTarget: apiProxyBase,
     public: {
       // Prefer explicit env; in local dev fall back to Laravel directly to avoid /api 404 when proxy/env is missing.
       apiUrl: process.env.NUXT_PUBLIC_API_URL || process.env.VITE_API_URL || (isDev ? 'http://127.0.0.1:8000/api' : '/api'),
@@ -43,6 +51,10 @@ export default defineNuxtConfig({
         target: devApiProxyTarget,
         changeOrigin: true,
       },
+    },
+    routeRules: {
+      '/api/**': { proxy: `${apiProxyBase}/api/**` },
+      '/storage/**': { proxy: `${apiProxyBase}/storage/**` },
     },
   },
   css: [
