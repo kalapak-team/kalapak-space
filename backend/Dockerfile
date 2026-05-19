@@ -1,10 +1,10 @@
-FROM php:8.3-fpm-alpine
+FROM php:8.3-cli-alpine
 
-# Install system dependencies
+# Install system dependencies (coreutils = GNU timeout for entrypoint migrations)
 RUN apk add --no-cache \
     git curl zip unzip libpng-dev libjpeg-turbo-dev freetype-dev \
     libzip-dev icu-dev postgresql-dev oniguruma-dev \
-    nodejs npm postgresql-client
+    nodejs npm postgresql-client coreutils
 
 # Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
@@ -19,37 +19,31 @@ RUN echo 'upload_max_filesize = 20M' > /usr/local/etc/php/conf.d/uploads.ini \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working directory
 WORKDIR /var/www/html
 
-# Copy composer files first (for Docker layer caching)
-COPY composer.json composer.lock* ./
+# Copy composer files first (Docker layer cache)
+COPY composer.json composer.lock ./
 
-# Install dependencies (production only)
+# Install deps before app source (scripts run after full COPY below)
 RUN composer install --no-dev --no-scripts --optimize-autoloader --no-interaction
 
-# Copy application
 COPY . .
 
-# Run post-install scripts after source is available
-RUN composer dump-autoload --optimize --no-interaction 2>/dev/null || true
+# Discover packages + optimized autoload (required for artisan on a fresh image)
+RUN composer install --no-dev --optimize-autoloader --no-interaction \
+    && php artisan package:discover --ansi
 
-# Create required storage directories
 RUN mkdir -p storage/framework/cache/data \
     storage/framework/sessions \
     storage/framework/views \
     storage/logs \
-    bootstrap/cache
+    bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
-# Set permissions
-RUN chown -R www-data:www-data storage bootstrap/cache
-
-# Copy entrypoint
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Expose port (Render assigns PORT dynamically)
 EXPOSE 8000
 
-# Use entrypoint script
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "/usr/local/bin/docker-entrypoint.sh"]

@@ -84,5 +84,11 @@ if [ -z "$REDIS_PASSWORD" ]; then
     fi
 fi
 
-echo "==> Starting Laravel on port ${PORT}..."
-exec php artisan serve --host=0.0.0.0 --port=${PORT}
+echo "==> PHP: $(php -r 'echo PHP_VERSION;')"
+if ! php artisan --version 2>&1; then
+  echo "==> FATAL: Laravel failed to boot (check APP_KEY, vendor/, bootstrap/cache)."
+  exit 1
+fi
+
+echo "==> Starting Laravel on 0.0.0.0:${PORT} (public/)..."
+exec php artisan serve --host=0.0.0.0 --port="${PORT}" --no-reload
