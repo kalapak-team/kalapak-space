@@ -6,10 +6,10 @@ return [
         'url' => env('SUPABASE_URL'),
         'secret_key' => env('SUPABASE_SECRET_KEY'),
         'bucket' => env('SUPABASE_BUCKET', 'kalapak-assets'),
-        // Comma-separated hosts that no longer resolve (deleted Supabase projects).
+        // Optional: comma-separated hosts for permanently deleted projects only (not paused).
         'dead_hosts' => array_values(array_filter(array_map(
             'trim',
-            explode(',', (string) env('SUPABASE_DEAD_HOSTS', 'hiucucocvvhgmszgqnxc.supabase.co'))
+            explode(',', (string) env('SUPABASE_DEAD_HOSTS', ''))
         ))),
     ],
 

@@ -1,5 +1,3 @@
-const DEAD_STORAGE_HOSTS = ['hiucucocvvhgmszgqnxc.supabase.co']
-
 /** @param {unknown} url */
 export function resolveMediaUrl(url) {
   if (!url || typeof url !== 'string') {
@@ -20,15 +18,10 @@ export function resolveMediaUrl(url) {
   }
 
   try {
-    const host = new URL(value).hostname.toLowerCase()
-    if (DEAD_STORAGE_HOSTS.includes(host)) {
-      return null
-    }
+    return new URL(value).href
   } catch {
     return null
   }
-
-  return value
 }
 
 export function useMediaUrl() {
