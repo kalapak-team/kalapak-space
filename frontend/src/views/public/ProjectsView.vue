@@ -172,8 +172,7 @@
 
         <!-- Grid -->
         <div v-else-if="displayProjects.length" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-7">
-          <router-link v-for="(project, i) in displayProjects" :key="project.id" :to="`/projects/${project.slug}`"
-            data-aos="fade-up" :data-aos-delay="(i % 3) * 80"
+          <router-link v-for="project in displayProjects" :key="project.id" :to="`/projects/${project.slug}`"
             class="group relative flex flex-col rounded-2xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl dark:hover:shadow-glow/10">
             <!-- Cover image -->
             <div class="relative aspect-[16/10] overflow-hidden bg-gray-100 dark:bg-dark-700">
@@ -281,7 +280,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
+import AOS from 'aos'
 import { publicApi } from '@/services/api'
 import Pagination from '@/components/common/Pagination.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
@@ -317,9 +317,11 @@ function debouncedFetch() {
 async function fetchProjects(page = 1) {
   loading.value = true
   try {
+    const pageNum = typeof page === 'number' ? page : 1
+    const reserveHeroSlot = pageNum === 1 && !search.value && !selectedTag.value && !selectedStatus.value
     const { data } = await publicApi.getProjects({
-      page: typeof page === 'number' ? page : 1,
-      per_page: 9,
+      page: pageNum,
+      per_page: reserveHeroSlot ? 10 : 9,
       search: search.value || undefined,
       tag: selectedTag.value || undefined,
       status: selectedStatus.value || undefined,
@@ -330,6 +332,8 @@ async function fetchProjects(page = 1) {
     projects.value = []
   } finally {
     loading.value = false
+    await nextTick()
+    AOS.refresh()
   }
 }
 
