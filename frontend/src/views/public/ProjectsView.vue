@@ -302,7 +302,9 @@ const openSourceCount = computed(() => projects.value.filter(p => p.is_open_sour
 const featuredProject = computed(() => projects.value.find(p => p.is_featured))
 const displayProjects = computed(() => {
   if (search.value || selectedTag.value || selectedStatus.value || meta.value.current_page > 1) return projects.value
-  return projects.value.filter(p => !p.is_featured)
+  const featured = featuredProject.value
+  if (!featured) return projects.value
+  return projects.value.filter(p => p.id !== featured.id)
 })
 
 let debounceTimer = null

@@ -269,7 +269,10 @@ const meta = ref({ current_page: 1, last_page: 1 })
 const featuredPost = computed(() => posts.value.find(p => p.is_featured))
 const displayPosts = computed(() => {
   if (search.value || selectedCategory.value || meta.value.current_page > 1) return posts.value
-  return posts.value.filter(p => !p.is_featured)
+  const featured = featuredPost.value
+  if (!featured) return posts.value
+  // Only hide the single hero featured post — other featured posts stay in the grid.
+  return posts.value.filter(p => p.id !== featured.id)
 })
 
 let debounceTimer = null
