@@ -11,9 +11,14 @@ if [ -z "$REDIS_PASSWORD" ]; then
   if [ "$CACHE_DRIVER" = "redis" ] || [ "$SESSION_DRIVER" = "redis" ]; then
     echo "==> [Redis] No REDIS_PASSWORD — using file/sync drivers."
     export CACHE_DRIVER=file
-    export SESSION_DRIVER=file
     export QUEUE_CONNECTION=sync
   fi
+fi
+
+# Web routes use the session middleware. Upstash Redis is for cache/queue only —
+# database sessions are reliable on Render and avoid Redis session driver failures.
+if [ "$APP_ENV" = "production" ]; then
+  export SESSION_DRIVER=database
 fi
 
 if [ ! -f vendor/autoload.php ]; then
@@ -33,7 +38,7 @@ chmod -R 775 storage bootstrap/cache 2>/dev/null || true
   php artisan package:discover --ansi 2>&1 || true
   if [ "$APP_ENV" = "production" ]; then
     php artisan config:cache 2>&1 || true
-    php artisan route:cache 2>&1 || true
+    # web.php uses closure routes — route:cache would fail and is not used.
   fi
   echo "==> [DB] DB_HOST=${DB_HOST} DB_DATABASE=${DB_DATABASE}"
   if [ -z "${RUN_MIGRATIONS}" ] && [ "${APP_ENV}" = "production" ]; then

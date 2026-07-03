@@ -91,7 +91,7 @@ services:
       - key: QUEUE_CONNECTION
         value: redis
       - key: SESSION_DRIVER
-        value: redis
+        value: database
       - key: TURNSTILE_SECRET_KEY
         sync: false # Set manually: get from Cloudflare Dashboard → Turnstile → your site → Secret Key
       # ── Mail (required for Forgot Password emails) ──

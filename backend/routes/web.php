@@ -1,16 +1,12 @@
 <?php
 
 use App\Http\Controllers\Auth\SocialAuthController;
+use App\Http\Controllers\PublicApi\HomeController;
 use App\Http\Controllers\PublicApi\OgMetaController;
 use App\Http\Controllers\PublicApi\SitemapController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return response()->json([
-        'name' => 'Kalapak Code Team API',
-        'version' => '1.0.0',
-    ]);
-});
+Route::get('/', [HomeController::class, 'index']);
 
 // Google OAuth (browser redirects, not API calls)
 Route::get('/auth/google/redirect', [SocialAuthController::class, 'redirectToGoogle']);

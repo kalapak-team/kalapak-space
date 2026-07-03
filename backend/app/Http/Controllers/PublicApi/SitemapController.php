@@ -52,7 +52,7 @@ class SitemapController extends Controller
         }
 
         // Dynamic: Published projects
-        $projects = Project::where('status', 'published')
+        $projects = Project::where('status', 'active')
             ->whereNotNull('slug')
             ->orderBy('updated_at', 'desc')
             ->get(['slug', 'updated_at']);

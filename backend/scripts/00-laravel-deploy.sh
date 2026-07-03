@@ -7,9 +7,12 @@ if [ -z "$REDIS_PASSWORD" ]; then
   if [ "$CACHE_DRIVER" = "redis" ] || [ "$SESSION_DRIVER" = "redis" ]; then
     echo "==> Redis password missing — file/sync drivers"
     export CACHE_DRIVER=file
-    export SESSION_DRIVER=file
     export QUEUE_CONNECTION=sync
   fi
+fi
+
+if [ "$APP_ENV" = "production" ]; then
+  export SESSION_DRIVER=database
 fi
 
 if [ "$APP_ENV" = "production" ]; then
