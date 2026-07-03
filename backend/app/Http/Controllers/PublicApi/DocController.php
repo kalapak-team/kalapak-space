@@ -19,47 +19,50 @@ class DocController extends Controller
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection<int, DocMenu>
+     * @return \Illuminate\Support\Collection<int, DocMenu>
      */
     private function loadNavTree()
     {
-        return DocMenu::whereNull('parent_id')
-            ->orderBy('order_num')
-            ->orderBy('name')
+        $publishedPages = Doc::where('status', 'published')
+            ->whereNull('parent_id')
             ->with([
-                'children' => function ($q) {
-                    $q->orderBy('order_num')->orderBy('name')
-                        ->with([
-                            'pages' => function ($q2) {
-                                $q2->where('status', 'published')
-                                    ->whereNull('parent_id')
-                                    ->select('id', 'title', 'slug', 'doc_menu_id', 'order_num', 'updated_at')
-                                    ->orderBy('order_num')
-                                    ->with([
-                                        'children' => function ($q3) {
-                                            $q3->where('status', 'published')
-                                                ->select('id', 'title', 'slug', 'parent_id', 'order_num', 'updated_at')
-                                                ->orderBy('order_num');
-                                        }
-                                    ]);
-                            }
-                        ]);
-                },
-                'pages' => function ($q) {
-                    $q->where('status', 'published')
-                        ->whereNull('parent_id')
-                        ->select('id', 'title', 'slug', 'doc_menu_id', 'order_num', 'updated_at')
-                        ->orderBy('order_num')
-                        ->with([
-                            'children' => function ($q2) {
-                                $q2->where('status', 'published')
-                                    ->select('id', 'title', 'slug', 'parent_id', 'order_num', 'updated_at')
-                                    ->orderBy('order_num');
-                            }
-                        ]);
-                }
+                'children' => fn($q) => $q
+                    ->where('status', 'published')
+                    ->select('id', 'title', 'slug', 'parent_id', 'order_num', 'updated_at')
+                    ->orderBy('order_num'),
             ])
-            ->get();
+            ->select('id', 'title', 'slug', 'doc_menu_id', 'order_num', 'updated_at')
+            ->orderBy('order_num')
+            ->get()
+            ->groupBy('doc_menu_id');
+
+        $allMenus = DocMenu::orderBy('order_num')->orderBy('name')->get();
+
+        return $allMenus->whereNull('parent_id')->values()->map(function ($main) use ($allMenus, $publishedPages) {
+            $main->setRelation(
+                'pages',
+                collect($publishedPages->get($main->id, collect()))->values()
+            );
+
+            $children = $allMenus
+                ->where('parent_id', $main->id)
+                ->values()
+                ->map(function ($sub) use ($publishedPages) {
+                    $sub->setRelation(
+                        'pages',
+                        collect($publishedPages->get($sub->id, collect()))->values()
+                    );
+
+                    return $sub;
+                })
+                ->filter(fn($sub) => $sub->pages->isNotEmpty())
+                ->values();
+
+            $main->setRelation('children', $children);
+
+            return $main;
+        })->filter(fn($main) => $main->pages->isNotEmpty() || $main->children->isNotEmpty())
+            ->values();
     }
 
     /**
