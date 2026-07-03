@@ -277,8 +277,8 @@
                 class="aspect-[16/10] overflow-hidden bg-gray-100 dark:bg-dark-700"
               >
                 <img
-                  v-if="project.cover_image"
-                  :src="project.cover_image"
+                  v-if="resolveMediaUrl(project.cover_image)"
+                  :src="resolveMediaUrl(project.cover_image)"
                   :alt="project.title"
                   class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
@@ -450,8 +450,8 @@
                   class="w-12 h-12 rounded-full border-2 border-white dark:border-dark-800 overflow-hidden bg-gradient-brand flex items-center justify-center ring-2 ring-transparent hover:ring-brand-violet dark:hover:ring-brand-cyan transition-all hover:z-10 hover:scale-110"
                 >
                   <img
-                    v-if="member.avatar"
-                    :src="member.avatar"
+                    v-if="resolveMediaUrl(member.avatar)"
+                    :src="resolveMediaUrl(member.avatar)"
                     :alt="member.name"
                     class="w-full h-full object-cover"
                   />
@@ -584,11 +584,11 @@
             >
               <!-- Cover image -->
               <div
-                v-if="post.cover_image"
+                v-if="resolveMediaUrl(post.cover_image)"
                 class="aspect-[16/9] overflow-hidden"
               >
                 <img
-                  :src="post.cover_image"
+                  :src="resolveMediaUrl(post.cover_image)"
                   :alt="post.title"
                   class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
@@ -628,8 +628,8 @@
                       class="w-7 h-7 rounded-full bg-gradient-brand flex items-center justify-center overflow-hidden"
                     >
                       <img
-                        v-if="post.author.avatar"
-                        :src="post.author.avatar"
+                        v-if="resolveMediaUrl(post.author.avatar)"
+                        :src="resolveMediaUrl(post.author.avatar)"
                         class="w-full h-full object-cover"
                       />
                       <span v-else class="text-white text-[10px] font-bold">{{
@@ -645,8 +645,8 @@
                       class="w-7 h-7 rounded-full bg-gradient-brand flex items-center justify-center overflow-hidden"
                     >
                       <img
-                        v-if="post.author.avatar"
-                        :src="post.author.avatar"
+                        v-if="resolveMediaUrl(post.author.avatar)"
+                        :src="resolveMediaUrl(post.author.avatar)"
                         class="w-full h-full object-cover"
                       />
                       <span v-else class="text-white text-[10px] font-bold">{{
@@ -729,6 +729,7 @@ import { useRouter } from "vue-router";
 import { publicApi } from "@/services/api";
 import dayjs from "dayjs";
 import MilkyWayGalaxy from "@/components/common/MilkyWayGalaxy.vue";
+import { resolveMediaUrl } from "../../../composables/useMediaUrl.js";
 
 const router = useRouter();
 

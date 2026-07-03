@@ -107,9 +107,8 @@ class User extends Authenticatable
             if ($resolved !== null) {
                 return $resolved;
             }
-            if (preg_match('/^https?:\/\//i', $avatar)) {
-                return $avatar;
-            }
+
+            return null;
         }
         $disk = $this->avatar_disk ?? 'supabase';
         if ($disk === 'cloudinary') {

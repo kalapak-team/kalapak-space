@@ -1,6 +1,15 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { authApi, memberApi, adminApi } from '@/services/api'
+import { resolveMediaUrl } from '../../composables/useMediaUrl.js'
+
+function normalizeUser(userData) {
+  if (!userData) return userData
+  return {
+    ...userData,
+    avatar: resolveMediaUrl(userData.avatar),
+  }
+}
 
 export const useAuthStore = defineStore('auth', () => {
   const isClient = typeof window !== 'undefined'
@@ -8,7 +17,7 @@ export const useAuthStore = defineStore('auth', () => {
     if (!isClient) return null
     try {
       const raw = localStorage.getItem('auth_user')
-      return raw ? JSON.parse(raw) : null
+      return raw ? normalizeUser(JSON.parse(raw)) : null
     } catch {
       return null
     }
@@ -41,7 +50,7 @@ export const useAuthStore = defineStore('auth', () => {
     if (!user.value) {
       try {
         const raw = localStorage.getItem('auth_user')
-        user.value = raw ? JSON.parse(raw) : null
+        user.value = raw ? normalizeUser(JSON.parse(raw)) : null
       } catch {
         user.value = null
       }
@@ -68,10 +77,10 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const { data } = await authApi.login(credentials)
       token.value = data.data.token
-      user.value = data.data.user
+      user.value = normalizeUser(data.data.user)
       if (isClient) {
         localStorage.setItem('auth_token', data.data.token)
-        localStorage.setItem('auth_user', JSON.stringify(data.data.user))
+        localStorage.setItem('auth_user', JSON.stringify(user.value))
       }
       if (isAdmin.value) {
         await fetchPermissions()
@@ -87,10 +96,10 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const { data } = await authApi.register(formData)
       token.value = data.data.token
-      user.value = data.data.user
+      user.value = normalizeUser(data.data.user)
       if (isClient) {
         localStorage.setItem('auth_token', data.data.token)
-        localStorage.setItem('auth_user', JSON.stringify(data.data.user))
+        localStorage.setItem('auth_user', JSON.stringify(user.value))
       }
       if (isAdmin.value) {
         await fetchPermissions()
@@ -106,9 +115,9 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true
     try {
       const { data } = await authApi.me()
-      user.value = data.data
+      user.value = normalizeUser(data.data)
       if (isClient) {
-        localStorage.setItem('auth_user', JSON.stringify(data.data))
+        localStorage.setItem('auth_user', JSON.stringify(user.value))
       }
       await fetchPermissions()
     } catch (error) {
@@ -123,9 +132,9 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function updateProfile(formData) {
     const { data } = await memberApi.updateProfile(formData)
-    user.value = data.data
+    user.value = normalizeUser(data.data)
     if (isClient) {
-      localStorage.setItem('auth_user', JSON.stringify(data.data))
+      localStorage.setItem('auth_user', JSON.stringify(user.value))
     }
     return data
   }
@@ -136,9 +145,9 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function uploadAvatar(formData) {
     const { data } = await memberApi.uploadAvatar(formData)
-    user.value = data.data
+    user.value = normalizeUser(data.data)
     if (isClient) {
-      localStorage.setItem('auth_user', JSON.stringify(data.data))
+      localStorage.setItem('auth_user', JSON.stringify(user.value))
     }
     return data
   }

@@ -16,7 +16,9 @@ class ProjectResource extends JsonResource
             'slug' => $this->slug,
             'description' => $this->description,
             'long_description' => $this->long_description,
-            'cover_image' => $this->cover_image ? app(SupabaseStorage::class)->url($this->cover_image) : null,
+            'cover_image' => $this->cover_image
+                ? app(SupabaseStorage::class)->resolvePublicUrlOrPlaceholder($this->cover_image)
+                : null,
             'repo_url' => $this->repo_url,
             'demo_url' => $this->demo_url,
             'tech_stack' => $this->tech_stack,

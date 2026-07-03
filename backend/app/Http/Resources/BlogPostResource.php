@@ -59,6 +59,6 @@ class BlogPostResource extends JsonResource
             return $this->cover_image;
         }
 
-        return app(SupabaseStorage::class)->url($this->cover_image);
+        return app(SupabaseStorage::class)->resolvePublicUrlOrPlaceholder($this->cover_image);
     }
 }

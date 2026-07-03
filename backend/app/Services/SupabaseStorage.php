@@ -10,6 +10,8 @@ class SupabaseStorage
     protected string $url;
     protected string $key;
     protected string $bucket;
+    /** @var list<string> */
+    protected array $deadHosts;
 
     public function __construct()
     {
@@ -19,6 +21,8 @@ class SupabaseStorage
         $this->key = (string) (config('services.supabase.secret_key') ?? '');
         $bucket = config('services.supabase.bucket');
         $this->bucket = (is_string($bucket) && $bucket !== '') ? $bucket : 'kalapak-assets';
+        $deadHosts = config('services.supabase.dead_hosts', []);
+        $this->deadHosts = is_array($deadHosts) ? array_map('strtolower', $deadHosts) : [];
     }
 
     /**
@@ -83,7 +87,53 @@ class SupabaseStorage
             return false;
         }
 
+        if ($host !== '' && $this->isDeadHost($host)) {
+            return false;
+        }
+
         return true;
+    }
+
+    public function placeholderUrl(): string
+    {
+        $url = config('services.media_placeholder_url');
+
+        return is_string($url) && $url !== '' ? $url : '';
+    }
+
+    public function resolvePublicUrlOrPlaceholder(?string $pathOrUrl): ?string
+    {
+        return $this->resolvePublicUrl($pathOrUrl) ?? ($pathOrUrl ? $this->placeholderUrl() ?: null : null);
+    }
+
+    public function isDeadHostUrl(?string $url): bool
+    {
+        if ($url === null || $url === '') {
+            return false;
+        }
+
+        $candidate = trim($url);
+        if (!str_contains($candidate, '://') && str_contains($candidate, '.supabase.co/')) {
+            $candidate = 'https://' . ltrim($candidate, '/');
+        }
+
+        $host = strtolower((string) parse_url($candidate, PHP_URL_HOST));
+
+        return $host !== '' && $this->isDeadHost($host);
+    }
+
+    protected function isDeadHost(string $host): bool
+    {
+        return in_array(strtolower($host), $this->deadHosts, true);
+    }
+
+    protected function sanitizeResolvedUrl(?string $url): ?string
+    {
+        if ($url === null || $url === '') {
+            return null;
+        }
+
+        return $this->isDeadHostUrl($url) ? null : $url;
     }
 
     /**
@@ -118,18 +168,26 @@ class SupabaseStorage
                 return null;
             }
 
-            return "{$this->url}/storage/v1/object/public/{$this->bucket}/{$storagePath}";
+            return $this->sanitizeResolvedUrl(
+                "{$this->url}/storage/v1/object/public/{$this->bucket}/{$storagePath}"
+            );
         }
 
-        if (preg_match('/^https?:\/\//i', $pathOrUrl)) {
-            return $pathOrUrl;
+        if (preg_match('/^https?:\/\//i', $pathOrUrl) || str_contains($pathOrUrl, '.supabase.co/')) {
+            $absolute = preg_match('/^https?:\/\//i', $pathOrUrl)
+                ? $pathOrUrl
+                : 'https://' . ltrim($pathOrUrl, '/');
+
+            return $this->sanitizeResolvedUrl($absolute);
         }
 
         if (!$this->isConfigured()) {
             return null;
         }
 
-        return "{$this->url}/storage/v1/object/public/{$this->bucket}/" . ltrim($pathOrUrl, '/');
+        return $this->sanitizeResolvedUrl(
+            "{$this->url}/storage/v1/object/public/{$this->bucket}/" . ltrim($pathOrUrl, '/')
+        );
     }
 
     /**
@@ -137,16 +195,40 @@ class SupabaseStorage
      */
     public function rewriteUrlsInHtml(?string $html): ?string
     {
-        if ($html === null || $html === '' || !$this->isConfigured()) {
+        if ($html === null || $html === '') {
             return $html;
         }
 
-        return (string) preg_replace_callback(
-            '#(?:https?:)?//[a-z0-9-]+\.supabase\.co/storage/v1/object/public/[^/"\'\s<>]+/([^"\'\s<>]+)#i',
+        $html = (string) preg_replace_callback(
+            '#\ssrc=(["\'])((?:https?:)?//[a-z0-9-]+\.supabase\.co/storage/v1/object/public/[^"\']+)\1#i',
             function (array $matches): string {
-                $resolved = $this->resolvePublicUrl($matches[0]);
+                $quote = $matches[1];
+                $resolved = $this->resolvePublicUrl($matches[2]);
 
-                return $resolved ?? $matches[0];
+                return $resolved
+                    ? ' src=' . $quote . $resolved . $quote
+                    : ' src=' . $quote . $quote;
+            },
+            $html
+        );
+
+        if (!$this->isConfigured()) {
+            return (string) preg_replace(
+                '#\ssrc=(["\'])(?!https?://|/|data:)([^"\']+\.(?:png|jpe?g|gif|webp|svg))\1#i',
+                ' src=$1$1',
+                $html
+            );
+        }
+
+        return (string) preg_replace_callback(
+            '#\ssrc=(["\'])(?!https?://|/|data:)([^"\']+\.(?:png|jpe?g|gif|webp|svg))\1#i',
+            function (array $matches): string {
+                $resolved = $this->resolvePublicUrl($matches[2]);
+                $quote = $matches[1];
+
+                return $resolved
+                    ? ' src=' . $quote . $resolved . $quote
+                    : ' src=' . $quote . $quote;
             },
             $html
         );
