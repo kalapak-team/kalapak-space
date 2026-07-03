@@ -15,7 +15,7 @@ class BlogPostResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'excerpt' => $this->excerpt,
-            'content' => $this->content,
+            'content' => app(SupabaseStorage::class)->rewriteUrlsInHtml($this->content),
             'cover_image' => $this->coverImageUrl(),
             'storage_provider' => $this->storage_provider ?? 'supabase',
             'status' => $this->status,

@@ -102,8 +102,14 @@ class User extends Authenticatable
         if ($avatar === '') {
             return null;
         }
-        if (preg_match('/^https?:\/\//i', $avatar)) {
-            return $avatar;
+        if (preg_match('/^https?:\/\//i', $avatar) || str_contains($avatar, '.supabase.co/')) {
+            $resolved = app(SupabaseStorage::class)->resolvePublicUrl($avatar);
+            if ($resolved !== null) {
+                return $resolved;
+            }
+            if (preg_match('/^https?:\/\//i', $avatar)) {
+                return $avatar;
+            }
         }
         $disk = $this->avatar_disk ?? 'supabase';
         if ($disk === 'cloudinary') {

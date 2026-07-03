@@ -91,14 +91,94 @@ class SupabaseStorage
      */
     public function url(string $path): ?string
     {
-        if (preg_match('/^https?:\/\//i', $path)) {
-            return $path;
+        return $this->resolvePublicUrl($path);
+    }
+
+    /**
+     * Resolve a storage path or any Supabase public URL to the currently configured project.
+     */
+    public function resolvePublicUrl(?string $pathOrUrl): ?string
+    {
+        if ($pathOrUrl === null) {
+            return null;
+        }
+
+        $pathOrUrl = trim($pathOrUrl);
+        if ($pathOrUrl === '') {
+            return null;
+        }
+
+        if (str_starts_with($pathOrUrl, '//')) {
+            $pathOrUrl = 'https:' . $pathOrUrl;
+        }
+
+        $storagePath = $this->extractStoragePath($pathOrUrl);
+        if ($storagePath !== null) {
+            if (!$this->isConfigured()) {
+                return null;
+            }
+
+            return "{$this->url}/storage/v1/object/public/{$this->bucket}/{$storagePath}";
+        }
+
+        if (preg_match('/^https?:\/\//i', $pathOrUrl)) {
+            return $pathOrUrl;
         }
 
         if (!$this->isConfigured()) {
             return null;
         }
-        return "{$this->url}/storage/v1/object/public/{$this->bucket}/{$path}";
+
+        return "{$this->url}/storage/v1/object/public/{$this->bucket}/" . ltrim($pathOrUrl, '/');
+    }
+
+    /**
+     * Rewrite Supabase storage URLs inside HTML (e.g. blog post bodies).
+     */
+    public function rewriteUrlsInHtml(?string $html): ?string
+    {
+        if ($html === null || $html === '' || !$this->isConfigured()) {
+            return $html;
+        }
+
+        return (string) preg_replace_callback(
+            '#(?:https?:)?//[a-z0-9-]+\.supabase\.co/storage/v1/object/public/[^/"\'\s<>]+/([^"\'\s<>]+)#i',
+            function (array $matches): string {
+                $resolved = $this->resolvePublicUrl($matches[0]);
+
+                return $resolved ?? $matches[0];
+            },
+            $html
+        );
+    }
+
+    /**
+     * Extract object path (e.g. blog/foo.png) from a Supabase public storage URL.
+     */
+    public function extractStoragePath(string $pathOrUrl): ?string
+    {
+        $candidate = trim($pathOrUrl);
+        if ($candidate === '') {
+            return null;
+        }
+
+        if (!str_contains($candidate, '://') && str_contains($candidate, '.supabase.co/')) {
+            $candidate = 'https://' . ltrim($candidate, '/');
+        }
+
+        $pattern = '#^https?://[^/]+\.supabase\.co/storage/v1/object/public/' . preg_quote($this->bucket, '#') . '/(.+)$#i';
+
+        if (preg_match($pattern, $candidate, $matches)) {
+            return ltrim($matches[1], '/');
+        }
+
+        // Any Supabase project host — remap to the configured bucket path.
+        $genericPattern = '#^https?://[^/]+\.supabase\.co/storage/v1/object/public/[^/]+/(.+)$#i';
+        if (preg_match($genericPattern, $candidate, $matches)) {
+            return ltrim($matches[1], '/');
+        }
+
+        return null;
     }
 
     /**

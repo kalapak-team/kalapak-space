@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Services\SupabaseStorage;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,7 +15,9 @@ class SeriesResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'description' => $this->description,
-            'cover_image' => $this->cover_image,
+            'cover_image' => $this->cover_image
+                ? app(SupabaseStorage::class)->resolvePublicUrl($this->cover_image)
+                : null,
             'author_id' => $this->author_id,
             'posts_count' => $this->whenCounted('blogPosts'),
             'created_at' => $this->created_at?->toISOString(),
