@@ -45,7 +45,8 @@ const email = ref('')
 const loading = ref(false)
 const sent = ref(false)
 const error = ref('')
-const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
+const runtimeConfig = useRuntimeConfig()
+const turnstileSiteKey = runtimeConfig.public.turnstileSiteKey || import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
 const turnstileToken = ref('')
 const mounted = ref(false)
 const isTurnstileReady = computed(() => mounted.value && !!turnstileSiteKey)

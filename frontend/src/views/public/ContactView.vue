@@ -208,10 +208,11 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { publicApi } from '@/services/api'
 import VueTurnstile from 'vue-turnstile'
 
+const runtimeConfig = useRuntimeConfig()
 const form = reactive({ name: '', email: '', subject: '', message: '' })
 const submitting = ref(false)
 const submitted = ref(false)
-const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
+const turnstileSiteKey = runtimeConfig.public.turnstileSiteKey || import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
 const turnstileToken = ref('')
 const error = ref('')
 const mounted = ref(false)

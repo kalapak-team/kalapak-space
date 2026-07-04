@@ -260,7 +260,8 @@ import VueTurnstile from 'vue-turnstile'
 const router = useRouter()
 const authStore = useAuthStore()
 
-const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
+const runtimeConfig = useRuntimeConfig()
+const turnstileSiteKey = runtimeConfig.public.turnstileSiteKey || import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
 const turnstileToken = ref('')
 const mounted = ref(false)
 const isTurnstileReady = computed(() => mounted.value && !!turnstileSiteKey)

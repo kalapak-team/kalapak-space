@@ -168,7 +168,8 @@ const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
 
-const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
+const runtimeConfig = useRuntimeConfig()
+const turnstileSiteKey = runtimeConfig.public.turnstileSiteKey || import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
 const turnstileToken = ref('')
 const mounted = ref(false)
 const form = ref({ email: '', password: '', remember: false })

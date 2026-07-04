@@ -379,7 +379,8 @@ const submitting = ref(false)
 const submitted = ref(false)
 const error = ref('')
 const openFaq = ref(null)
-const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
+const runtimeConfig = useRuntimeConfig()
+const turnstileSiteKey = runtimeConfig.public.turnstileSiteKey || import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
 const turnstileToken = ref('')
 const mounted = ref(false)
 const isTurnstileReady = computed(() => mounted.value && !!turnstileSiteKey)
