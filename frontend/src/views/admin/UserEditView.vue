@@ -70,14 +70,14 @@
           <div class="mt-5 pt-5 border-t border-gray-100 dark:border-dark-700 space-y-2">
             <button
               @click="toggleActive"
-              class="w-full py-2 px-4 rounded-lg text-sm font-medium transition-colors"
+              class="w-full py-2 px-4 rounded-full text-sm font-medium transition-colors"
               :class="user.is_active
                 ? 'bg-orange-50 text-orange-600 hover:bg-orange-100 dark:bg-orange-500/10 dark:text-orange-400 dark:hover:bg-orange-500/20'
                 : 'bg-green-50 text-green-600 hover:bg-green-100 dark:bg-green-500/10 dark:text-green-400 dark:hover:bg-green-500/20'"
             >
               {{ user.is_active ? 'Deactivate User' : 'Activate User' }}
             </button>
-            <button @click="confirmDelete" class="w-full py-2 px-4 rounded-lg text-sm font-medium bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20 transition-colors">
+            <button @click="confirmDelete" class="w-full py-2 px-4 rounded-full text-sm font-medium bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20 transition-colors">
               Delete User
             </button>
           </div>
@@ -156,7 +156,7 @@
                   <tr v-for="res in permissionResources" :key="res.key">
                     <td class="py-3 pr-4">
                       <div class="flex items-center gap-2">
-                        <div class="w-7 h-7 rounded-lg flex items-center justify-center" :class="res.bg">
+                        <div class="w-7 h-7 rounded-full flex items-center justify-center" :class="res.bg">
                           <component :is="res.icon" class="w-4 h-4" :class="res.iconColor" />
                         </div>
                         <span class="font-medium text-gray-800 dark:text-gray-200">{{ res.label }}</span>
@@ -216,7 +216,7 @@
             </p>
             <div class="flex justify-center gap-3">
               <button @click="showDeleteModal = false" class="btn-ghost text-sm">Cancel</button>
-              <button @click="handleDelete" :disabled="deletingUser" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors">
+              <button @click="handleDelete" :disabled="deletingUser" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-full transition-colors">
                 {{ deletingUser ? 'Deleting...' : 'Delete' }}
               </button>
             </div>

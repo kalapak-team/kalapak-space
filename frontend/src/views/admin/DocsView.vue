@@ -7,7 +7,7 @@
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Manage documentation pages and guides</p>
       </div>
       <div class="flex items-center gap-3">
-        <router-link :to="{ name: 'admin-docs-reorder' }" class="btn-ghost flex items-center gap-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2">
+        <router-link :to="{ name: 'admin-docs-reorder' }" class="btn-ghost flex items-center gap-2 text-sm border border-gray-300 dark:border-gray-600 rounded-full px-3 py-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
           Reorder
         </router-link>
@@ -21,7 +21,7 @@
     <!-- Stats -->
     <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-brand-violet/10 dark:bg-brand-violet/20 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-brand-violet/10 dark:bg-brand-violet/20 flex items-center justify-center">
           <svg class="w-5 h-5 text-brand-violet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
         </div>
         <div>
@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
           <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
         <div>
@@ -39,7 +39,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center">
           <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
         </div>
         <div>
@@ -117,14 +117,14 @@
               <div class="flex items-center justify-end gap-1">
                 <router-link
                   :to="{ name: 'admin-docs-edit', params: { id: doc.id } }"
-                  class="p-1.5 rounded-lg text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors"
+                  class="p-1.5 rounded-full text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors"
                   title="Edit"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                 </router-link>
                 <button
                   @click="confirmDelete(doc)"
-                  class="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                  class="p-1.5 rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
                   title="Delete"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
@@ -139,9 +139,9 @@
       <div v-if="meta.last_page > 1" class="flex items-center justify-between px-4 py-3 border-t border-gray-200 dark:border-dark-600">
         <p class="text-xs text-gray-500">Showing {{ docs.length }} of {{ meta.total }} docs</p>
         <div class="flex items-center gap-1">
-          <button :disabled="meta.current_page === 1" @click="changePage(meta.current_page - 1)" class="px-3 py-1.5 text-xs rounded-lg border border-gray-200 dark:border-dark-600 disabled:opacity-40 hover:border-brand-violet transition-colors">Prev</button>
+          <button :disabled="meta.current_page === 1" @click="changePage(meta.current_page - 1)" class="px-3 py-1.5 text-xs rounded-full border border-gray-200 dark:border-dark-600 disabled:opacity-40 hover:border-brand-violet transition-colors">Prev</button>
           <span class="text-xs text-gray-500 px-2">{{ meta.current_page }} / {{ meta.last_page }}</span>
-          <button :disabled="meta.current_page === meta.last_page" @click="changePage(meta.current_page + 1)" class="px-3 py-1.5 text-xs rounded-lg border border-gray-200 dark:border-dark-600 disabled:opacity-40 hover:border-brand-violet transition-colors">Next</button>
+          <button :disabled="meta.current_page === meta.last_page" @click="changePage(meta.current_page + 1)" class="px-3 py-1.5 text-xs rounded-full border border-gray-200 dark:border-dark-600 disabled:opacity-40 hover:border-brand-violet transition-colors">Next</button>
         </div>
       </div>
     </div>

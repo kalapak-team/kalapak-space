@@ -15,7 +15,7 @@
     <!-- Stats Row -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-brand-violet/10 dark:bg-brand-violet/20 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-brand-violet/10 dark:bg-brand-violet/20 flex items-center justify-center">
           <TagIcon class="w-5 h-5 text-brand-violet" />
         </div>
         <div>
@@ -24,7 +24,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center">
           <FolderIcon class="w-5 h-5 text-blue-500" />
         </div>
         <div>
@@ -33,7 +33,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center">
           <ExclamationTriangleIcon class="w-5 h-5 text-amber-500" />
         </div>
         <div>
@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
           <SwatchIcon class="w-5 h-5 text-green-500" />
         </div>
         <div>
@@ -60,7 +60,7 @@
           v-model="searchQuery"
           type="text"
           placeholder="Search tags..."
-          class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white dark:bg-dark-700 border border-gray-200 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all"
+          class="w-full pl-10 pr-4 py-2.5 rounded-full bg-white dark:bg-dark-700 border border-gray-200 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all"
         />
       </div>
       <div class="flex items-center gap-2">
@@ -70,7 +70,7 @@
           placeholder="Name A-Z"
           size="sm"
         />
-        <div class="flex rounded-xl border border-gray-200 dark:border-dark-500 overflow-hidden">
+        <div class="flex rounded-full border border-gray-200 dark:border-dark-500 overflow-hidden">
           <button @click="viewMode = 'grid'" class="px-3 py-2.5 transition-colors" :class="viewMode === 'grid' ? 'bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-600'">
             <Squares2X2Icon class="w-4 h-4" />
           </button>
@@ -120,7 +120,7 @@
           <!-- Tag visual -->
           <div class="flex items-start justify-between mb-4">
             <div class="flex items-center gap-3">
-              <div class="w-11 h-11 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110"
+              <div class="w-11 h-11 rounded-full flex items-center justify-center transition-transform group-hover:scale-110"
                    :style="{ background: (tag.color || '#7b2fff') + '18' }">
                 <TagIcon class="w-5 h-5" :style="{ color: tag.color || '#7b2fff' }" />
               </div>
@@ -131,10 +131,10 @@
             </div>
             <!-- Actions -->
             <div class="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button v-if="authStore.canDo('tags', 'update')" @click="openEditModal(tag)" class="p-1.5 rounded-lg text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Edit">
+              <button v-if="authStore.canDo('tags', 'update')" @click="openEditModal(tag)" class="p-1.5 rounded-full text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Edit">
                 <PencilSquareIcon class="w-4 h-4" />
               </button>
-              <button v-if="authStore.canDo('tags', 'delete')" @click="confirmDelete(tag)" class="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors" title="Delete">
+              <button v-if="authStore.canDo('tags', 'delete')" @click="confirmDelete(tag)" class="p-1.5 rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors" title="Delete">
                 <TrashIcon class="w-4 h-4" />
               </button>
             </div>
@@ -176,7 +176,7 @@
               class="border-b border-gray-50 dark:border-dark-600 last:border-0 hover:bg-gray-50/50 dark:hover:bg-white/[0.02] transition-colors group">
             <td class="px-5 py-3.5">
               <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                <div class="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
                      :style="{ background: (tag.color || '#7b2fff') + '18' }">
                   <TagIcon class="w-4 h-4" :style="{ color: tag.color || '#7b2fff' }" />
                 </div>
@@ -205,10 +205,10 @@
             </td>
             <td class="px-5 py-3.5 text-right">
               <div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button v-if="authStore.canDo('tags', 'update')" @click="openEditModal(tag)" class="p-1.5 rounded-lg text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Edit">
+                <button v-if="authStore.canDo('tags', 'update')" @click="openEditModal(tag)" class="p-1.5 rounded-full text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Edit">
                   <PencilSquareIcon class="w-4 h-4" />
                 </button>
-                <button v-if="authStore.canDo('tags', 'delete')" @click="confirmDelete(tag)" class="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors" title="Delete">
+                <button v-if="authStore.canDo('tags', 'delete')" @click="confirmDelete(tag)" class="p-1.5 rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors" title="Delete">
                   <TrashIcon class="w-4 h-4" />
                 </button>
               </div>
@@ -253,7 +253,7 @@
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between mb-6">
                   <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl flex items-center justify-center"
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center"
                          :style="{ background: (form.color || '#7b2fff') + '18' }">
                       <TagIcon class="w-5 h-5" :style="{ color: form.color || '#7b2fff' }" />
                     </div>
@@ -262,7 +262,7 @@
                       <p class="text-xs text-gray-500 dark:text-gray-400">{{ editingTag ? 'Update tag details' : 'Add a new tag for projects' }}</p>
                     </div>
                   </div>
-                  <button @click="closeModal" class="p-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors">
+                  <button @click="closeModal" class="p-2 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors">
                     <XMarkIcon class="w-5 h-5" />
                   </button>
                 </div>
@@ -276,7 +276,7 @@
                       @input="autoSlug"
                       type="text"
                       placeholder="e.g. Vue.js"
-                      class="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-dark-700 border border-gray-200 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all"
+                      class="w-full px-4 py-2.5 rounded-full bg-gray-50 dark:bg-dark-700 border border-gray-200 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all"
                       required
                     />
                   </div>
@@ -288,7 +288,7 @@
                       v-model="form.slug"
                       type="text"
                       placeholder="e.g. vuejs"
-                      class="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-dark-700 border border-gray-200 dark:border-dark-500 text-sm font-mono text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all"
+                      class="w-full px-4 py-2.5 rounded-full bg-gray-50 dark:bg-dark-700 border border-gray-200 dark:border-dark-500 text-sm font-mono text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all"
                       required
                     />
                   </div>
@@ -301,7 +301,7 @@
                         <input
                           v-model="form.color"
                           type="color"
-                          class="w-12 h-12 rounded-xl border-2 border-gray-200 dark:border-dark-500 cursor-pointer overflow-hidden appearance-none bg-transparent [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:rounded-lg [&::-webkit-color-swatch]:border-none"
+                          class="w-12 h-12 rounded-full border-2 border-gray-200 dark:border-dark-500 cursor-pointer overflow-hidden appearance-none bg-transparent [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:rounded-full [&::-webkit-color-swatch]:border-none"
                         />
                       </div>
                       <input
@@ -309,7 +309,7 @@
                         type="text"
                         placeholder="#7b2fff"
                         maxlength="7"
-                        class="flex-1 px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-dark-700 border border-gray-200 dark:border-dark-500 text-sm font-mono text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all"
+                        class="flex-1 px-4 py-2.5 rounded-full bg-gray-50 dark:bg-dark-700 border border-gray-200 dark:border-dark-500 text-sm font-mono text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all"
                       />
                     </div>
                     <!-- Preset Colors -->
@@ -319,7 +319,7 @@
                         :key="preset.color"
                         type="button"
                         @click="form.color = preset.color"
-                        class="w-7 h-7 rounded-lg ring-1 transition-all hover:scale-110 shadow-sm"
+                        class="w-7 h-7 rounded-full ring-1 transition-all hover:scale-110 shadow-sm"
                         :class="form.color === preset.color ? 'ring-2 ring-offset-2 ring-offset-white dark:ring-offset-dark-800' : 'ring-gray-200 dark:ring-white/10'"
                         :style="{ background: preset.color, '--tw-ring-color': preset.color }"
                         :title="preset.name"
@@ -330,8 +330,8 @@
                   <!-- Preview -->
                   <div class="pt-2">
                     <label class="block text-xs font-semibold text-gray-400 dark:text-gray-500 mb-2 uppercase tracking-wider">Preview</label>
-                    <div class="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-dark-700/50 border border-gray-100 dark:border-dark-600">
-                      <div class="w-9 h-9 rounded-lg flex items-center justify-center"
+                    <div class="flex items-center gap-3 p-3 rounded-full bg-gray-50 dark:bg-dark-700/50 border border-gray-100 dark:border-dark-600">
+                      <div class="w-9 h-9 rounded-full flex items-center justify-center"
                            :style="{ background: (form.color || '#7b2fff') + '18' }">
                         <TagIcon class="w-4 h-4" :style="{ color: form.color || '#7b2fff' }" />
                       </div>
@@ -347,14 +347,14 @@
                   </div>
 
                   <!-- Error -->
-                  <div v-if="formError" class="p-3 rounded-xl bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-900/30">
+                  <div v-if="formError" class="p-3 rounded-full bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-900/30">
                     <p class="text-sm text-red-600 dark:text-red-400">{{ formError }}</p>
                   </div>
 
                   <!-- Actions -->
                   <div class="flex items-center gap-3 pt-2">
                     <button type="button" @click="closeModal"
-                            class="flex-1 px-4 py-2.5 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-dark-600 hover:bg-gray-200 dark:hover:bg-dark-500 transition-colors">
+                            class="flex-1 px-4 py-2.5 rounded-full text-sm font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-dark-600 hover:bg-gray-200 dark:hover:bg-dark-500 transition-colors">
                       Cancel
                     </button>
                     <button type="submit" :disabled="saving"
@@ -397,7 +397,7 @@
                 Are you sure you want to delete
               </p>
               <p class="text-sm mb-1">
-                <span class="inline-flex items-center gap-1.5 font-semibold px-2.5 py-1 rounded-lg"
+                <span class="inline-flex items-center gap-1.5 font-semibold px-2.5 py-1 rounded-full"
                       :style="{ background: (deletingTag?.color || '#7b2fff') + '18', color: deletingTag?.color || '#7b2fff' }">
                   <TagIcon class="w-3.5 h-3.5" />
                   {{ deletingTag?.name }}
@@ -409,11 +409,11 @@
             </div>
             <div class="flex items-center gap-3 mt-6">
               <button @click="showDeleteModal = false"
-                      class="flex-1 px-4 py-2.5 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-dark-600 hover:bg-gray-200 dark:hover:bg-dark-500 transition-colors">
+                      class="flex-1 px-4 py-2.5 rounded-full text-sm font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-dark-600 hover:bg-gray-200 dark:hover:bg-dark-500 transition-colors">
                 Cancel
               </button>
               <button @click="handleDelete" :disabled="deleting"
-                      class="flex-1 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-red-500 hover:bg-red-600 transition-colors flex items-center justify-center gap-2">
+                      class="flex-1 px-4 py-2.5 rounded-full text-sm font-semibold text-white bg-red-500 hover:bg-red-600 transition-colors flex items-center justify-center gap-2">
                 <div v-if="deleting" class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 <template v-else>
                   <TrashIcon class="w-4 h-4" />
@@ -436,7 +436,7 @@
         leave-from-class="opacity-100 translate-y-0"
         leave-to-class="opacity-0 translate-y-4"
       >
-        <div v-if="toast" class="fixed bottom-6 right-6 z-[60] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg ring-1"
+        <div v-if="toast" class="fixed bottom-6 right-6 z-[60] flex items-center gap-3 px-5 py-3 rounded-full shadow-lg ring-1"
              :class="toast.type === 'success'
                ? 'bg-green-50 dark:bg-green-900/20 ring-green-200 dark:ring-green-800/30 text-green-700 dark:text-green-400'
                : 'bg-red-50 dark:bg-red-900/20 ring-red-200 dark:ring-red-800/30 text-red-700 dark:text-red-400'">

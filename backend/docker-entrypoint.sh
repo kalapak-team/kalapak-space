@@ -2,14 +2,15 @@
 
 cd /var/www/html || exit 1
 
-# Render injects PORT (usually 10000). Do NOT override with PORT=80 in the dashboard.
+# Render injects PORT (usually 10000). Local Docker uses 8000.
 PORT=${PORT:-10000}
 
 export PGSSLMODE="${DB_SSLMODE:-prefer}"
 
-if [ -z "$REDIS_PASSWORD" ]; then
-  if [ "$CACHE_DRIVER" = "redis" ] || [ "$SESSION_DRIVER" = "redis" ]; then
-    echo "==> [Redis] No REDIS_PASSWORD — using file/sync drivers."
+# Redis fallback: if CACHE_DRIVER=redis but no password and no reachable redis, fall back to file.
+if [ "$CACHE_DRIVER" = "redis" ] || [ "$SESSION_DRIVER" = "redis" ]; then
+  if [ "$APP_ENV" = "production" ] && [ -z "$REDIS_PASSWORD" ]; then
+    echo "==> [Redis] No REDIS_PASSWORD in production — using file/sync drivers."
     export CACHE_DRIVER=file
     export QUEUE_CONNECTION=sync
   fi
@@ -23,7 +24,11 @@ fi
 
 if [ ! -f vendor/autoload.php ]; then
   echo "==> Installing composer dependencies..."
-  composer install --no-dev --optimize-autoloader --no-interaction
+  if [ "$APP_ENV" = "production" ]; then
+    composer install --no-dev --optimize-autoloader --no-interaction
+  else
+    composer install --optimize-autoloader --no-interaction
+  fi
 fi
 
 if [ -z "$APP_KEY" ]; then
@@ -33,12 +38,10 @@ fi
 
 chmod -R 775 storage bootstrap/cache 2>/dev/null || true
 
-# Heavy work in background so Render health check (/ping.php) passes quickly.
-(
+run_setup() {
   php artisan package:discover --ansi 2>&1 || true
   if [ "$APP_ENV" = "production" ]; then
     php artisan config:cache 2>&1 || true
-    # web.php uses closure routes — route:cache would fail and is not used.
   fi
   echo "==> [DB] DB_HOST=${DB_HOST} DB_DATABASE=${DB_DATABASE}"
   if [ -z "${RUN_MIGRATIONS}" ] && [ "${APP_ENV}" = "production" ]; then
@@ -52,7 +55,15 @@ chmod -R 775 storage bootstrap/cache 2>/dev/null || true
       php artisan migrate --force --no-interaction 2>&1
     fi
   fi
-) &
+}
+
+# Production: background setup so Render health check passes quickly.
+# Local: run setup in foreground so migrations finish before serving.
+if [ "$APP_ENV" = "production" ]; then
+  run_setup &
+else
+  run_setup
+fi
 
 echo "==> Listening on 0.0.0.0:${PORT} (health: /ping.php, Laravel: /up)"
 exec php artisan serve --host=0.0.0.0 --port="${PORT}" --no-reload

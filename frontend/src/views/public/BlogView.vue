@@ -32,7 +32,7 @@
               v-model="search"
               type="text"
               placeholder="Search articles..."
-              class="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 dark:bg-dark-700 border border-gray-200 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all duration-300"
+              class="w-full pl-10 pr-4 py-3 rounded-full bg-gray-50 dark:bg-dark-700 border border-gray-200 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all duration-300"
               @input="debouncedFetch"
             />
           </div>
@@ -47,7 +47,7 @@
           </div>
           <!-- Clear -->
           <button v-if="search || selectedCategory" @click="clearFilters"
-            class="px-4 py-3 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-brand-violet/5 dark:hover:bg-brand-cyan/5 transition-all duration-300 whitespace-nowrap">
+            class="px-4 py-3 rounded-full text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-brand-violet/5 dark:hover:bg-brand-cyan/5 transition-all duration-300 whitespace-nowrap">
             Clear
           </button>
         </div>
@@ -103,7 +103,7 @@
                 <button
                   v-if="featuredPost.author?.username"
                   type="button"
-                  class="flex items-center gap-3 text-left rounded-xl -m-1 p-1 hover:bg-gray-100/80 dark:hover:bg-dark-700/50 transition-colors"
+                  class="flex items-center gap-3 text-left rounded-full -m-1 p-1 hover:bg-gray-100/80 dark:hover:bg-dark-700/50 transition-colors"
                   @click.stop.prevent="goProfile(featuredPost.author.username)"
                 >
                   <div class="w-9 h-9 rounded-full overflow-hidden ring-2 ring-gray-100 dark:ring-dark-600">
@@ -125,9 +125,8 @@
                     <p class="text-[10px] text-gray-400 uppercase tracking-wider">Author</p>
                   </div>
                 </div>
-                <span class="inline-flex items-center gap-1.5 text-sm font-medium text-brand-violet dark:text-brand-cyan group-hover:translate-x-1 transition-transform duration-300">
+                <span class="inline-flex items-center gap-1.5 text-sm font-medium text-brand-violet dark:text-brand-cyan transition-transform duration-300">
                   Read Article
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 </span>
               </div>
             </div>
@@ -197,7 +196,7 @@
                 <button
                   v-if="post.author?.username"
                   type="button"
-                  class="flex items-center gap-2.5 text-left rounded-lg -m-1 p-1 hover:bg-gray-50 dark:hover:bg-dark-700/50 transition-colors"
+                  class="flex items-center gap-2.5 text-left rounded-full -m-1 p-1 hover:bg-gray-50 dark:hover:bg-dark-700/50 transition-colors"
                   @click.stop.prevent="goProfile(post.author.username)"
                 >
                   <div class="w-7 h-7 rounded-full overflow-hidden ring-1 ring-gray-100 dark:ring-dark-600">
@@ -213,9 +212,8 @@
                   </div>
                   <span class="text-xs text-gray-500 dark:text-gray-400 font-medium">{{ post.author?.name }}</span>
                 </div>
-                <span class="text-xs font-medium text-brand-violet dark:text-brand-cyan group-hover:translate-x-1 transition-transform duration-300 flex items-center gap-1">
+                <span class="text-xs font-medium text-brand-violet dark:text-brand-cyan transition-transform duration-300">
                   Read
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 </span>
               </div>
             </div>

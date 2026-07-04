@@ -17,7 +17,7 @@
     <!-- Stats Cards -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-brand-violet/10 dark:bg-brand-violet/20 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-brand-violet/10 dark:bg-brand-violet/20 flex items-center justify-center">
           <svg class="w-5 h-5 text-brand-violet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
         </div>
         <div>
@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
           <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
         <div>
@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
           <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
         </div>
         <div>
@@ -44,7 +44,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-brand-cyan/10 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-brand-cyan/10 flex items-center justify-center">
           <svg class="w-5 h-5 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
         <div>
@@ -87,7 +87,7 @@
           @change="fetchUsers()"
         />
         <!-- View Toggle -->
-        <div class="flex items-center border border-gray-200 dark:border-dark-600 rounded-lg overflow-hidden">
+        <div class="flex items-center border border-gray-200 dark:border-dark-600 rounded-full overflow-hidden">
           <button
             @click="viewMode = 'table'"
             class="p-2 transition-colors"
@@ -190,7 +190,7 @@
               <div class="flex items-center justify-end gap-1">
                 <button
                   @click="toggleActive(user)"
-                  class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group"
+                  class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group"
                   :title="user.is_active ? 'Deactivate' : 'Activate'"
                 >
                   <svg v-if="user.is_active" class="w-4 h-4 text-gray-400 group-hover:text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
@@ -198,14 +198,14 @@
                 </button>
                 <router-link
                   :to="{ name: 'admin-user-edit', params: { id: user.id } }"
-                  class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group"
+                  class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group"
                   title="Edit"
                 >
                   <svg class="w-4 h-4 text-gray-400 group-hover:text-brand-violet dark:group-hover:text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                 </router-link>
                 <button
                   @click="confirmDelete(user)"
-                  class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group"
+                  class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group"
                   title="Delete"
                 >
                   <svg class="w-4 h-4 text-gray-400 group-hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
@@ -269,7 +269,7 @@
         <div class="flex items-center justify-center gap-1 mt-4 pt-3 border-t border-gray-100 dark:border-dark-700">
           <button
             @click="toggleActive(user)"
-            class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors"
+            class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors"
             :title="user.is_active ? 'Deactivate' : 'Activate'"
           >
             <svg v-if="user.is_active" class="w-4 h-4 text-gray-400 hover:text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
@@ -277,14 +277,14 @@
           </button>
           <router-link
             :to="{ name: 'admin-user-edit', params: { id: user.id } }"
-            class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors"
+            class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors"
             title="Edit"
           >
             <svg class="w-4 h-4 text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
           </router-link>
           <button
             @click="confirmDelete(user)"
-            class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors"
+            class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors"
             title="Delete"
           >
             <svg class="w-4 h-4 text-gray-400 hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
@@ -321,7 +321,7 @@
           <div class="relative bg-white dark:bg-dark-800 rounded-2xl shadow-2xl w-full max-w-md p-6 z-10">
             <div class="flex items-center justify-between mb-5">
               <h2 class="text-lg font-bold dark:text-white">Create New User</h2>
-              <button @click="showCreateModal = false" class="p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-700">
+              <button @click="showCreateModal = false" class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-dark-700">
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
               </button>
             </div>
@@ -389,7 +389,7 @@
             </p>
             <div class="flex justify-center gap-3">
               <button @click="deleteTarget = null" class="btn-ghost text-sm">Cancel</button>
-              <button @click="handleDelete" :disabled="deleting" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors">
+              <button @click="handleDelete" :disabled="deleting" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-full transition-colors">
                 {{ deleting ? 'Deleting...' : 'Delete' }}
               </button>
             </div>

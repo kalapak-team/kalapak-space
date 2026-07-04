@@ -69,7 +69,7 @@
               <div class="flex items-center justify-end gap-1">
                 <button
                   @click="openEdit(cat)"
-                  class="p-1.5 rounded-lg text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-brand-violet/10 dark:hover:bg-brand-cyan/10 transition-colors"
+                  class="p-1.5 rounded-full text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-brand-violet/10 dark:hover:bg-brand-cyan/10 transition-colors"
                   title="Rename"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -79,7 +79,7 @@
                 </button>
                 <button
                   @click="openDelete(cat)"
-                  class="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
+                  class="p-1.5 rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
                   title="Delete"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -162,7 +162,7 @@
 
           <div class="flex items-center gap-3">
             <button @click="confirmDelete" :disabled="deleteModal.saving"
-              class="flex-1 text-sm font-semibold px-4 py-2 rounded-xl bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 transition-colors flex items-center justify-center gap-2">
+              class="flex-1 text-sm font-semibold px-4 py-2 rounded-full bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 transition-colors flex items-center justify-center gap-2">
               <svg v-if="deleteModal.saving" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
@@ -178,7 +178,7 @@
     <!-- Toast -->
     <transition name="toast-fade">
       <div v-if="toast.show"
-        :class="['fixed top-5 right-5 z-[60] flex items-center gap-2.5 px-4 py-3 rounded-xl shadow-2xl text-sm font-medium pointer-events-none',
+        :class="['fixed top-5 right-5 z-[60] flex items-center gap-2.5 px-4 py-3 rounded-full shadow-2xl text-sm font-medium pointer-events-none',
           toast.type === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white']"
       >
         <svg v-if="toast.type === 'success'" class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

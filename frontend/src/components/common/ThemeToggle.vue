@@ -1,7 +1,7 @@
 <template>
   <button
     @click="themeStore.toggle()"
-    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-700 transition-colors duration-200"
+    class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-700 transition-colors duration-200"
     :title="themeStore.isDark ? 'Switch to light mode' : 'Switch to dark mode'"
   >
     <svg v-if="themeStore.isDark" class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

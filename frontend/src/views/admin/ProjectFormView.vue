@@ -45,7 +45,7 @@
                 Long Description
               </label>
               <ContentEditor v-if="editorReady" v-model="form.long_description" />
-              <div v-else class="flex items-center justify-center h-48 border border-gray-200 dark:border-dark-600 rounded-xl text-gray-400">
+              <div v-else class="flex items-center justify-center h-48 border border-gray-200 dark:border-dark-600 rounded-full text-gray-400">
                 <svg class="w-5 h-5 animate-spin mr-2" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
                 Loading editor...
               </div>
@@ -94,7 +94,7 @@
                   :class="form.storage_provider === 'supabase'
                     ? 'bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/30 ring-1 ring-emerald-200 dark:ring-emerald-500/20'
                     : 'bg-white dark:bg-dark-700 text-gray-500 border-gray-200 dark:border-dark-600 hover:border-gray-300'"
-                  class="flex-1 px-3 py-2 rounded-lg border text-xs font-medium transition-all text-center flex items-center justify-center gap-1.5">
+                  class="flex-1 px-3 py-2 rounded-full border text-xs font-medium transition-all text-center flex items-center justify-center gap-1.5">
                   <svg class="w-3.5 h-3.5" viewBox="0 0 109 113" fill="currentColor"><path d="M63.7 110.3c-2.6 3.1-7.8 3.1-10.4 0L2.5 49.2c-3.5-4.2-.3-10.4 5.2-10.4h100.6c5.5 0 8.7 6.2 5.2 10.4l-49.8 61.1z"/></svg>
                   Supabase
                 </button>
@@ -102,13 +102,13 @@
                   :class="form.storage_provider === 'cloudinary'
                     ? 'bg-blue-50 text-blue-700 border-blue-300 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/30 ring-1 ring-blue-200 dark:ring-blue-500/20'
                     : 'bg-white dark:bg-dark-700 text-gray-500 border-gray-200 dark:border-dark-600 hover:border-gray-300'"
-                  class="flex-1 px-3 py-2 rounded-lg border text-xs font-medium transition-all text-center flex items-center justify-center gap-1.5">
+                  class="flex-1 px-3 py-2 rounded-full border text-xs font-medium transition-all text-center flex items-center justify-center gap-1.5">
                   <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                   Cloudinary
                 </button>
               </div>
               <!-- Single provider locked -->
-              <div v-else class="flex items-center gap-2 px-3 py-2 rounded-lg border bg-gray-50 dark:bg-dark-700 border-gray-200 dark:border-dark-600 text-xs text-gray-500 dark:text-gray-400">
+              <div v-else class="flex items-center gap-2 px-3 py-2 rounded-full border bg-gray-50 dark:bg-dark-700 border-gray-200 dark:border-dark-600 text-xs text-gray-500 dark:text-gray-400">
                 <svg v-if="allowedProviders === 'supabase'" class="w-3.5 h-3.5 text-emerald-500" viewBox="0 0 109 113" fill="currentColor"><path d="M63.7 110.3c-2.6 3.1-7.8 3.1-10.4 0L2.5 49.2c-3.5-4.2-.3-10.4 5.2-10.4h100.6c5.5 0 8.7 6.2 5.2 10.4l-49.8 61.1z"/></svg>
                 <svg v-else class="w-3.5 h-3.5 text-blue-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                 {{ allowedProviders === 'supabase' ? 'Supabase' : 'Cloudinary' }}
@@ -116,13 +116,13 @@
               </div>
             </div>
             <div class="relative">
-              <div v-if="imagePreview || existingImage" class="relative rounded-xl overflow-hidden group">
+              <div v-if="imagePreview || existingImage" class="relative rounded-full overflow-hidden group">
                 <img :src="imagePreview || existingImage" alt="Cover preview" class="w-full h-40 object-cover" />
                 <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <button type="button" @click="removeImage" class="px-3 py-1.5 bg-white/90 text-gray-800 text-xs rounded-lg font-medium hover:bg-white transition-colors">Remove</button>
+                  <button type="button" @click="removeImage" class="px-3 py-1.5 bg-white/90 text-gray-800 text-xs rounded-full font-medium hover:bg-white transition-colors">Remove</button>
                 </div>
               </div>
-              <label v-else class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 dark:border-dark-500 rounded-xl cursor-pointer hover:border-brand-violet dark:hover:border-brand-cyan transition-colors bg-gray-50/50 dark:bg-dark-700/30">
+              <label v-else class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 dark:border-dark-500 rounded-full cursor-pointer hover:border-brand-violet dark:hover:border-brand-cyan transition-colors bg-gray-50/50 dark:bg-dark-700/30">
                 <svg class="w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
                 <span class="text-xs text-gray-500">Click to upload</span>
                 <span class="text-[10px] text-gray-400 mt-1">PNG, JPG up to 2MB</span>
@@ -178,7 +178,7 @@
                 :options="[{ label: 'None', value: '' }, ...filteredCollections.map((c) => ({ label: c.name, value: String(c.id) }))]"
                 placeholder="None"
               />
-              <button type="button" class="shrink-0 px-3 py-2 rounded-lg border border-gray-200 dark:border-dark-600 text-xs font-medium text-brand-violet dark:text-brand-cyan hover:bg-gray-50 dark:hover:bg-white/[0.04]" @click="openCollectionModal">
+              <button type="button" class="shrink-0 px-3 py-2 rounded-full border border-gray-200 dark:border-dark-600 text-xs font-medium text-brand-violet dark:text-brand-cyan hover:bg-gray-50 dark:hover:bg-white/[0.04]" @click="openCollectionModal">
                 New
               </button>
             </div>

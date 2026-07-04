@@ -15,7 +15,7 @@
 
         <!-- ── Logo ── -->
         <router-link to="/" class="nav-logo group flex items-center gap-2.5 relative [transition:all_0.35s_ease]">
-          <img src="https://res.cloudinary.com/kalapak/image/upload/q_auto/f_auto/v1775860922/Logo_kalapak_om1ygl.png" alt="Kalapak Logo" class="rounded-xl object-contain shadow-md shadow-brand-violet/20 dark:shadow-brand-cyan/20 group-hover:shadow-lg group-hover:shadow-brand-violet/30 dark:group-hover:shadow-brand-cyan/30 [transition:all_0.35s_ease] group-hover:scale-105" :class="isDocsPage ? 'w-9 h-9' : (scrolled ? 'w-8 h-8 scale-95' : 'w-11 h-11')" />
+          <img src="https://res.cloudinary.com/kalapak/image/upload/q_auto/f_auto/v1775860922/Logo_kalapak_om1ygl.png" alt="Kalapak Logo" class="rounded-full object-contain shadow-md shadow-brand-violet/20 dark:shadow-brand-cyan/20 group-hover:shadow-lg group-hover:shadow-brand-violet/30 dark:group-hover:shadow-brand-cyan/30 [transition:all_0.35s_ease] group-hover:scale-105" :class="isDocsPage ? 'w-9 h-9' : (scrolled ? 'w-8 h-8 scale-95' : 'w-11 h-11')" />
           <div class="flex flex-col leading-none [transition:all_0.35s_ease]" :class="isDocsPage ? '' : (scrolled ? 'scale-95' : 'scale-100')">
             <span class="font-sans font-bold tracking-tight text-gray-900 dark:text-white group-hover:text-brand-violet dark:group-hover:text-brand-cyan [transition:all_0.35s_ease]" :class="isDocsPage ? 'text-[15px]' : (scrolled ? 'text-[14px]' : 'text-[16px]')">Kalapak</span>
             <span class="font-medium uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500 [transition:all_0.35s_ease]" :class="isDocsPage ? 'text-[9px]' : (scrolled ? 'text-[8px]' : 'text-[10px]')">Code Team</span>
@@ -30,7 +30,7 @@
         <div v-if="isDocsPage" class="hidden lg:flex flex-1 items-center mx-6">
           <button
             @click="openSearch"
-            class="w-full max-w-xl flex items-center gap-3 px-4 py-2 rounded-xl text-sm text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-white/[0.08] bg-gray-50 dark:bg-white/[0.03] hover:border-brand-violet/40 dark:hover:border-brand-cyan/30 hover:bg-white dark:hover:bg-white/[0.05] transition-all duration-200 group"
+            class="w-full max-w-xl flex items-center gap-3 px-4 py-2 rounded-full text-sm text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-white/[0.08] bg-gray-50 dark:bg-white/[0.03] hover:border-brand-violet/40 dark:hover:border-brand-cyan/30 hover:bg-white dark:hover:bg-white/[0.05] transition-all duration-200 group"
           >
             <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
             <span class="flex-1 text-left">Search everything...</span>
@@ -43,7 +43,7 @@
               v-for="link in navLinks"
               :key="link.name"
               :to="link.to"
-              class="nav-link relative px-3 py-1.5 rounded-xl text-[12.5px] font-semibold tracking-wide transition-all duration-300 whitespace-nowrap"
+              class="nav-link relative px-3 py-1.5 rounded-full text-[12.5px] font-semibold tracking-wide transition-all duration-300 whitespace-nowrap"
               :class="[
                 isActive(link.name)
                   ? 'nav-link-active text-white shadow-md shadow-brand-violet/25 dark:shadow-brand-cyan/25'
@@ -56,12 +56,12 @@
               <!-- Active pill background -->
               <span
                 v-if="isActive(link.name)"
-                class="absolute inset-0 rounded-xl bg-gradient-to-r from-brand-violet to-brand-cyan"
+                class="absolute inset-0 rounded-full bg-gradient-to-r from-brand-violet to-brand-cyan"
               />
               <!-- Hover background -->
               <span
                 v-else
-                class="absolute inset-0 rounded-xl bg-white dark:bg-white/[0.06] opacity-0 hover-bg transition-opacity duration-200"
+                class="absolute inset-0 rounded-full bg-white dark:bg-white/[0.06] opacity-0 hover-bg transition-opacity duration-200"
               />
             </router-link>
           </div>
@@ -73,7 +73,7 @@
           <button
             v-if="!isDocsPage"
             @click="openSearch"
-            class="nav-action-btn hidden sm:flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-gray-400 dark:text-gray-500 border border-gray-200/70 dark:border-white/[0.06] bg-white/50 dark:bg-white/[0.02] hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 hover:text-gray-600 dark:hover:text-gray-300 transition-all duration-200"
+            class="nav-action-btn hidden sm:flex items-center gap-2 px-3 py-2 rounded-full text-xs text-gray-400 dark:text-gray-500 border border-gray-200/70 dark:border-white/[0.06] bg-white/50 dark:bg-white/[0.02] hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 hover:text-gray-600 dark:hover:text-gray-300 transition-all duration-200"
             title="Search"
           >
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
@@ -92,7 +92,7 @@
             <div class="relative" ref="notifDropdownRef">
               <button
                 @click="toggleNotifications"
-                class="nav-icon-btn relative p-2 rounded-xl text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-all duration-200"
+                class="nav-icon-btn relative p-2 rounded-full text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-all duration-200"
               >
                 <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg>
                 <span v-if="notifStore.unreadCount > 0" class="absolute top-1 right-1 min-w-[16px] h-4 flex items-center justify-center px-1 rounded-full bg-red-500 text-white text-[10px] font-bold ring-2 ring-white dark:ring-dark-800">
@@ -146,7 +146,7 @@
                           <!-- Icon -->
                           <div class="flex-shrink-0 mt-0.5">
                             <div
-                              class="w-8 h-8 rounded-lg flex items-center justify-center"
+                              class="w-8 h-8 rounded-full flex items-center justify-center"
                               :class="notifIconClass(notif.data?.icon)"
                             >
                               <svg v-if="notif.data?.icon === 'success'" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
@@ -192,16 +192,16 @@
             <div class="relative" ref="profileDropdownRef">
               <button
                 @click="profileOpen = !profileOpen"
-                class="nav-profile-btn flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-xl hover:bg-gray-100/80 dark:hover:bg-white/[0.05] transition-all duration-200"
+                class="nav-profile-btn flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-full hover:bg-gray-100/80 dark:hover:bg-white/[0.05] transition-all duration-200"
               >
                 <div class="relative">
                   <img
                     v-if="authStore.user?.avatar"
                     :src="authStore.user.avatar"
                     :alt="authStore.user?.name"
-                    class="w-8 h-8 rounded-lg object-cover ring-2 ring-brand-violet/20 dark:ring-brand-cyan/20"
+                    class="w-8 h-8 rounded-full object-cover ring-2 ring-brand-violet/20 dark:ring-brand-cyan/20"
                   />
-                  <div v-else class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-violet to-brand-cyan flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                  <div v-else class="w-8 h-8 rounded-full bg-gradient-to-br from-brand-violet to-brand-cyan flex items-center justify-center text-white text-xs font-bold shadow-sm">
                     {{ authStore.user?.name?.charAt(0)?.toUpperCase() || '?' }}
                   </div>
                   <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-green-500 ring-2 ring-white dark:ring-dark-800" />
@@ -235,9 +235,9 @@
                       <img
                         v-if="authStore.user?.avatar"
                         :src="authStore.user.avatar"
-                        class="w-10 h-10 rounded-xl object-cover"
+                        class="w-10 h-10 rounded-full object-cover"
                       />
-                      <div v-else class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-violet to-brand-cyan flex items-center justify-center text-white font-bold">
+                      <div v-else class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-violet to-brand-cyan flex items-center justify-center text-white font-bold">
                         {{ authStore.user?.name?.charAt(0)?.toUpperCase() || '?' }}
                       </div>
                       <div class="min-w-0 flex-1">
@@ -245,7 +245,7 @@
                         <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ authStore.user?.email }}</p>
                       </div>
                     </div>
-                    <span v-if="authStore.user?.role?.name" class="inline-flex items-center gap-1 mt-2.5 px-2.5 py-1 text-[10px] font-semibold rounded-lg bg-brand-violet/8 text-brand-violet dark:bg-brand-cyan/8 dark:text-brand-cyan uppercase tracking-wider">
+                    <span v-if="authStore.user?.role?.name" class="inline-flex items-center gap-1 mt-2.5 px-2.5 py-1 text-[10px] font-semibold rounded-full bg-brand-violet/8 text-brand-violet dark:bg-brand-cyan/8 dark:text-brand-cyan uppercase tracking-wider">
                       <span class="w-1 h-1 rounded-full bg-current" />
                       {{ authStore.user.role.name }}
                     </span>
@@ -298,12 +298,11 @@
 
           <!-- Guest actions -->
           <template v-else>
-            <router-link :to="{ name: 'login' }" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-[13px] font-semibold text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100/80 dark:hover:bg-white/[0.05] transition-all duration-200">
+            <router-link :to="{ name: 'login' }" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-semibold text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100/80 dark:hover:bg-white/[0.05] transition-all duration-200">
               Sign In
             </router-link>
-            <router-link :to="{ name: 'register' }" class="nav-cta-btn group relative hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-[13px] font-bold text-white overflow-hidden shadow-md shadow-brand-violet/20 dark:shadow-brand-cyan/20 hover:shadow-lg hover:shadow-brand-violet/30 dark:hover:shadow-brand-cyan/30 hover:-translate-y-[1px] transition-all duration-300">
+            <router-link :to="{ name: 'register' }" class="nav-cta-btn group relative hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] font-bold text-white overflow-hidden shadow-md shadow-brand-violet/20 dark:shadow-brand-cyan/20 hover:shadow-lg hover:shadow-brand-violet/30 dark:hover:shadow-brand-cyan/30 hover:-translate-y-[1px] transition-all duration-300">
               <span class="relative z-10">Get Started</span>
-              <svg class="relative z-10 w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
               <span class="absolute inset-0 bg-gradient-to-r from-brand-violet to-brand-cyan" />
               <span class="absolute inset-0 bg-gradient-to-r from-brand-cyan to-brand-violet opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </router-link>
@@ -311,7 +310,7 @@
 
           <!-- Mobile menu button -->
           <button
-            class="lg:hidden relative p-2.5 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-all duration-200"
+            class="lg:hidden relative p-2.5 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-all duration-200"
             @click="mobileOpen = !mobileOpen"
           >
             <div class="w-5 h-4 flex flex-col justify-between relative">
@@ -345,16 +344,16 @@
               v-if="authStore.user?.avatar"
               :src="authStore.user.avatar"
               :alt="authStore.user?.name"
-              class="w-12 h-12 rounded-xl object-cover ring-2 ring-brand-violet/20 dark:ring-brand-cyan/20"
+              class="w-12 h-12 rounded-full object-cover ring-2 ring-brand-violet/20 dark:ring-brand-cyan/20"
             />
-            <div v-else class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-violet to-brand-cyan flex items-center justify-center text-white font-bold text-lg shadow-md">
+            <div v-else class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-violet to-brand-cyan flex items-center justify-center text-white font-bold text-lg shadow-md">
               {{ authStore.user?.name?.charAt(0)?.toUpperCase() || '?' }}
             </div>
             <div class="min-w-0 flex-1">
               <p class="text-sm font-bold text-gray-900 dark:text-white truncate">{{ authStore.user?.name }}</p>
               <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ authStore.user?.email }}</p>
             </div>
-            <span v-if="authStore.user?.role?.name" class="px-2 py-1 text-[9px] font-bold uppercase tracking-wider rounded-lg bg-brand-violet/8 text-brand-violet dark:bg-brand-cyan/8 dark:text-brand-cyan">
+            <span v-if="authStore.user?.role?.name" class="px-2 py-1 text-[9px] font-bold uppercase tracking-wider rounded-full bg-brand-violet/8 text-brand-violet dark:bg-brand-cyan/8 dark:text-brand-cyan">
               {{ authStore.user.role.name }}
             </span>
           </div>
@@ -365,7 +364,7 @@
               v-for="link in navLinks"
               :key="link.name"
               :to="link.to"
-              class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-[14px] font-semibold transition-all duration-200"
+              class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-full text-[14px] font-semibold transition-all duration-200"
               :class="[
                 isActive(link.name)
                   ? 'text-white bg-gradient-to-r from-brand-violet to-brand-cyan shadow-md'
@@ -382,17 +381,17 @@
           <!-- Mobile auth section -->
           <div v-if="authStore.isAuthenticated && authChromeReady" class="p-3 pt-0 space-y-0.5">
             <div class="h-px bg-gray-100 dark:bg-white/[0.06] my-2" />
-            <router-link to="/member/profile" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100/80 dark:hover:bg-white/[0.05]" @click="mobileOpen = false">
+            <router-link to="/member/profile" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-full text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100/80 dark:hover:bg-white/[0.05]" @click="mobileOpen = false">
               <svg class="w-[18px] h-[18px] flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
               My Profile
             </router-link>
-            <router-link v-if="authStore.isAdmin" :to="{ name: 'admin-dashboard' }" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100/80 dark:hover:bg-white/[0.05]" @click="mobileOpen = false">
+            <router-link v-if="authStore.isAdmin" :to="{ name: 'admin-dashboard' }" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-full text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100/80 dark:hover:bg-white/[0.05]" @click="mobileOpen = false">
               <svg class="w-[18px] h-[18px] flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5"/></svg>
               Dashboard
             </router-link>
             <button
               @click="handleLogout(); mobileOpen = false"
-              class="mobile-nav-link flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10"
+              class="mobile-nav-link flex items-center gap-3 w-full px-4 py-3 rounded-full text-sm font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10"
             >
               <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" /></svg>
               Sign Out
@@ -401,12 +400,11 @@
 
           <!-- Guest CTA in mobile -->
           <div v-else class="p-4 pt-2 space-y-2 border-t border-gray-100 dark:border-white/[0.06]">
-            <router-link :to="{ name: 'login' }" class="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-white/[0.08] hover:bg-gray-50 dark:hover:bg-white/[0.03] transition-colors" @click="mobileOpen = false">
+            <router-link :to="{ name: 'login' }" class="flex items-center justify-center gap-2 w-full py-3 rounded-full text-sm font-semibold text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-white/[0.08] hover:bg-gray-50 dark:hover:bg-white/[0.03] transition-colors" @click="mobileOpen = false">
               Sign In
             </router-link>
-            <router-link :to="{ name: 'register' }" class="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-brand-violet to-brand-cyan shadow-md" @click="mobileOpen = false">
+            <router-link :to="{ name: 'register' }" class="flex items-center justify-center gap-2 w-full py-3 rounded-full text-sm font-bold text-white bg-gradient-to-r from-brand-violet to-brand-cyan shadow-md" @click="mobileOpen = false">
               Get Started Free
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
             </router-link>
           </div>
         </div>

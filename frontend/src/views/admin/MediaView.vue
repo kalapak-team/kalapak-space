@@ -7,19 +7,19 @@
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Manage uploaded images and documents</p>
       </div>
       <div class="flex items-center gap-2">
-        <button v-if="selectedIds.length && authStore.canDo('media', 'delete')" @click="bulkDelete" class="px-3 py-2 text-xs font-medium rounded-lg bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500/20 transition-colors flex items-center gap-1.5">
+        <button v-if="selectedIds.length && authStore.canDo('media', 'delete')" @click="bulkDelete" class="px-3 py-2 text-xs font-medium rounded-full bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500/20 transition-colors flex items-center gap-1.5">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
           Delete {{ selectedIds.length }}
         </button>
         <!-- Single provider locked by super admin -->
-        <div v-if="allowedProviders !== 'both'" class="flex items-center gap-1.5 px-3 py-2 rounded-lg border bg-gray-50 dark:bg-dark-700 border-gray-200 dark:border-dark-600 text-xs text-gray-500 dark:text-gray-400">
+        <div v-if="allowedProviders !== 'both'" class="flex items-center gap-1.5 px-3 py-2 rounded-full border bg-gray-50 dark:bg-dark-700 border-gray-200 dark:border-dark-600 text-xs text-gray-500 dark:text-gray-400">
           <svg v-if="allowedProviders === 'supabase'" class="w-3.5 h-3.5 text-emerald-500" viewBox="0 0 109 113" fill="currentColor"><path d="M63.7 110.3c-2.6 3.1-7.8 3.1-10.4 0L2.5 49.2c-3.5-4.2-.3-10.4 5.2-10.4h100.6c5.5 0 8.7 6.2 5.2 10.4l-49.8 61.1z"/></svg>
           <svg v-else class="w-3.5 h-3.5 text-blue-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
           {{ allowedProviders === 'supabase' ? 'Supabase' : 'Cloudinary' }}
           <span class="text-[10px] text-gray-400 ml-1">· Set by Super Admin</span>
         </div>
         <!-- Both allowed: toggle buttons -->
-        <div v-else class="flex items-center border border-gray-200 dark:border-dark-600 rounded-lg overflow-hidden">
+        <div v-else class="flex items-center border border-gray-200 dark:border-dark-600 rounded-full overflow-hidden">
           <button type="button" @click="storageProvider = 'supabase'"
             :class="storageProvider === 'supabase' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-dark-700'"
             class="px-3 py-2 flex items-center gap-1.5 transition-colors text-xs font-medium">
@@ -44,7 +44,7 @@
     <!-- Stats Cards -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-brand-violet/10 dark:bg-brand-violet/20 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-brand-violet/10 dark:bg-brand-violet/20 flex items-center justify-center">
           <svg class="w-5 h-5 text-brand-violet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
         </div>
         <div>
@@ -53,7 +53,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center">
           <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
         </div>
         <div>
@@ -62,7 +62,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center">
           <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
         </div>
         <div>
@@ -71,7 +71,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
           <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg>
         </div>
         <div>
@@ -123,7 +123,7 @@
           class="w-full md:w-40"
           @change="fetchMedia()"
         />
-        <div class="flex items-center border border-gray-200 dark:border-dark-600 rounded-lg overflow-hidden">
+        <div class="flex items-center border border-gray-200 dark:border-dark-600 rounded-full overflow-hidden">
           <button @click="viewMode = 'grid'" class="p-2 transition-colors" :class="viewMode === 'grid' ? 'bg-brand-violet/10 text-brand-violet dark:bg-brand-cyan/10 dark:text-brand-cyan' : 'text-gray-400 hover:text-gray-600'">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
           </button>
@@ -142,7 +142,7 @@
     <!-- Grid View -->
     <div v-else-if="viewMode === 'grid' && media.length" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
       <div v-for="item in media" :key="item.id"
-        class="glass-card !p-0 group relative overflow-hidden rounded-xl cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02]"
+        class="glass-card !p-0 group relative overflow-hidden rounded-full cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02]"
         :class="{ 'ring-2 ring-brand-violet dark:ring-brand-cyan': selectedIds.includes(item.id) }"
         @click="openPreview(item)">
         <!-- Select Checkbox -->
@@ -169,10 +169,10 @@
         </div>
         <!-- Hover Actions -->
         <div class="absolute top-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button @click.stop="copyUrl(item)" class="w-7 h-7 rounded-lg bg-black/50 backdrop-blur-sm text-white flex items-center justify-center hover:bg-black/70 transition-colors" title="Copy URL">
+          <button @click.stop="copyUrl(item)" class="w-7 h-7 rounded-full bg-black/50 backdrop-blur-sm text-white flex items-center justify-center hover:bg-black/70 transition-colors" title="Copy URL">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
           </button>
-          <button v-if="authStore.canDo('media', 'delete')" @click.stop="deleteTarget = item" class="w-7 h-7 rounded-lg bg-red-500/80 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 transition-colors" title="Delete">
+          <button v-if="authStore.canDo('media', 'delete')" @click.stop="deleteTarget = item" class="w-7 h-7 rounded-full bg-red-500/80 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 transition-colors" title="Delete">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
           </button>
         </div>
@@ -203,7 +203,7 @@
               </td>
               <td class="px-4 py-3">
                 <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-lg overflow-hidden bg-gray-100 dark:bg-dark-600 flex-shrink-0">
+                  <div class="w-10 h-10 rounded-full overflow-hidden bg-gray-100 dark:bg-dark-600 flex-shrink-0">
                     <img v-if="isImage(item)" :src="item.url" :alt="item.original_name" class="w-full h-full object-cover" loading="lazy" />
                     <div v-else class="w-full h-full flex items-center justify-center">
                       <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -222,10 +222,10 @@
               <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ formatDate(item.created_at) }}</td>
               <td class="px-4 py-3 text-right" @click.stop>
                 <div class="flex items-center justify-end gap-1">
-                  <button @click="copyUrl(item)" class="p-1.5 rounded-lg text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-brand-violet/10 dark:hover:bg-brand-cyan/10 transition-colors" title="Copy URL">
+                  <button @click="copyUrl(item)" class="p-1.5 rounded-full text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-brand-violet/10 dark:hover:bg-brand-cyan/10 transition-colors" title="Copy URL">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
                   </button>
-                  <button v-if="authStore.canDo('media', 'delete')" @click="deleteTarget = item" class="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-500/10 transition-colors" title="Delete">
+                  <button v-if="authStore.canDo('media', 'delete')" @click="deleteTarget = item" class="p-1.5 rounded-full text-gray-400 hover:text-red-500 hover:bg-red-500/10 transition-colors" title="Delete">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                   </button>
                 </div>
@@ -271,23 +271,23 @@
                   </div>
                 </div>
                 <div class="flex items-center gap-1 flex-shrink-0">
-                  <button @click="copyUrl(preview)" class="p-2 rounded-lg text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-brand-violet/10 dark:hover:bg-brand-cyan/10 transition-colors" title="Copy URL">
+                  <button @click="copyUrl(preview)" class="p-2 rounded-full text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-brand-violet/10 dark:hover:bg-brand-cyan/10 transition-colors" title="Copy URL">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
                   </button>
-                  <a :href="preview.url" target="_blank" class="p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:text-gray-300 dark:hover:bg-dark-700 transition-colors" title="Open original">
+                  <a :href="preview.url" target="_blank" class="p-2 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:text-gray-300 dark:hover:bg-dark-700 transition-colors" title="Open original">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                   </a>
-                  <button v-if="authStore.canDo('media', 'delete')" @click="deleteTarget = preview; preview = null" class="p-2 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-500/10 transition-colors" title="Delete">
+                  <button v-if="authStore.canDo('media', 'delete')" @click="deleteTarget = preview; preview = null" class="p-2 rounded-full text-gray-400 hover:text-red-500 hover:bg-red-500/10 transition-colors" title="Delete">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                   </button>
-                  <button @click="preview = null" class="p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:text-gray-300 dark:hover:bg-dark-700 transition-colors">
+                  <button @click="preview = null" class="p-2 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:text-gray-300 dark:hover:bg-dark-700 transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                   </button>
                 </div>
               </div>
               <!-- Preview Content -->
               <div class="flex-1 overflow-auto p-4 flex items-center justify-center bg-gray-50 dark:bg-dark-900 min-h-[300px]">
-                <img v-if="isImage(preview)" :src="preview.url" :alt="preview.original_name" class="max-w-full max-h-[65vh] object-contain rounded-lg shadow-lg" />
+                <img v-if="isImage(preview)" :src="preview.url" :alt="preview.original_name" class="max-w-full max-h-[65vh] object-contain rounded-full shadow-lg" />
                 <div v-else class="flex flex-col items-center text-center py-12">
                   <svg class="w-20 h-20 text-gray-300 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                   <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Preview not available for this file type</p>
@@ -306,7 +306,7 @@
         <div v-if="deleteTarget" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" @click.self="deleteTarget = null">
           <div class="bg-white dark:bg-dark-800 rounded-2xl shadow-2xl max-w-sm w-full p-6 border border-gray-200 dark:border-dark-600">
             <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center">
+              <div class="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
                 <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
               </div>
               <div>
@@ -314,8 +314,8 @@
                 <p class="text-sm text-gray-500 dark:text-gray-400">This action cannot be undone.</p>
               </div>
             </div>
-            <div class="flex items-center gap-3 mb-5 p-3 rounded-lg bg-gray-50 dark:bg-dark-700">
-              <div class="w-10 h-10 rounded-lg overflow-hidden bg-gray-200 dark:bg-dark-600 flex-shrink-0">
+            <div class="flex items-center gap-3 mb-5 p-3 rounded-full bg-gray-50 dark:bg-dark-700">
+              <div class="w-10 h-10 rounded-full overflow-hidden bg-gray-200 dark:bg-dark-600 flex-shrink-0">
                 <img v-if="isImage(deleteTarget)" :src="deleteTarget.url" class="w-full h-full object-cover" />
                 <div v-else class="w-full h-full flex items-center justify-center">
                   <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -327,8 +327,8 @@
               </div>
             </div>
             <div class="flex items-center gap-3 justify-end">
-              <button @click="deleteTarget = null" class="px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 dark:bg-dark-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-500 transition-colors">Cancel</button>
-              <button @click="confirmDelete" class="px-4 py-2 text-sm font-medium rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors">Delete</button>
+              <button @click="deleteTarget = null" class="px-4 py-2 text-sm font-medium rounded-full bg-gray-100 dark:bg-dark-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-500 transition-colors">Cancel</button>
+              <button @click="confirmDelete" class="px-4 py-2 text-sm font-medium rounded-full bg-red-600 text-white hover:bg-red-700 transition-colors">Delete</button>
             </div>
           </div>
         </div>

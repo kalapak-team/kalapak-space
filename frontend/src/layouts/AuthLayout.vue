@@ -53,7 +53,7 @@
           <img
             src="https://res.cloudinary.com/kalapak/image/upload/q_auto/f_auto/v1775860922/Logo_kalapak_om1ygl.png"
             alt="Kalapak Logo"
-            class="w-12 h-12 rounded-xl object-contain shadow-lg shadow-brand-violet/25 group-hover:shadow-brand-violet/40 transition-shadow"
+            class="w-12 h-12 rounded-full object-contain shadow-lg shadow-brand-violet/25 group-hover:shadow-brand-violet/40 transition-shadow"
           />
           <div>
             <h1 class="text-xl font-sans font-bold text-white">Kalapak</h1>
@@ -137,7 +137,7 @@
           <img
             src="https://res.cloudinary.com/kalapak/image/upload/q_auto/f_auto/v1775860922/Logo_kalapak_om1ygl.png"
             alt="Kalapak Logo"
-            class="w-10 h-10 rounded-xl shadow-lg shadow-brand-violet/25"
+            class="w-10 h-10 rounded-full shadow-lg shadow-brand-violet/25"
           />
           <div>
             <h1 class="text-lg font-sans font-bold text-white">Kalapak</h1>

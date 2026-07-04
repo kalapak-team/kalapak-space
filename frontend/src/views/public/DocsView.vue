@@ -36,7 +36,7 @@
                 <li v-for="page in mainMenu.pages" :key="page.slug">
                   <button
                     @click="loadDoc(page.slug)"
-                    class="w-full text-left px-3 py-1.5 rounded-lg text-[13.5px] transition-colors duration-150"
+                    class="w-full text-left px-3 py-1.5 rounded-full text-[13.5px] transition-colors duration-150"
                     :class="currentSlug === page.slug
                       ? 'bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan font-semibold border-l-2 border-brand-violet dark:border-brand-cyan'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.04]'"
@@ -45,7 +45,7 @@
                     <li v-for="sub in page.children" :key="sub.slug">
                       <button
                         @click="loadDoc(sub.slug)"
-                        class="w-full text-left px-2 py-1.5 rounded-lg text-[13px] transition-colors duration-150"
+                        class="w-full text-left px-2 py-1.5 rounded-full text-[13px] transition-colors duration-150"
                         :class="currentSlug === sub.slug
                           ? 'bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan font-semibold border-l-2 border-brand-violet dark:border-brand-cyan'
                           : 'text-gray-500 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.04]'"
@@ -62,7 +62,7 @@
                   <li v-for="page in subMenu.pages" :key="page.slug">
                     <button
                       @click="loadDoc(page.slug)"
-                      class="w-full text-left px-3 py-1.5 rounded-lg text-[13.5px] transition-colors duration-150"
+                      class="w-full text-left px-3 py-1.5 rounded-full text-[13.5px] transition-colors duration-150"
                       :class="currentSlug === page.slug
                         ? 'bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan font-semibold border-l-2 border-brand-violet dark:border-brand-cyan'
                         : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.04]'"
@@ -72,7 +72,7 @@
                       <li v-for="sub in page.children" :key="sub.slug">
                         <button
                           @click="loadDoc(sub.slug)"
-                          class="w-full text-left px-2 py-1.5 rounded-lg text-[13px] transition-colors duration-150"
+                          class="w-full text-left px-2 py-1.5 rounded-full text-[13px] transition-colors duration-150"
                           :class="currentSlug === sub.slug
                             ? 'bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan font-semibold border-l-2 border-brand-violet dark:border-brand-cyan'
                             : 'text-gray-500 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.04]'"

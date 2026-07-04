@@ -15,7 +15,7 @@
     <!-- Stats Cards -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-brand-violet/10 dark:bg-brand-violet/20 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-brand-violet/10 dark:bg-brand-violet/20 flex items-center justify-center">
           <svg class="w-5 h-5 text-brand-violet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
         </div>
         <div>
@@ -24,7 +24,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
           <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
         <div>
@@ -33,7 +33,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center">
           <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
         <div>
@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-brand-cyan/10 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-brand-cyan/10 flex items-center justify-center">
           <svg class="w-5 h-5 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
         </div>
         <div>
@@ -96,7 +96,7 @@
           class="w-full md:w-48"
           @change="fetchProjects()"
         />
-        <div class="flex items-center border border-gray-200 dark:border-dark-600 rounded-lg overflow-hidden">
+        <div class="flex items-center border border-gray-200 dark:border-dark-600 rounded-full overflow-hidden">
           <button @click="viewMode = 'table'" class="p-2 transition-colors" :class="viewMode === 'table' ? 'bg-brand-violet/10 text-brand-violet dark:bg-brand-cyan/10 dark:text-brand-cyan' : 'text-gray-400 hover:text-gray-600'">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
           </button>
@@ -138,8 +138,8 @@
             <td class="py-3 px-4">
               <div class="flex items-center gap-3">
                 <div class="relative flex-shrink-0">
-                  <img v-if="project.cover_image" :src="project.cover_image" :alt="project.title" class="w-14 h-10 object-cover rounded-lg ring-1 ring-gray-200 dark:ring-dark-600" />
-                  <div v-else class="w-14 h-10 rounded-lg bg-gradient-to-br from-brand-violet/20 to-brand-cyan/20 dark:from-brand-violet/10 dark:to-brand-cyan/10 flex items-center justify-center">
+                  <img v-if="project.cover_image" :src="project.cover_image" :alt="project.title" class="w-14 h-10 object-cover rounded-full ring-1 ring-gray-200 dark:ring-dark-600" />
+                  <div v-else class="w-14 h-10 rounded-full bg-gradient-to-br from-brand-violet/20 to-brand-cyan/20 dark:from-brand-violet/10 dark:to-brand-cyan/10 flex items-center justify-center">
                     <svg class="w-5 h-5 text-brand-violet/50 dark:text-brand-cyan/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                   </div>
                 </div>
@@ -175,16 +175,16 @@
             </td>
             <td class="py-3 px-4 text-right">
               <div class="flex items-center justify-end gap-1">
-                <a v-if="project.demo_url" :href="project.demo_url" target="_blank" rel="noopener" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="View Demo">
+                <a v-if="project.demo_url" :href="project.demo_url" target="_blank" rel="noopener" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="View Demo">
                   <svg class="w-4 h-4 text-gray-400 group-hover:text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                 </a>
-                <a v-if="project.repo_url" :href="project.repo_url" target="_blank" rel="noopener" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="View Repo">
+                <a v-if="project.repo_url" :href="project.repo_url" target="_blank" rel="noopener" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="View Repo">
                   <svg class="w-4 h-4 text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-200" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
                 </a>
-                <router-link v-if="authStore.canDo('projects', 'update')" :to="{ name: 'admin-project-edit', params: { id: project.id } }" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Edit">
+                <router-link v-if="authStore.canDo('projects', 'update')" :to="{ name: 'admin-project-edit', params: { id: project.id } }" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Edit">
                   <svg class="w-4 h-4 text-gray-400 group-hover:text-brand-violet dark:group-hover:text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                 </router-link>
-                <button v-if="authStore.canDo('projects', 'delete')" @click="confirmDelete(project)" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Delete">
+                <button v-if="authStore.canDo('projects', 'delete')" @click="confirmDelete(project)" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Delete">
                   <svg class="w-4 h-4 text-gray-400 group-hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                 </button>
               </div>
@@ -235,13 +235,13 @@
           <div class="flex items-center justify-between mt-4 pt-3 border-t border-gray-100 dark:border-dark-700">
             <span class="text-[10px] text-gray-400">{{ formatDate(project.created_at) }}</span>
             <div class="flex items-center gap-1">
-              <a v-if="project.demo_url" :href="project.demo_url" target="_blank" rel="noopener" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Demo">
+              <a v-if="project.demo_url" :href="project.demo_url" target="_blank" rel="noopener" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Demo">
                 <svg class="w-3.5 h-3.5 text-gray-400 hover:text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
               </a>
-              <router-link v-if="authStore.canDo('projects', 'update')" :to="{ name: 'admin-project-edit', params: { id: project.id } }" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Edit">
+              <router-link v-if="authStore.canDo('projects', 'update')" :to="{ name: 'admin-project-edit', params: { id: project.id } }" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Edit">
                 <svg class="w-3.5 h-3.5 text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
               </router-link>
-              <button v-if="authStore.canDo('projects', 'delete')" @click="confirmDelete(project)" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Delete">
+              <button v-if="authStore.canDo('projects', 'delete')" @click="confirmDelete(project)" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Delete">
                 <svg class="w-3.5 h-3.5 text-gray-400 hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
               </button>
             </div>
@@ -278,7 +278,7 @@
             </p>
             <div class="flex justify-center gap-3">
               <button @click="deleteTarget = null" class="btn-ghost text-sm">Cancel</button>
-              <button @click="handleDelete" :disabled="deleting" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors">
+              <button @click="handleDelete" :disabled="deleting" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-full transition-colors">
                 {{ deleting ? 'Deleting...' : 'Delete' }}
               </button>
             </div>

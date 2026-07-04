@@ -5,7 +5,7 @@
       <button
         @click="refresh"
         :disabled="loading"
-        class="px-3 py-1.5 text-sm rounded-lg bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan hover:bg-brand-violet/20 dark:hover:bg-brand-cyan/20 transition-colors disabled:opacity-50"
+        class="px-3 py-1.5 text-sm rounded-full bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan hover:bg-brand-violet/20 dark:hover:bg-brand-cyan/20 transition-colors disabled:opacity-50"
       >
         <span v-if="loading" class="inline-flex items-center gap-1">
           <svg class="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" fill="none">
@@ -22,9 +22,9 @@
 
     <div class="grid sm:grid-cols-2 gap-6">
       <!-- Cloudinary Card -->
-      <div class="rounded-xl border border-gray-200 dark:border-gray-700 p-4 bg-white/50 dark:bg-white/5">
+      <div class="rounded-full border border-gray-200 dark:border-gray-700 p-4 bg-white/50 dark:bg-white/5">
         <div class="flex items-center gap-3 mb-4">
-          <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-lg">
+          <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-lg">
             ☁️
           </div>
           <div>
@@ -88,9 +88,9 @@
       </div>
 
       <!-- Supabase Card -->
-      <div class="rounded-xl border border-gray-200 dark:border-gray-700 p-4 bg-white/50 dark:bg-white/5">
+      <div class="rounded-full border border-gray-200 dark:border-gray-700 p-4 bg-white/50 dark:bg-white/5">
         <div class="flex items-center gap-3 mb-4">
-          <div class="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-lg">
+          <div class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-lg">
             🗄️
           </div>
           <div>
@@ -136,9 +136,9 @@
       </div>
 
       <!-- Redis Card -->
-      <div class="rounded-xl border border-gray-200 dark:border-gray-700 p-4 bg-white/50 dark:bg-white/5">
+      <div class="rounded-full border border-gray-200 dark:border-gray-700 p-4 bg-white/50 dark:bg-white/5">
         <div class="flex items-center gap-3 mb-4">
-          <div class="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-lg">
+          <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-lg">
             ⚡
           </div>
           <div>
@@ -165,15 +165,15 @@
           </div>
 
           <div class="grid grid-cols-2 gap-2 text-xs text-gray-500 dark:text-gray-400 mt-2">
-            <div class="bg-gray-100 dark:bg-white/5 rounded-lg px-3 py-2">
+            <div class="bg-gray-100 dark:bg-white/5 rounded-full px-3 py-2">
               <p class="text-gray-400 mb-0.5">Keys</p>
               <p class="font-semibold dark:text-white text-sm">{{ redis.keys?.toLocaleString() ?? 0 }}</p>
             </div>
-            <div class="bg-gray-100 dark:bg-white/5 rounded-lg px-3 py-2">
+            <div class="bg-gray-100 dark:bg-white/5 rounded-full px-3 py-2">
               <p class="text-gray-400 mb-0.5">Clients</p>
               <p class="font-semibold dark:text-white text-sm">{{ redis.connected_clients ?? 0 }}</p>
             </div>
-            <div class="bg-gray-100 dark:bg-white/5 rounded-lg px-3 py-2 col-span-2">
+            <div class="bg-gray-100 dark:bg-white/5 rounded-full px-3 py-2 col-span-2">
               <p class="text-gray-400 mb-0.5">Commands Processed</p>
               <p class="font-semibold dark:text-white text-sm">{{ redis.commands_processed?.toLocaleString() ?? 0 }}</p>
             </div>
@@ -184,9 +184,9 @@
       </div>
 
       <!-- Database Card -->
-      <div class="rounded-xl border border-gray-200 dark:border-gray-700 p-4 bg-white/50 dark:bg-white/5">
+      <div class="rounded-full border border-gray-200 dark:border-gray-700 p-4 bg-white/50 dark:bg-white/5">
         <div class="flex items-center gap-3 mb-4">
-          <div class="w-10 h-10 rounded-lg bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center text-lg">
+          <div class="w-10 h-10 rounded-full bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center text-lg">
             🐘
           </div>
           <div>

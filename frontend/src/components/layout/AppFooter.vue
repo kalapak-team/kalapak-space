@@ -15,7 +15,7 @@
               <img
                 src="https://res.cloudinary.com/kalapak/image/upload/q_auto/f_auto/v1775860922/Logo_kalapak_om1ygl.png"
                 alt="Kalapak Logo"
-                class="w-10 h-10 rounded-xl object-contain"
+                class="w-10 h-10 rounded-full object-contain"
               />
               <span class="text-xl font-black tracking-tight text-gray-900 dark:text-white">Kalapak</span>
             </div>
@@ -138,7 +138,7 @@ const resourceLinks = [
 
 /* ── Social icon button ── */
 .social-btn {
-  @apply w-9 h-9 rounded-xl flex items-center justify-center
+  @apply w-9 h-9 rounded-full flex items-center justify-center
          bg-white/80 dark:bg-white/5
          border border-gray-200 dark:border-white/10
          text-gray-500 dark:text-gray-400

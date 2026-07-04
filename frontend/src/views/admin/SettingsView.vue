@@ -29,7 +29,7 @@
       <!-- Navigation Tabs -->
       <div class="glass-card !p-1 flex gap-1 overflow-x-auto">
         <button v-for="group in groupNames" :key="group" @click="activeGroup = group"
-          class="px-4 py-2 text-sm font-medium rounded-lg whitespace-nowrap transition-all"
+          class="px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap transition-all"
           :class="activeGroup === group
             ? 'bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan shadow-sm'
             : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-700'">
@@ -54,7 +54,7 @@
         <div class="glass-card">
           <!-- Group Header -->
           <div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200 dark:border-dark-600">
-            <div class="w-10 h-10 rounded-xl flex items-center justify-center" :class="groupStyle(group).bg">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center" :class="groupStyle(group).bg">
               <svg v-if="group === 'general'" class="w-5 h-5" :class="groupStyle(group).text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
               <svg v-else-if="group === 'social'" class="w-5 h-5" :class="groupStyle(group).text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
               <svg v-else-if="group === 'seo'" class="w-5 h-5" :class="groupStyle(group).text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
@@ -122,7 +122,7 @@
                     :class="setting.value === 'supabase'
                       ? 'bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/30 ring-1 ring-emerald-200 dark:ring-emerald-500/20'
                       : 'bg-white dark:bg-dark-700 text-gray-500 border-gray-200 dark:border-dark-600 hover:border-gray-300'"
-                    class="flex-1 px-3 py-2.5 rounded-lg border text-xs font-medium transition-all text-center flex items-center justify-center gap-2">
+                    class="flex-1 px-3 py-2.5 rounded-full border text-xs font-medium transition-all text-center flex items-center justify-center gap-2">
                     <svg class="w-3.5 h-3.5" viewBox="0 0 109 113" fill="currentColor"><path d="M63.7 110.3c-2.6 3.1-7.8 3.1-10.4 0L2.5 49.2c-3.5-4.2-.3-10.4 5.2-10.4h100.6c5.5 0 8.7 6.2 5.2 10.4l-49.8 61.1z"/></svg>
                     Supabase only
                   </button>
@@ -130,7 +130,7 @@
                     :class="setting.value === 'both'
                       ? 'bg-brand-violet/10 text-brand-violet border-brand-violet/30 dark:bg-brand-cyan/10 dark:text-brand-cyan dark:border-brand-cyan/30 ring-1 ring-brand-violet/20 dark:ring-brand-cyan/20'
                       : 'bg-white dark:bg-dark-700 text-gray-500 border-gray-200 dark:border-dark-600 hover:border-gray-300'"
-                    class="flex-1 px-3 py-2.5 rounded-lg border text-xs font-medium transition-all text-center flex items-center justify-center gap-2">
+                    class="flex-1 px-3 py-2.5 rounded-full border text-xs font-medium transition-all text-center flex items-center justify-center gap-2">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
                     Both
                   </button>
@@ -138,7 +138,7 @@
                     :class="setting.value === 'cloudinary'
                       ? 'bg-blue-50 text-blue-700 border-blue-300 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/30 ring-1 ring-blue-200 dark:ring-blue-500/20'
                       : 'bg-white dark:bg-dark-700 text-gray-500 border-gray-200 dark:border-dark-600 hover:border-gray-300'"
-                    class="flex-1 px-3 py-2.5 rounded-lg border text-xs font-medium transition-all text-center flex items-center justify-center gap-2">
+                    class="flex-1 px-3 py-2.5 rounded-full border text-xs font-medium transition-all text-center flex items-center justify-center gap-2">
                     <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                     Cloudinary only
                   </button>
@@ -163,7 +163,7 @@
               <p class="text-sm font-medium text-amber-800 dark:text-amber-300">You have unsaved changes</p>
             </div>
             <div class="flex items-center gap-2">
-              <button @click="resetChanges" class="px-3 py-1.5 text-sm font-medium rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors">Discard</button>
+              <button @click="resetChanges" class="px-3 py-1.5 text-sm font-medium rounded-full text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors">Discard</button>
               <button @click="handleSave" :disabled="saving" class="btn-primary text-sm flex items-center gap-2">
                 <svg v-if="saving" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
                 {{ saving ? 'Saving...' : 'Save Changes' }}
@@ -177,7 +177,7 @@
     <!-- Success Toast Animation -->
     <Teleport to="body">
       <Transition enter-active-class="transition-all duration-300" leave-active-class="transition-all duration-300" enter-from-class="opacity-0 scale-95" leave-to-class="opacity-0 scale-95">
-        <div v-if="showSuccess" class="fixed bottom-8 right-8 z-50 bg-green-500 text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-2">
+        <div v-if="showSuccess" class="fixed bottom-8 right-8 z-50 bg-green-500 text-white px-5 py-3 rounded-full shadow-lg flex items-center gap-2">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           Settings saved successfully!
         </div>

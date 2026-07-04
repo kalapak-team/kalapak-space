@@ -20,7 +20,7 @@
           <img
             src="https://res.cloudinary.com/kalapak/image/upload/q_auto/f_auto/v1775860922/Logo_kalapak_om1ygl.png"
             alt="Kalapak Logo"
-            class="w-9 h-9 rounded-xl object-contain shadow-md shadow-brand-violet/20 dark:shadow-brand-cyan/20 flex-shrink-0 group-hover:shadow-lg transition-shadow duration-300"
+            class="w-9 h-9 rounded-full object-contain shadow-md shadow-brand-violet/20 dark:shadow-brand-cyan/20 flex-shrink-0 group-hover:shadow-lg transition-shadow duration-300"
           />
           <transition
             enter-active-class="transition duration-200 ease-out delay-75"
@@ -51,7 +51,7 @@
       <div v-if="!sidebarCollapsed" class="px-3 pt-3 pb-1 flex-shrink-0">
         <button
           @click="searchOpen = true"
-          class="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-[13px] text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-white/[0.03] border border-gray-200/80 dark:border-white/[0.06] hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 hover:text-gray-500 dark:hover:text-gray-400 transition-all duration-200"
+          class="flex items-center gap-2.5 w-full px-3 py-2 rounded-full text-[13px] text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-white/[0.03] border border-gray-200/80 dark:border-white/[0.06] hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 hover:text-gray-500 dark:hover:text-gray-400 transition-all duration-200"
         >
           <svg
             class="w-3.5 h-3.5 flex-shrink-0"
@@ -76,7 +76,7 @@
       <div v-else class="flex justify-center pt-3 pb-1 flex-shrink-0">
         <button
           @click="searchOpen = true"
-          class="p-2 rounded-lg text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/[0.05] transition-all"
+          class="p-2 rounded-full text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/[0.05] transition-all"
           title="Search (⌘K)"
         >
           <svg
@@ -119,7 +119,7 @@
             :key="item.routeName"
             :to="item.to"
             :title="sidebarCollapsed ? item.label : undefined"
-            class="sidebar-link group relative flex items-center gap-3 rounded-lg transition-all duration-200"
+            class="sidebar-link group relative flex items-center gap-3 rounded-full transition-all duration-200"
             :class="[
               sidebarCollapsed
                 ? 'justify-center px-0 py-2.5 mx-auto w-11'
@@ -161,7 +161,7 @@
             <!-- Tooltip for collapsed -->
             <div
               v-if="sidebarCollapsed"
-              class="sidebar-tooltip absolute left-full ml-3 px-2.5 py-1.5 rounded-lg bg-gray-900 dark:bg-gray-700 text-white text-xs font-medium shadow-lg whitespace-nowrap opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50 pointer-events-none"
+              class="sidebar-tooltip absolute left-full ml-3 px-2.5 py-1.5 rounded-full bg-gray-900 dark:bg-gray-700 text-white text-xs font-medium shadow-lg whitespace-nowrap opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50 pointer-events-none"
             >
               {{ item.label }}
               <span
@@ -188,7 +188,7 @@
             :key="item.routeName"
             :to="item.to"
             :title="sidebarCollapsed ? item.label : undefined"
-            class="sidebar-link group relative flex items-center gap-3 rounded-lg transition-all duration-200"
+            class="sidebar-link group relative flex items-center gap-3 rounded-full transition-all duration-200"
             :class="[
               sidebarCollapsed
                 ? 'justify-center px-0 py-2.5 mx-auto w-11'
@@ -226,7 +226,7 @@
             />
             <div
               v-if="sidebarCollapsed"
-              class="sidebar-tooltip absolute left-full ml-3 px-2.5 py-1.5 rounded-lg bg-gray-900 dark:bg-gray-700 text-white text-xs font-medium shadow-lg whitespace-nowrap opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50 pointer-events-none"
+              class="sidebar-tooltip absolute left-full ml-3 px-2.5 py-1.5 rounded-full bg-gray-900 dark:bg-gray-700 text-white text-xs font-medium shadow-lg whitespace-nowrap opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50 pointer-events-none"
             >
               {{ item.label }}
               <span
@@ -253,7 +253,7 @@
             :key="item.routeName"
             :to="item.to"
             :title="sidebarCollapsed ? item.label : undefined"
-            class="sidebar-link group relative flex items-center gap-3 rounded-lg transition-all duration-200"
+            class="sidebar-link group relative flex items-center gap-3 rounded-full transition-all duration-200"
             :class="[
               sidebarCollapsed
                 ? 'justify-center px-0 py-2.5 mx-auto w-11'
@@ -277,7 +277,7 @@
             }}</span>
             <div
               v-if="sidebarCollapsed"
-              class="sidebar-tooltip absolute left-full ml-3 px-2.5 py-1.5 rounded-lg bg-gray-900 dark:bg-gray-700 text-white text-xs font-medium shadow-lg whitespace-nowrap opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50 pointer-events-none"
+              class="sidebar-tooltip absolute left-full ml-3 px-2.5 py-1.5 rounded-full bg-gray-900 dark:bg-gray-700 text-white text-xs font-medium shadow-lg whitespace-nowrap opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50 pointer-events-none"
             >
               {{ item.label }}
               <span
@@ -295,7 +295,7 @@
         <div
           v-for="n in 10"
           :key="n"
-          class="h-9 rounded-lg bg-gray-100/90 dark:bg-white/[0.06]"
+          class="h-9 rounded-full bg-gray-100/90 dark:bg-white/[0.06]"
         />
       </div>
 
@@ -340,11 +340,11 @@
               v-if="authStore.user?.avatar"
               :src="authStore.user.avatar"
               :alt="authStore.user?.name"
-              class="w-8 h-8 rounded-lg object-cover ring-1 ring-gray-200 dark:ring-white/10"
+              class="w-8 h-8 rounded-full object-cover ring-1 ring-gray-200 dark:ring-white/10"
             />
             <div
               v-else
-              class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-violet to-brand-cyan flex items-center justify-center text-white text-xs font-bold shadow-sm"
+              class="w-8 h-8 rounded-full bg-gradient-to-br from-brand-violet to-brand-cyan flex items-center justify-center text-white text-xs font-bold shadow-sm"
             >
               {{ authStore.user?.name?.charAt(0)?.toUpperCase() || "?" }}
             </div>
@@ -388,7 +388,7 @@
           aria-hidden="true"
         >
           <div
-            class="w-8 h-8 rounded-lg bg-gray-100 dark:bg-white/[0.08] animate-pulse flex-shrink-0"
+            class="w-8 h-8 rounded-full bg-gray-100 dark:bg-white/[0.08] animate-pulse flex-shrink-0"
           />
           <div v-if="!sidebarCollapsed" class="flex-1 space-y-1.5 min-w-0">
             <div
@@ -430,7 +430,7 @@
         <!-- Left: Mobile toggle + Breadcrumb area -->
         <div class="flex items-center gap-3">
           <button
-            class="lg:hidden p-2 -ml-2 rounded-lg text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/[0.05] transition-colors"
+            class="lg:hidden p-2 -ml-2 rounded-full text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/[0.05] transition-colors"
             @click="uiStore.toggleSidebar()"
           >
             <svg
@@ -454,7 +454,7 @@
           <!-- View site link -->
           <router-link
             to="/"
-            class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/[0.05] transition-all"
+            class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/[0.05] transition-all"
           >
             <svg
               class="w-3.5 h-3.5"
@@ -481,7 +481,7 @@
           <div class="relative" ref="notifDropdownRef">
             <button
               @click="toggleNotifications"
-              class="relative p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/[0.05] transition-all duration-200"
+              class="relative p-2 rounded-full text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/[0.05] transition-all duration-200"
             >
               <svg
                 class="w-[18px] h-[18px]"
@@ -523,7 +523,7 @@
             >
               <div
                 v-if="notifOpen"
-                class="fixed left-4 right-4 top-20 z-50 sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-96 rounded-xl bg-white dark:bg-dark-800 shadow-xl shadow-black/8 dark:shadow-black/30 ring-1 ring-gray-200/80 dark:ring-white/[0.08] overflow-hidden"
+                class="fixed left-4 right-4 top-20 z-50 sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-96 rounded-full bg-white dark:bg-dark-800 shadow-xl shadow-black/8 dark:shadow-black/30 ring-1 ring-gray-200/80 dark:ring-white/[0.08] overflow-hidden"
               >
                 <div
                   class="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-white/[0.06]"
@@ -601,7 +601,7 @@
                     >
                       <div class="flex-shrink-0 mt-0.5">
                         <div
-                          class="w-8 h-8 rounded-lg flex items-center justify-center"
+                          class="w-8 h-8 rounded-full flex items-center justify-center"
                           :class="notifIconClass(notif.data?.icon)"
                         >
                           <svg
@@ -686,7 +686,7 @@
                       </div>
                       <button
                         @click.stop="notifStore.deleteNotification(notif.id)"
-                        class="absolute top-2 right-2 p-1 rounded-md text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 opacity-0 group-hover:opacity-100 transition-all"
+                        class="absolute top-2 right-2 p-1 rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 opacity-0 group-hover:opacity-100 transition-all"
                       >
                         <svg
                           class="w-3.5 h-3.5"
@@ -713,17 +713,17 @@
           <div class="relative" ref="profileDropdownRef">
             <button
               @click="profileOpen = !profileOpen"
-              class="flex items-center gap-2 px-1.5 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/[0.05] transition-colors"
+              class="flex items-center gap-2 px-1.5 py-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-white/[0.05] transition-colors"
             >
               <img
                 v-if="authStore.user?.avatar"
                 :src="authStore.user.avatar"
                 :alt="authStore.user?.name"
-                class="w-7 h-7 rounded-lg object-cover ring-1 ring-gray-200 dark:ring-white/10"
+                class="w-7 h-7 rounded-full object-cover ring-1 ring-gray-200 dark:ring-white/10"
               />
               <div
                 v-else
-                class="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-violet to-brand-cyan flex items-center justify-center text-white text-[11px] font-bold"
+                class="w-7 h-7 rounded-full bg-gradient-to-br from-brand-violet to-brand-cyan flex items-center justify-center text-white text-[11px] font-bold"
               >
                 {{ authStore.user?.name?.charAt(0)?.toUpperCase() || "?" }}
               </div>
@@ -758,7 +758,7 @@
             >
               <div
                 v-if="profileOpen"
-                class="absolute right-0 mt-2 w-60 rounded-xl bg-white dark:bg-dark-800 shadow-xl shadow-black/8 dark:shadow-black/30 ring-1 ring-gray-200/80 dark:ring-white/[0.08] py-1.5 z-50"
+                class="absolute right-0 mt-2 w-60 rounded-full bg-white dark:bg-dark-800 shadow-xl shadow-black/8 dark:shadow-black/30 ring-1 ring-gray-200/80 dark:ring-white/[0.08] py-1.5 z-50"
               >
                 <div
                   class="px-4 py-3 border-b border-gray-100 dark:border-white/[0.06]"
@@ -785,7 +785,7 @@
                 <div class="py-1 px-1.5">
                   <router-link
                     to="/member/profile"
-                    class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-white/[0.04] transition-colors"
+                    class="flex items-center gap-2.5 px-3 py-2 rounded-full text-[13px] text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-white/[0.04] transition-colors"
                     @click="profileOpen = false"
                   >
                     <svg
@@ -805,7 +805,7 @@
                   </router-link>
                   <router-link
                     to="/"
-                    class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-white/[0.04] transition-colors"
+                    class="flex items-center gap-2.5 px-3 py-2 rounded-full text-[13px] text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-white/[0.04] transition-colors"
                     @click="profileOpen = false"
                   >
                     <svg
@@ -833,7 +833,7 @@
                       handleLogout();
                       profileOpen = false;
                     "
-                    class="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-[13px] text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors"
+                    class="flex items-center gap-2.5 w-full px-3 py-2 rounded-full text-[13px] text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors"
                   >
                     <svg
                       class="w-4 h-4"
@@ -861,13 +861,13 @@
             aria-hidden="true"
           >
             <div
-              class="h-9 w-9 rounded-lg bg-gray-100 dark:bg-white/[0.08] animate-pulse"
+              class="h-9 w-9 rounded-full bg-gray-100 dark:bg-white/[0.08] animate-pulse"
             />
             <div
-              class="h-9 w-9 rounded-lg bg-gray-100 dark:bg-white/[0.08] animate-pulse"
+              class="h-9 w-9 rounded-full bg-gray-100 dark:bg-white/[0.08] animate-pulse"
             />
             <div
-              class="hidden sm:block h-9 w-28 rounded-lg bg-gray-100 dark:bg-white/[0.08] animate-pulse"
+              class="hidden sm:block h-9 w-28 rounded-full bg-gray-100 dark:bg-white/[0.08] animate-pulse"
             />
           </div>
         </div>

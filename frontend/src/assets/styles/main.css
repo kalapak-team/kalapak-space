@@ -886,14 +886,14 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold text-white
            bg-gradient-to-r from-brand-violet to-brand-cyan
            hover:shadow-glow transform hover:-translate-y-0.5
            transition-all duration-300 ease-out;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold
            border-2 border-brand-violet text-brand-violet
            hover:bg-brand-violet hover:text-white
            dark:border-brand-cyan dark:text-brand-cyan dark:hover:bg-brand-cyan dark:hover:text-dark-900
@@ -901,14 +901,14 @@
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-full font-medium
            text-gray-600 hover:text-brand-violet hover:bg-brand-violet/10
            dark:text-gray-400 dark:hover:text-brand-cyan dark:hover:bg-brand-cyan/10
            transition-all duration-200;
   }
 
   .input-field {
-    @apply w-full px-4 py-3 rounded-xl border border-gray-200 bg-white
+    @apply w-full px-4 py-3 rounded-full border border-gray-200 bg-white
            dark:border-dark-600 dark:bg-dark-700
            focus:ring-2 focus:ring-brand-violet/50 focus:border-brand-violet
            dark:focus:ring-brand-cyan/50 dark:focus:border-brand-cyan

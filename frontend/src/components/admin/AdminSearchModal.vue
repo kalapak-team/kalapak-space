@@ -41,13 +41,13 @@
                 @input="onInput"
               />
 
-              <button v-if="query.length" @click="clearQuery" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors group">
+              <button v-if="query.length" @click="clearQuery" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors group">
                 <svg class="w-4 h-4 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
               </button>
 
-              <kbd class="hidden sm:inline-flex px-2 py-1 rounded-lg bg-gray-100 dark:bg-white/[0.06] text-[10px] font-code text-gray-400 border border-gray-200/50 dark:border-white/[0.06] select-none">ESC</kbd>
+              <kbd class="hidden sm:inline-flex px-2 py-1 rounded-full bg-gray-100 dark:bg-white/[0.06] text-[10px] font-code text-gray-400 border border-gray-200/50 dark:border-white/[0.06] select-none">ESC</kbd>
             </div>
 
             <!-- Filters -->
@@ -56,7 +56,7 @@
                 v-for="filter in filters"
                 :key="filter.key"
                 @click="setFilter(filter.key)"
-                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold tracking-wide uppercase transition-all duration-200 whitespace-nowrap"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold tracking-wide uppercase transition-all duration-200 whitespace-nowrap"
                 :class="activeFilter === filter.key
                   ? 'bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan ring-1 ring-brand-violet/20 dark:ring-brand-cyan/20'
                   : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100/80 dark:hover:bg-white/[0.04]'"
@@ -76,8 +76,8 @@
 
               <!-- Loading skeleton -->
               <div v-if="loading && !hasResults" class="p-3 space-y-2">
-                <div v-for="n in 4" :key="n" class="flex items-center gap-3 px-3 py-3 rounded-xl animate-pulse">
-                  <div class="w-10 h-10 rounded-xl bg-gray-200/80 dark:bg-white/[0.06]" />
+                <div v-for="n in 4" :key="n" class="flex items-center gap-3 px-3 py-3 rounded-full animate-pulse">
+                  <div class="w-10 h-10 rounded-full bg-gray-200/80 dark:bg-white/[0.06]" />
                   <div class="flex-1 space-y-2">
                     <div class="h-3.5 w-2/3 rounded-md bg-gray-200/80 dark:bg-white/[0.06]" />
                     <div class="h-2.5 w-1/2 rounded-md bg-gray-200/60 dark:bg-white/[0.04]" />
@@ -98,14 +98,14 @@
                   <button
                     v-for="(item, i) in filteredData.users"
                     :key="'u' + item.id"
-                    class="group flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-all duration-150 cursor-pointer text-left"
+                    class="group flex items-center gap-3 w-full px-3 py-2.5 rounded-full transition-all duration-150 cursor-pointer text-left"
                     :class="activeIndex === getGlobalIndex('users', i)
                       ? 'bg-brand-violet/8 dark:bg-brand-cyan/8 ring-1 ring-brand-violet/15 dark:ring-brand-cyan/15'
                       : 'hover:bg-gray-50 dark:hover:bg-white/[0.03]'"
                     @click="navigateTo('/admin/users', item)"
                     @mouseenter="activeIndex = getGlobalIndex('users', i)"
                   >
-                    <div class="w-10 h-10 rounded-xl overflow-hidden shrink-0 ring-1 ring-gray-200/60 dark:ring-white/[0.06] bg-gradient-to-br from-brand-violet/10 to-brand-cyan/10 flex items-center justify-center">
+                    <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 ring-1 ring-gray-200/60 dark:ring-white/[0.06] bg-gradient-to-br from-brand-violet/10 to-brand-cyan/10 flex items-center justify-center">
                       <img v-if="item.avatar" :src="item.avatar" class="w-full h-full object-cover" />
                       <UsersIcon v-else class="w-4.5 h-4.5 text-brand-violet/40 dark:text-brand-cyan/40" />
                     </div>
@@ -128,14 +128,14 @@
                   <button
                     v-for="(item, i) in filteredData.projects"
                     :key="'p' + item.id"
-                    class="group flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-all duration-150 cursor-pointer text-left"
+                    class="group flex items-center gap-3 w-full px-3 py-2.5 rounded-full transition-all duration-150 cursor-pointer text-left"
                     :class="activeIndex === getGlobalIndex('projects', i)
                       ? 'bg-brand-violet/8 dark:bg-brand-cyan/8 ring-1 ring-brand-violet/15 dark:ring-brand-cyan/15'
                       : 'hover:bg-gray-50 dark:hover:bg-white/[0.03]'"
                     @click="navigateTo(`/admin/projects`, item)"
                     @mouseenter="activeIndex = getGlobalIndex('projects', i)"
                   >
-                    <div class="w-10 h-10 rounded-xl overflow-hidden shrink-0 ring-1 ring-gray-200/60 dark:ring-white/[0.06] bg-gradient-to-br from-brand-violet/10 to-brand-cyan/10 flex items-center justify-center">
+                    <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 ring-1 ring-gray-200/60 dark:ring-white/[0.06] bg-gradient-to-br from-brand-violet/10 to-brand-cyan/10 flex items-center justify-center">
                       <img v-if="item.thumbnail" :src="item.thumbnail" class="w-full h-full object-cover" />
                       <FolderIcon v-else class="w-4.5 h-4.5 text-brand-violet/40 dark:text-brand-cyan/40" />
                     </div>
@@ -158,14 +158,14 @@
                   <button
                     v-for="(item, i) in filteredData.posts"
                     :key="'b' + item.id"
-                    class="group flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-all duration-150 cursor-pointer text-left"
+                    class="group flex items-center gap-3 w-full px-3 py-2.5 rounded-full transition-all duration-150 cursor-pointer text-left"
                     :class="activeIndex === getGlobalIndex('posts', i)
                       ? 'bg-brand-violet/8 dark:bg-brand-cyan/8 ring-1 ring-brand-violet/15 dark:ring-brand-cyan/15'
                       : 'hover:bg-gray-50 dark:hover:bg-white/[0.03]'"
                     @click="navigateTo('/admin/blog', item)"
                     @mouseenter="activeIndex = getGlobalIndex('posts', i)"
                   >
-                    <div class="w-10 h-10 rounded-xl overflow-hidden shrink-0 ring-1 ring-gray-200/60 dark:ring-white/[0.06] bg-gradient-to-br from-brand-violet/10 to-brand-cyan/10 flex items-center justify-center">
+                    <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 ring-1 ring-gray-200/60 dark:ring-white/[0.06] bg-gradient-to-br from-brand-violet/10 to-brand-cyan/10 flex items-center justify-center">
                       <img v-if="item.thumbnail" :src="item.thumbnail" class="w-full h-full object-cover" />
                       <DocumentTextIcon v-else class="w-4.5 h-4.5 text-brand-violet/40 dark:text-brand-cyan/40" />
                     </div>
@@ -188,14 +188,14 @@
                   <button
                     v-for="(item, i) in filteredData.messages"
                     :key="'m' + item.id"
-                    class="group flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-all duration-150 cursor-pointer text-left"
+                    class="group flex items-center gap-3 w-full px-3 py-2.5 rounded-full transition-all duration-150 cursor-pointer text-left"
                     :class="activeIndex === getGlobalIndex('messages', i)
                       ? 'bg-brand-violet/8 dark:bg-brand-cyan/8 ring-1 ring-brand-violet/15 dark:ring-brand-cyan/15'
                       : 'hover:bg-gray-50 dark:hover:bg-white/[0.03]'"
                     @click="navigateTo('/admin/messages', item)"
                     @mouseenter="activeIndex = getGlobalIndex('messages', i)"
                   >
-                    <div class="w-10 h-10 rounded-xl shrink-0 ring-1 ring-gray-200/60 dark:ring-white/[0.06] bg-gradient-to-br from-brand-violet/10 to-brand-cyan/10 flex items-center justify-center">
+                    <div class="w-10 h-10 rounded-full shrink-0 ring-1 ring-gray-200/60 dark:ring-white/[0.06] bg-gradient-to-br from-brand-violet/10 to-brand-cyan/10 flex items-center justify-center">
                       <EnvelopeIcon class="w-4.5 h-4.5 text-brand-violet/40 dark:text-brand-cyan/40" />
                     </div>
                     <div class="min-w-0 flex-1">
@@ -220,14 +220,14 @@
                   <button
                     v-for="(item, i) in filteredData.applications"
                     :key="'a' + item.id"
-                    class="group flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-all duration-150 cursor-pointer text-left"
+                    class="group flex items-center gap-3 w-full px-3 py-2.5 rounded-full transition-all duration-150 cursor-pointer text-left"
                     :class="activeIndex === getGlobalIndex('applications', i)
                       ? 'bg-brand-violet/8 dark:bg-brand-cyan/8 ring-1 ring-brand-violet/15 dark:ring-brand-cyan/15'
                       : 'hover:bg-gray-50 dark:hover:bg-white/[0.03]'"
                     @click="navigateTo('/admin/applications', item)"
                     @mouseenter="activeIndex = getGlobalIndex('applications', i)"
                   >
-                    <div class="w-10 h-10 rounded-xl shrink-0 ring-1 ring-gray-200/60 dark:ring-white/[0.06] bg-gradient-to-br from-brand-violet/10 to-brand-cyan/10 flex items-center justify-center">
+                    <div class="w-10 h-10 rounded-full shrink-0 ring-1 ring-gray-200/60 dark:ring-white/[0.06] bg-gradient-to-br from-brand-violet/10 to-brand-cyan/10 flex items-center justify-center">
                       <InboxStackIcon class="w-4.5 h-4.5 text-brand-violet/40 dark:text-brand-cyan/40" />
                     </div>
                     <div class="min-w-0 flex-1">
@@ -249,14 +249,14 @@
                   <button
                     v-for="(item, i) in filteredData.team"
                     :key="'t' + item.id"
-                    class="group flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-all duration-150 cursor-pointer text-left"
+                    class="group flex items-center gap-3 w-full px-3 py-2.5 rounded-full transition-all duration-150 cursor-pointer text-left"
                     :class="activeIndex === getGlobalIndex('team', i)
                       ? 'bg-brand-violet/8 dark:bg-brand-cyan/8 ring-1 ring-brand-violet/15 dark:ring-brand-cyan/15'
                       : 'hover:bg-gray-50 dark:hover:bg-white/[0.03]'"
                     @click="navigateTo('/admin/team', item)"
                     @mouseenter="activeIndex = getGlobalIndex('team', i)"
                   >
-                    <div class="w-10 h-10 rounded-xl overflow-hidden shrink-0 ring-1 ring-gray-200/60 dark:ring-white/[0.06] bg-gradient-to-br from-brand-violet/10 to-brand-cyan/10 flex items-center justify-center">
+                    <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 ring-1 ring-gray-200/60 dark:ring-white/[0.06] bg-gradient-to-br from-brand-violet/10 to-brand-cyan/10 flex items-center justify-center">
                       <img v-if="item.avatar" :src="item.avatar" class="w-full h-full object-cover" />
                       <UserGroupIcon v-else class="w-4.5 h-4.5 text-brand-violet/40 dark:text-brand-cyan/40" />
                     </div>
@@ -278,14 +278,14 @@
                   <button
                     v-for="(item, i) in filteredData.tags"
                     :key="'tg' + item.id"
-                    class="group flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-all duration-150 cursor-pointer text-left"
+                    class="group flex items-center gap-3 w-full px-3 py-2.5 rounded-full transition-all duration-150 cursor-pointer text-left"
                     :class="activeIndex === getGlobalIndex('tags', i)
                       ? 'bg-brand-violet/8 dark:bg-brand-cyan/8 ring-1 ring-brand-violet/15 dark:ring-brand-cyan/15'
                       : 'hover:bg-gray-50 dark:hover:bg-white/[0.03]'"
                     @click="navigateTo('/admin/tags', item)"
                     @mouseenter="activeIndex = getGlobalIndex('tags', i)"
                   >
-                    <div class="w-10 h-10 rounded-xl shrink-0 ring-1 ring-gray-200/60 dark:ring-white/[0.06] flex items-center justify-center"
+                    <div class="w-10 h-10 rounded-full shrink-0 ring-1 ring-gray-200/60 dark:ring-white/[0.06] flex items-center justify-center"
                          :style="item.color ? `background: ${item.color}15` : ''">
                       <TagIcon class="w-4.5 h-4.5" :style="item.color ? `color: ${item.color}` : ''" :class="!item.color && 'text-brand-violet/40 dark:text-brand-cyan/40'" />
                     </div>
@@ -324,10 +324,10 @@
                     v-for="(link, i) in quickLinks"
                     :key="'q' + i"
                     :to="link.to"
-                    class="group flex items-center gap-2.5 px-3 py-3 rounded-xl transition-all duration-150 hover:bg-gray-50 dark:hover:bg-white/[0.03]"
+                    class="group flex items-center gap-2.5 px-3 py-3 rounded-full transition-all duration-150 hover:bg-gray-50 dark:hover:bg-white/[0.03]"
                     @click="close"
                   >
-                    <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-gray-100/80 dark:bg-white/[0.04]">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-gray-100/80 dark:bg-white/[0.04]">
                       <component :is="link.icon" class="w-4 h-4 text-gray-400 dark:text-gray-500" />
                     </div>
                     <div class="min-w-0 flex-1">

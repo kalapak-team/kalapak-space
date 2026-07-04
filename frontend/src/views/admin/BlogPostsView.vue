@@ -15,7 +15,7 @@
     <!-- Stats Cards -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-brand-violet/10 dark:bg-brand-violet/20 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-brand-violet/10 dark:bg-brand-violet/20 flex items-center justify-center">
           <svg class="w-5 h-5 text-brand-violet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
         </div>
         <div>
@@ -24,7 +24,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
           <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
         <div>
@@ -33,7 +33,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center">
           <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
         </div>
         <div>
@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-brand-cyan/10 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-brand-cyan/10 flex items-center justify-center">
           <svg class="w-5 h-5 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
         </div>
         <div>
@@ -96,7 +96,7 @@
           class="w-full md:w-44"
           @change="fetchPosts()"
         />
-        <div class="flex items-center border border-gray-200 dark:border-dark-600 rounded-lg overflow-hidden">
+        <div class="flex items-center border border-gray-200 dark:border-dark-600 rounded-full overflow-hidden">
           <button @click="viewMode = 'table'" class="p-2 transition-colors" :class="viewMode === 'table' ? 'bg-brand-violet/10 text-brand-violet dark:bg-brand-cyan/10 dark:text-brand-cyan' : 'text-gray-400 hover:text-gray-600'">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
           </button>
@@ -139,8 +139,8 @@
             <td class="py-3 px-4">
               <div class="flex items-center gap-3">
                 <div class="relative flex-shrink-0">
-                  <img v-if="post.cover_image" :src="post.cover_image" :alt="post.title" class="w-14 h-10 object-cover rounded-lg ring-1 ring-gray-200 dark:ring-dark-600" />
-                  <div v-else class="w-14 h-10 rounded-lg bg-gradient-to-br from-brand-violet/20 to-brand-cyan/20 dark:from-brand-violet/10 dark:to-brand-cyan/10 flex items-center justify-center">
+                  <img v-if="post.cover_image" :src="post.cover_image" :alt="post.title" class="w-14 h-10 object-cover rounded-full ring-1 ring-gray-200 dark:ring-dark-600" />
+                  <div v-else class="w-14 h-10 rounded-full bg-gradient-to-br from-brand-violet/20 to-brand-cyan/20 dark:from-brand-violet/10 dark:to-brand-cyan/10 flex items-center justify-center">
                     <svg class="w-5 h-5 text-brand-violet/50 dark:text-brand-cyan/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
                   </div>
                   <span v-if="post.is_featured" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-yellow-400 flex items-center justify-center">
@@ -189,10 +189,10 @@
             </td>
             <td class="py-3 px-4 text-right">
               <div class="flex items-center justify-end gap-1">
-                <router-link v-if="canEditPerm(post)" :to="{ name: 'admin-blog-edit', params: { id: post.id } }" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Edit">
+                <router-link v-if="canEditPerm(post)" :to="{ name: 'admin-blog-edit', params: { id: post.id } }" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Edit">
                   <svg class="w-4 h-4 text-gray-400 group-hover:text-brand-violet dark:group-hover:text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                 </router-link>
-                <button v-if="canDeletePerm(post)" @click="confirmDelete(post)" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Delete">
+                <button v-if="canDeletePerm(post)" @click="confirmDelete(post)" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors group" title="Delete">
                   <svg class="w-4 h-4 text-gray-400 group-hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                 </button>
               </div>
@@ -260,10 +260,10 @@
           <div class="flex items-center justify-between mt-3">
             <span class="text-[10px] text-gray-400">{{ formatDate(post.published_at || post.created_at) }}</span>
             <div class="flex items-center gap-1">
-              <router-link v-if="canEditPerm(post)" :to="{ name: 'admin-blog-edit', params: { id: post.id } }" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Edit">
+              <router-link v-if="canEditPerm(post)" :to="{ name: 'admin-blog-edit', params: { id: post.id } }" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Edit">
                 <svg class="w-3.5 h-3.5 text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
               </router-link>
-              <button v-if="canDeletePerm(post)" @click="confirmDelete(post)" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Delete">
+              <button v-if="canDeletePerm(post)" @click="confirmDelete(post)" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors" title="Delete">
                 <svg class="w-3.5 h-3.5 text-gray-400 hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
               </button>
             </div>
@@ -300,7 +300,7 @@
             </p>
             <div class="flex justify-center gap-3">
               <button @click="deleteTarget = null" class="btn-ghost text-sm">Cancel</button>
-              <button @click="handleDelete" :disabled="deleting" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors">
+              <button @click="handleDelete" :disabled="deleting" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-full transition-colors">
                 {{ deleting ? 'Deleting...' : 'Delete' }}
               </button>
             </div>

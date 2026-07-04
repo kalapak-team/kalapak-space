@@ -7,11 +7,11 @@
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Contact form submissions and inquiries</p>
       </div>
       <div class="flex items-center gap-2">
-        <button v-if="selectedIds.length" @click="bulkDelete" class="px-3 py-2 text-xs font-medium rounded-lg bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500/20 transition-colors flex items-center gap-1.5">
+        <button v-if="selectedIds.length" @click="bulkDelete" class="px-3 py-2 text-xs font-medium rounded-full bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500/20 transition-colors flex items-center gap-1.5">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
           Delete {{ selectedIds.length }}
         </button>
-        <button v-if="selectedIds.length" @click="bulkMarkRead" class="px-3 py-2 text-xs font-medium rounded-lg bg-brand-violet/10 text-brand-violet dark:bg-brand-cyan/10 dark:text-brand-cyan hover:opacity-80 transition-colors flex items-center gap-1.5">
+        <button v-if="selectedIds.length" @click="bulkMarkRead" class="px-3 py-2 text-xs font-medium rounded-full bg-brand-violet/10 text-brand-violet dark:bg-brand-cyan/10 dark:text-brand-cyan hover:opacity-80 transition-colors flex items-center gap-1.5">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76"/></svg>
           Mark Read
         </button>
@@ -21,7 +21,7 @@
     <!-- Stats Cards -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       <div class="glass-card !p-4 flex items-center gap-3 cursor-pointer transition-all hover:scale-[1.02]" :class="readFilter === '' ? 'ring-2 ring-brand-violet dark:ring-brand-cyan' : ''" @click="readFilter = ''; fetchMessages()">
-        <div class="w-10 h-10 rounded-xl bg-brand-violet/10 dark:bg-brand-violet/20 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-brand-violet/10 dark:bg-brand-violet/20 flex items-center justify-center">
           <svg class="w-5 h-5 text-brand-violet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
         </div>
         <div>
@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3 cursor-pointer transition-all hover:scale-[1.02]" :class="readFilter === 'unread' ? 'ring-2 ring-blue-400' : ''" @click="readFilter = 'unread'; fetchMessages()">
-        <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center relative">
+        <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center relative">
           <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
           <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-white dark:border-dark-800" />
         </div>
@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3 cursor-pointer transition-all hover:scale-[1.02]" :class="readFilter === 'read' ? 'ring-2 ring-green-400' : ''" @click="readFilter = 'read'; fetchMessages()">
-        <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
           <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76"/></svg>
         </div>
         <div>
@@ -49,7 +49,7 @@
         </div>
       </div>
       <div class="glass-card !p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-brand-cyan/10 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-brand-cyan/10 flex items-center justify-center">
           <svg class="w-5 h-5 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
         <div>
@@ -74,7 +74,7 @@
           class="w-full md:w-40"
           @change="fetchMessages()"
         />
-        <div class="flex items-center border border-gray-200 dark:border-dark-600 rounded-lg overflow-hidden">
+        <div class="flex items-center border border-gray-200 dark:border-dark-600 rounded-full overflow-hidden">
           <button @click="viewMode = 'inbox'" class="p-2 transition-colors" :class="viewMode === 'inbox' ? 'bg-brand-violet/10 text-brand-violet dark:bg-brand-cyan/10 dark:text-brand-cyan' : 'text-gray-400 hover:text-gray-600'">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
           </button>
@@ -124,7 +124,7 @@
           <div class="flex items-center gap-2 flex-shrink-0">
             <span class="text-xs whitespace-nowrap" :class="msg.is_read ? 'text-gray-400 dark:text-gray-500' : 'text-blue-500 font-medium'">{{ timeAgo(msg.created_at) }}</span>
             <div class="flex items-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <button @click.stop="deleteMessage(msg)" class="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-500/10 transition-colors" title="Delete">
+              <button @click.stop="deleteMessage(msg)" class="p-1.5 rounded-full text-gray-400 hover:text-red-500 hover:bg-red-500/10 transition-colors" title="Delete">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
               </button>
             </div>
@@ -153,7 +153,7 @@
           </div>
           <div class="flex items-center gap-1.5 flex-shrink-0">
             <span v-if="!msg.is_read" class="w-2 h-2 rounded-full bg-blue-500" />
-            <button @click.stop="deleteMessage(msg)" class="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-500/10 transition-colors opacity-0 group-hover:opacity-100">
+            <button @click.stop="deleteMessage(msg)" class="p-1.5 rounded-full text-gray-400 hover:text-red-500 hover:bg-red-500/10 transition-colors opacity-0 group-hover:opacity-100">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
             </button>
           </div>
@@ -203,10 +203,10 @@
                   </div>
                 </div>
                 <div class="flex items-center gap-2">
-                  <button @click="deleteMessage(selected); selected = null" class="p-2 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-500/10 transition-colors" title="Delete">
+                  <button @click="deleteMessage(selected); selected = null" class="p-2 rounded-full text-gray-400 hover:text-red-500 hover:bg-red-500/10 transition-colors" title="Delete">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                   </button>
-                  <button @click="selected = null" class="p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:text-gray-300 dark:hover:bg-dark-700 transition-colors">
+                  <button @click="selected = null" class="p-2 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:text-gray-300 dark:hover:bg-dark-700 transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                   </button>
                 </div>
@@ -228,7 +228,7 @@
                 </div>
 
                 <!-- Message Body -->
-                <div class="bg-gray-50 dark:bg-dark-700 rounded-xl p-5">
+                <div class="bg-gray-50 dark:bg-dark-700 rounded-full p-5">
                   <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">{{ selected.body || selected.message || 'No content' }}</p>
                 </div>
 
@@ -239,7 +239,7 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10l9 6 9-6M3 10v8a2 2 0 002 2h14a2 2 0 002-2v-8"/></svg>
                     Reply via Email
                   </a>
-                  <button @click="copyEmail(selected.email)" class="px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 dark:bg-dark-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-500 transition-colors flex items-center gap-2">
+                  <button @click="copyEmail(selected.email)" class="px-4 py-2 text-sm font-medium rounded-full bg-gray-100 dark:bg-dark-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-500 transition-colors flex items-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
                     {{ copied ? 'Copied!' : 'Copy Email' }}
                   </button>
@@ -257,7 +257,7 @@
         <div v-if="deleteTarget" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" @click.self="deleteTarget = null">
           <div class="bg-white dark:bg-dark-800 rounded-2xl shadow-2xl max-w-sm w-full p-6 border border-gray-200 dark:border-dark-600">
             <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center">
+              <div class="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
                 <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
               </div>
               <div>
@@ -269,8 +269,8 @@
               Are you sure you want to delete the message from <strong class="dark:text-white">{{ deleteTarget.name }}</strong>?
             </p>
             <div class="flex items-center gap-3 justify-end">
-              <button @click="deleteTarget = null" class="px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 dark:bg-dark-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-500 transition-colors">Cancel</button>
-              <button @click="confirmDelete" class="px-4 py-2 text-sm font-medium rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors">Delete</button>
+              <button @click="deleteTarget = null" class="px-4 py-2 text-sm font-medium rounded-full bg-gray-100 dark:bg-dark-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-500 transition-colors">Cancel</button>
+              <button @click="confirmDelete" class="px-4 py-2 text-sm font-medium rounded-full bg-red-600 text-white hover:bg-red-700 transition-colors">Delete</button>
             </div>
           </div>
         </div>

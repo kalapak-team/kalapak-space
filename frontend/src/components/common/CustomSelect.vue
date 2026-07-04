@@ -6,7 +6,7 @@
       ref="triggerRef"
       @click="toggle"
       :class="[
-        'flex items-center justify-between gap-2 w-full text-left rounded-xl border text-sm transition-all duration-200 cursor-pointer backdrop-blur-sm',
+        'flex items-center justify-between gap-2 w-full text-left rounded-full border text-sm transition-all duration-200 cursor-pointer backdrop-blur-sm',
         isOpen
           ? 'border-brand-violet dark:border-brand-cyan ring-2 ring-brand-violet/20 dark:ring-brand-cyan/20 bg-white dark:bg-white/[0.08]'
           : 'border-gray-200 dark:border-white/[0.08] hover:border-gray-300 dark:hover:border-white/[0.15] bg-gray-50 dark:bg-white/[0.04]',
@@ -40,7 +40,7 @@
           v-if="isOpen"
           ref="dropdownRef"
           :style="floatingStyle"
-          class="fixed z-[9999] rounded-xl border border-gray-200/80 dark:border-white/[0.08] bg-white dark:bg-dark-800/95 shadow-2xl shadow-black/10 dark:shadow-black/50 backdrop-blur-xl overflow-hidden"
+          class="fixed z-[9999] rounded-full border border-gray-200/80 dark:border-white/[0.08] bg-white dark:bg-dark-800/95 shadow-2xl shadow-black/10 dark:shadow-black/50 backdrop-blur-xl overflow-hidden"
         >
           <!-- Search (optional) -->
           <div v-if="searchable" class="p-2 border-b border-gray-100 dark:border-white/[0.06]">
@@ -49,7 +49,7 @@
               v-model="searchQuery"
               type="text"
               :placeholder="searchPlaceholder"
-              class="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-white/[0.05] border border-gray-200 dark:border-white/[0.08] text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-brand-violet dark:focus:border-brand-cyan transition-colors"
+              class="w-full px-3 py-2 rounded-full bg-gray-50 dark:bg-white/[0.05] border border-gray-200 dark:border-white/[0.08] text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-brand-violet dark:focus:border-brand-cyan transition-colors"
               @keydown.stop
             />
           </div>

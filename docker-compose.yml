@@ -1,4 +1,5 @@
 services:
+  # ── PostgreSQL ──
   postgres:
     image: postgres:16-alpine
     container_name: kalapak_postgres
@@ -19,6 +20,7 @@ services:
       timeout: 5s
       retries: 5
 
+  # ── pgAdmin ──
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: kalapak_pgadmin
@@ -29,7 +31,7 @@ services:
       - "5050:80"
     volumes:
       - pgadmin_data:/var/lib/pgadmin
-      - ./pgadmin/servers.json:/pgadmin4/servers.json
+      - ./pgadmin/servers.json:/pgadmin4/servers.json:ro
     depends_on:
       postgres:
         condition: service_healthy
@@ -37,11 +39,14 @@ services:
       - kalapak_network
     restart: unless-stopped
 
+  # ── Redis ──
   redis:
     image: redis:7-alpine
     container_name: kalapak_redis
     ports:
       - "6379:6379"
+    volumes:
+      - redis_data:/data
     networks:
       - kalapak_network
     restart: unless-stopped
@@ -51,16 +56,19 @@ services:
       timeout: 5s
       retries: 5
 
+  # ── Laravel Backend ──
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     container_name: kalapak_backend
     environment:
       PORT: "8000"
       APP_ENV: local
-      RUN_SCRIPTS: "1"
-      RUN_DB_SEED: "0"
+      APP_DEBUG: "true"
+      APP_KEY: "base64:Xq2ORYZKct/EDW69vLh7za498cRGbfqthRp7wqqkuAY="
+      APP_URL: http://localhost:8000
+      FRONTEND_URL: http://localhost:3000
       DB_CONNECTION: pgsql
       DB_HOST: postgres
       DB_PORT: "5432"
@@ -68,20 +76,23 @@ services:
       DB_USERNAME: kalapak_user
       DB_PASSWORD: kalapak123
       DB_SSLMODE: prefer
-      CACHE_DRIVER: file
-      QUEUE_CONNECTION: sync
+      CACHE_DRIVER: redis
+      QUEUE_CONNECTION: redis
       SESSION_DRIVER: file
-    env_file:
-      - ./backend/.env
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      REDIS_PASSWORD: ""
+      SANCTUM_STATEFUL_DOMAINS: "localhost:3000"
+      RUN_MIGRATIONS: "1"
     ports:
       - "8000:8000"
-    # nginx-php-fpm image listens on $PORT (8000 above)
     volumes:
-      - ./backend/.env:/var/www/html/.env
-      # Sync app + routes + database from host so new migrations apply without rebuilding the image.
       - ./backend/app:/var/www/html/app
       - ./backend/routes:/var/www/html/routes
+      - ./backend/config:/var/www/html/config
       - ./backend/database:/var/www/html/database
+      - ./backend/resources:/var/www/html/resources
+      - ./backend/storage:/var/www/html/storage
     depends_on:
       postgres:
         condition: service_healthy
@@ -91,6 +102,7 @@ services:
       - kalapak_network
     restart: unless-stopped
 
+  # ── Nuxt Frontend ──
   frontend:
     build:
       context: ./frontend
@@ -99,16 +111,12 @@ services:
     container_name: kalapak_frontend
     environment:
       NUXT_DEV_API_PROXY: http://backend:8000
+      VITE_API_URL: http://localhost:8000/api
+      NUXT_PUBLIC_API_URL: http://localhost:8000/api
+      NUXT_PUBLIC_SITE_URL: http://localhost:3000
     ports:
       - "3000:3000"
-    command:
-      - sh
-      - -c
-      - |
-        if [ ! -x node_modules/.bin/cross-env ]; then
-          npm install;
-        fi
-        npm run dev -- --host 0.0.0.0 --port 3000
+    command: ["sh", "-c", "npm install && npm run dev -- --host 0.0.0.0 --port 3000"]
     volumes:
       - ./frontend:/app
       - frontend_node_modules:/app/node_modules
@@ -121,6 +129,7 @@ services:
 volumes:
   postgres_data:
   pgadmin_data:
+  redis_data:
   frontend_node_modules:
 
 networks:

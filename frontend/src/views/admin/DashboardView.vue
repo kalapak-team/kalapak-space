@@ -10,7 +10,7 @@
             <p class="text-sm text-gray-500 dark:text-gray-400">{{ stat.label }}</p>
             <p class="text-2xl font-sans font-bold dark:text-white mt-1">{{ stat.value }}</p>
           </div>
-          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl" :class="stat.bgClass">
+          <div class="w-12 h-12 rounded-full flex items-center justify-center text-xl" :class="stat.bgClass">
             {{ stat.icon }}
           </div>
         </div>

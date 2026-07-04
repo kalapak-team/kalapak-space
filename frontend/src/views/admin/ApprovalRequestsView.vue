@@ -11,7 +11,7 @@
           <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
           {{ pendingCount }} pending
         </span>
-        <button @click="fetchRequests" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-700 transition-colors">
+        <button @click="fetchRequests" class="flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-700 transition-colors">
           <svg class="w-4 h-4" :class="loading ? 'animate-spin' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
           Refresh
         </button>
@@ -24,7 +24,7 @@
         v-for="tab in tabs"
         :key="tab.value"
         @click="activeTab = tab.value; fetchRequests()"
-        class="px-4 py-2 text-sm font-medium rounded-lg transition-all whitespace-nowrap"
+        class="px-4 py-2 text-sm font-medium rounded-full transition-all whitespace-nowrap"
         :class="activeTab === tab.value
           ? 'bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan shadow-sm'
           : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-700'"
@@ -59,7 +59,7 @@
       >
         <!-- Action badge + Subject -->
         <div class="flex items-center gap-3 flex-1 min-w-0">
-          <div class="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" :class="actionStyle(req.action).bg">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" :class="actionStyle(req.action).bg">
             <svg class="w-5 h-5" :class="actionStyle(req.action).text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path v-if="req.action === 'create'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
               <path v-else-if="req.action === 'update'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -92,7 +92,7 @@
             <button
               @click="openApprove(req)"
               :disabled="processing === req.id"
-              class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/30 border border-green-200 dark:border-green-800/40 transition-colors disabled:opacity-50"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/30 border border-green-200 dark:border-green-800/40 transition-colors disabled:opacity-50"
             >
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
               Approve
@@ -100,7 +100,7 @@
             <button
               @click="openReject(req)"
               :disabled="processing === req.id"
-              class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 border border-red-200 dark:border-red-800/40 transition-colors disabled:opacity-50"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 border border-red-200 dark:border-red-800/40 transition-colors disabled:opacity-50"
             >
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
               Reject
@@ -127,13 +127,13 @@
       <button
         :disabled="meta.current_page === 1"
         @click="page--; fetchRequests()"
-        class="px-3 py-1.5 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        class="px-3 py-1.5 rounded-full text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
       >← Prev</button>
       <span class="text-sm text-gray-500 dark:text-gray-400">{{ meta.current_page }} / {{ meta.last_page }}</span>
       <button
         :disabled="meta.current_page === meta.last_page"
         @click="page++; fetchRequests()"
-        class="px-3 py-1.5 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        class="px-3 py-1.5 rounded-full text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
       >Next →</button>
     </div>
 
@@ -143,7 +143,7 @@
         <div v-if="approveModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" @click.self="approveModal = false">
           <div class="bg-white dark:bg-dark-800 rounded-2xl shadow-2xl w-full max-w-md p-6">
             <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+              <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
                 <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
               </div>
               <div>
@@ -151,7 +151,7 @@
                 <p class="text-sm text-gray-500 dark:text-gray-400">This will apply the action immediately.</p>
               </div>
             </div>
-            <div class="mb-4 p-3 rounded-xl bg-gray-50 dark:bg-dark-700">
+            <div class="mb-4 p-3 rounded-full bg-gray-50 dark:bg-dark-700">
               <p class="text-sm text-gray-600 dark:text-gray-300">
                 <span class="font-semibold">{{ selectedReq?.action }}</span> action on
                 <span class="font-semibold">{{ selectedReq?.subject_type }}</span>
@@ -164,7 +164,7 @@
               <textarea v-model="reviewNote" rows="2" class="input-field resize-none" placeholder="Add a note..." />
             </div>
             <div class="flex gap-2 justify-end">
-              <button @click="approveModal = false" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-700 transition-colors">Cancel</button>
+              <button @click="approveModal = false" class="px-4 py-2 rounded-full text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-700 transition-colors">Cancel</button>
               <button @click="confirmApprove" :disabled="processing" class="btn-primary text-sm flex items-center gap-2">
                 <svg v-if="processing" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
                 {{ processing ? 'Approving...' : 'Approve' }}
@@ -181,7 +181,7 @@
         <div v-if="rejectModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" @click.self="rejectModal = false">
           <div class="bg-white dark:bg-dark-800 rounded-2xl shadow-2xl w-full max-w-md p-6">
             <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+              <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
                 <svg class="w-5 h-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
               </div>
               <div>
@@ -189,7 +189,7 @@
                 <p class="text-sm text-gray-500 dark:text-gray-400">The action will not be applied.</p>
               </div>
             </div>
-            <div class="mb-4 p-3 rounded-xl bg-gray-50 dark:bg-dark-700">
+            <div class="mb-4 p-3 rounded-full bg-gray-50 dark:bg-dark-700">
               <p class="text-sm text-gray-600 dark:text-gray-300">
                 <span class="font-semibold">{{ selectedReq?.action }}</span> action on
                 <span class="font-semibold">{{ selectedReq?.subject_type }}</span>
@@ -203,8 +203,8 @@
               <p v-if="noteError" class="text-xs text-red-500 mt-1">{{ noteError }}</p>
             </div>
             <div class="flex gap-2 justify-end">
-              <button @click="rejectModal = false" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-700 transition-colors">Cancel</button>
-              <button @click="confirmReject" :disabled="processing" class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-red-600 hover:bg-red-700 text-white transition-colors disabled:opacity-50">
+              <button @click="rejectModal = false" class="px-4 py-2 rounded-full text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-700 transition-colors">Cancel</button>
+              <button @click="confirmReject" :disabled="processing" class="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-red-600 hover:bg-red-700 text-white transition-colors disabled:opacity-50">
                 <svg v-if="processing" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
                 {{ processing ? 'Rejecting...' : 'Reject' }}
               </button>

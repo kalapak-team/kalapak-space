@@ -3,7 +3,7 @@
     <button
       :disabled="currentPage <= 1"
       @click="$emit('page-change', currentPage - 1)"
-      class="px-3 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-dark-700"
+      class="px-3 py-2 rounded-full text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-dark-700"
     >
       Previous
     </button>
@@ -13,7 +13,7 @@
       <button
         v-else
         @click="$emit('page-change', page)"
-        class="w-10 h-10 rounded-lg text-sm font-medium transition-all duration-200"
+        class="w-10 h-10 rounded-full text-sm font-medium transition-all duration-200"
         :class="[
           page === currentPage
             ? 'bg-gradient-brand text-white shadow-glow'
@@ -27,7 +27,7 @@
     <button
       :disabled="currentPage >= lastPage"
       @click="$emit('page-change', currentPage + 1)"
-      class="px-3 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-dark-700"
+      class="px-3 py-2 rounded-full text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-dark-700"
     >
       Next
     </button>

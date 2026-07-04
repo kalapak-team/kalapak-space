@@ -31,7 +31,7 @@
     <transition name="toast-fade">
       <div
         v-if="toast.show"
-        :class="['fixed top-5 right-5 z-50 flex items-center gap-2.5 px-4 py-3 rounded-xl shadow-2xl text-sm font-medium pointer-events-none',
+        :class="['fixed top-5 right-5 z-50 flex items-center gap-2.5 px-4 py-3 rounded-full shadow-2xl text-sm font-medium pointer-events-none',
           toast.type === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white']"
       >
         <svg v-if="toast.type === 'success'" class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -66,7 +66,7 @@
         class="space-y-4"
       >
         <template #item="{ element: mm, index: mmIdx }">
-          <div class="rounded-xl border border-brand-violet/30 bg-white dark:bg-dark-800/60 overflow-hidden shadow-sm">
+          <div class="rounded-full border border-brand-violet/30 bg-white dark:bg-dark-800/60 overflow-hidden shadow-sm">
 
             <!-- Main Menu header -->
             <div class="flex items-center gap-2 px-3 py-2.5 bg-brand-violet/10 select-none border-b border-brand-violet/20">
@@ -124,7 +124,7 @@
                 class="space-y-1.5"
               >
                 <template #item="{ element: sm, index: smIdx }">
-                  <div class="rounded-lg border border-brand-cyan/20 bg-white dark:bg-dark-700/40 overflow-hidden">
+                  <div class="rounded-full border border-brand-cyan/20 bg-white dark:bg-dark-700/40 overflow-hidden">
                     <!-- Sub-Menu header -->
                     <div class="flex items-center gap-2 px-2.5 py-2 bg-brand-cyan/5 select-none border-b border-brand-cyan/10">
                       <!-- Drag grip -->
@@ -196,14 +196,14 @@
                 <!-- Empty sub-menu drop zone -->
                 <template #footer>
                   <div v-if="mm.subMenus.length === 0"
-                    class="px-4 py-2 text-center text-xs text-gray-400 italic border border-dashed border-gray-200 dark:border-dark-600 rounded-lg">
+                    class="px-4 py-2 text-center text-xs text-gray-400 italic border border-dashed border-gray-200 dark:border-dark-600 rounded-full">
                     Drop sub-menus here
                   </div>
                 </template>
               </draggable>
 
               <!-- ── Docs directly under this Main Menu ── -->
-              <div v-if="mm.docs.length > 0 || true" class="rounded-lg border border-gray-200 dark:border-dark-600 overflow-hidden">
+              <div v-if="mm.docs.length > 0 || true" class="rounded-full border border-gray-200 dark:border-dark-600 overflow-hidden">
                 <div class="px-2.5 py-1.5 bg-gray-50 dark:bg-white/[0.03] border-b border-gray-100 dark:border-dark-600">
                   <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Direct Pages</span>
                 </div>
@@ -239,7 +239,7 @@
       </draggable>
 
       <!-- ── Unassigned Docs ── -->
-      <div v-if="unassigned.length > 0" class="mt-4 rounded-xl border border-yellow-400/30 bg-white dark:bg-dark-800/40 overflow-hidden shadow-sm">
+      <div v-if="unassigned.length > 0" class="mt-4 rounded-full border border-yellow-400/30 bg-white dark:bg-dark-800/40 overflow-hidden shadow-sm">
         <div class="px-3 py-2.5 bg-yellow-400/10 border-b border-yellow-400/20 select-none">
           <span class="text-sm font-semibold text-yellow-600 dark:text-yellow-400">Unassigned Pages</span>
           <span class="ml-2 text-xs text-gray-400">Drag these into a menu above</span>

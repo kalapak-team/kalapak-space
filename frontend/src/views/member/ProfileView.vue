@@ -45,12 +45,12 @@
               </svg>
             </div>
           </div>          <!-- Storage provider selector -->
-          <div v-if="allowedProviders !== 'both'" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 text-[11px] text-white/70">
+          <div v-if="allowedProviders !== 'both'" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/10 text-[11px] text-white/70">
             <svg v-if="allowedProviders === 'supabase'" class="w-3 h-3 text-emerald-400" viewBox="0 0 109 113" fill="currentColor"><path d="M63.7 110.3c-2.6 3.1-7.8 3.1-10.4 0L2.5 49.2c-3.5-4.2-.3-10.4 5.2-10.4h100.6c5.5 0 8.7 6.2 5.2 10.4l-49.8 61.1z"/></svg>
             <svg v-else class="w-3 h-3 text-blue-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
             {{ allowedProviders === 'supabase' ? 'Supabase' : 'Cloudinary' }}
           </div>
-          <div v-else class="flex rounded-lg overflow-hidden border border-white/20">
+          <div v-else class="flex rounded-full overflow-hidden border border-white/20">
             <button type="button" @click="avatarStorageProvider = 'supabase'"
               :class="avatarStorageProvider === 'supabase' ? 'bg-white/20 text-white' : 'text-white/50 hover:bg-white/10'"
               class="px-2.5 py-1 flex items-center gap-1 transition-colors text-[11px] font-medium">
@@ -114,12 +114,12 @@
     <div class="max-w-5xl mx-auto px-4 sm:px-6 -mt-16 relative z-20 pb-20">
 
       <!-- Tab Navigation -->
-      <div class="flex gap-1 p-1 rounded-xl bg-dark-800/80 dark:bg-dark-800/80 bg-gray-100 backdrop-blur-sm border border-dark-600/50 dark:border-dark-600/50 border-gray-200 mb-8 w-fit">
+      <div class="flex gap-1 p-1 rounded-full bg-dark-800/80 dark:bg-dark-800/80 bg-gray-100 backdrop-blur-sm border border-dark-600/50 dark:border-dark-600/50 border-gray-200 mb-8 w-fit">
         <button
           v-for="tab in tabs"
           :key="tab.id"
           @click="activeTab = tab.id"
-          class="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all"
+          class="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all"
           :class="activeTab === tab.id
             ? 'bg-gradient-to-r from-brand-violet to-brand-cyan text-white shadow-lg shadow-brand-violet/25'
             : 'text-gray-400 hover:text-white hover:bg-dark-700/50'"
@@ -139,7 +139,7 @@
             <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Quick Info</h3>
             <div class="space-y-4">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-brand-violet/10 flex items-center justify-center">
+                <div class="w-10 h-10 rounded-full bg-brand-violet/10 flex items-center justify-center">
                   <svg class="w-5 h-5 text-brand-violet" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                   </svg>
@@ -150,7 +150,7 @@
                 </div>
               </div>
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
+                <div class="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
                   <span class="text-purple-400 text-sm font-bold">@</span>
                 </div>
                 <div class="min-w-0">
@@ -161,7 +161,7 @@
                 </div>
               </div>
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-brand-cyan/10 flex items-center justify-center">
+                <div class="w-10 h-10 rounded-full bg-brand-cyan/10 flex items-center justify-center">
                   <svg class="w-5 h-5 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                   </svg>
@@ -172,7 +172,7 @@
                 </div>
               </div>
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
+                <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
                   <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -186,7 +186,7 @@
                 </div>
               </div>
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center">
+                <div class="w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center">
                   <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
                   </svg>
@@ -231,7 +231,7 @@
                       v-model="profileForm.name"
                       type="text"
                       required
-                      class="w-full pl-12 pr-4 py-3 bg-dark-800/50 dark:bg-dark-800/50 bg-gray-50 border border-dark-600 dark:border-dark-600 border-gray-200 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet/50 transition-all"
+                      class="w-full pl-12 pr-4 py-3 bg-dark-800/50 dark:bg-dark-800/50 bg-gray-50 border border-dark-600 dark:border-dark-600 border-gray-200 rounded-full text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet/50 transition-all"
                     />
                   </div>
                 </div>
@@ -249,7 +249,7 @@
                       maxlength="30"
                       pattern="[a-zA-Z0-9_]+"
                       autocomplete="username"
-                      class="w-full pl-10 pr-4 py-3 bg-dark-800/50 dark:bg-dark-800/50 bg-gray-50 border border-dark-600 dark:border-dark-600 border-gray-200 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet/50 transition-all"
+                      class="w-full pl-10 pr-4 py-3 bg-dark-800/50 dark:bg-dark-800/50 bg-gray-50 border border-dark-600 dark:border-dark-600 border-gray-200 rounded-full text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet/50 transition-all"
                       placeholder="your_handle"
                     />
                   </div>
@@ -268,7 +268,7 @@
                     v-model="profileForm.email"
                     type="email"
                     disabled
-                    class="w-full pl-12 pr-4 py-3 bg-dark-700/30 dark:bg-dark-700/30 bg-gray-100 border border-dark-600/50 dark:border-dark-600/50 border-gray-200 rounded-xl text-gray-500 cursor-not-allowed"
+                    class="w-full pl-12 pr-4 py-3 bg-dark-700/30 dark:bg-dark-700/30 bg-gray-100 border border-dark-600/50 dark:border-dark-600/50 border-gray-200 rounded-full text-gray-500 cursor-not-allowed"
                   />
                 </div>
                 <p class="mt-1.5 text-xs text-gray-500">Email cannot be changed</p>
@@ -282,7 +282,7 @@
                     v-model="profileForm.bio"
                     rows="4"
                     maxlength="1000"
-                    class="w-full px-4 py-3 bg-dark-800/50 dark:bg-dark-800/50 bg-gray-50 border border-dark-600 dark:border-dark-600 border-gray-200 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet/50 transition-all resize-none"
+                    class="w-full px-4 py-3 bg-dark-800/50 dark:bg-dark-800/50 bg-gray-50 border border-dark-600 dark:border-dark-600 border-gray-200 rounded-full text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet/50 transition-all resize-none"
                     placeholder="Tell the world about yourself — what drives you, what you build, what you're passionate about..."
                   ></textarea>
                   <span class="absolute bottom-3 right-3 text-xs text-gray-500">{{ profileForm.bio?.length || 0 }}/1000</span>
@@ -300,7 +300,7 @@
                     <input
                       v-model="profileForm.github_url"
                       type="url"
-                      class="w-full pl-12 pr-4 py-3 bg-dark-800/50 dark:bg-dark-800/50 bg-gray-50 border border-dark-600 dark:border-dark-600 border-gray-200 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet/50 transition-all"
+                      class="w-full pl-12 pr-4 py-3 bg-dark-800/50 dark:bg-dark-800/50 bg-gray-50 border border-dark-600 dark:border-dark-600 border-gray-200 rounded-full text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet/50 transition-all"
                       placeholder="https://github.com/username"
                     />
                   </div>
@@ -311,7 +311,7 @@
                     <input
                       v-model="profileForm.linkedin_url"
                       type="url"
-                      class="w-full pl-12 pr-4 py-3 bg-dark-800/50 dark:bg-dark-800/50 bg-gray-50 border border-dark-600 dark:border-dark-600 border-gray-200 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet/50 transition-all"
+                      class="w-full pl-12 pr-4 py-3 bg-dark-800/50 dark:bg-dark-800/50 bg-gray-50 border border-dark-600 dark:border-dark-600 border-gray-200 rounded-full text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet/50 transition-all"
                       placeholder="https://linkedin.com/in/username"
                     />
                   </div>
@@ -320,7 +320,7 @@
 
               <!-- Success/Error Message -->
               <transition name="fade">
-                <div v-if="profileMsg" class="flex items-center gap-3 px-4 py-3 rounded-xl" :class="profileError ? 'bg-red-500/10 border border-red-500/20' : 'bg-green-500/10 border border-green-500/20'">
+                <div v-if="profileMsg" class="flex items-center gap-3 px-4 py-3 rounded-full" :class="profileError ? 'bg-red-500/10 border border-red-500/20' : 'bg-green-500/10 border border-green-500/20'">
                   <svg v-if="!profileError" class="w-5 h-5 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -333,13 +333,13 @@
 
               <!-- Submit -->
               <div class="flex items-center justify-end gap-3 pt-2">
-                <button type="button" @click="resetProfileForm" class="px-5 py-2.5 rounded-xl text-sm font-medium text-gray-400 hover:text-white hover:bg-dark-700/50 transition-all">
+                <button type="button" @click="resetProfileForm" class="px-5 py-2.5 rounded-full text-sm font-medium text-gray-400 hover:text-white hover:bg-dark-700/50 transition-all">
                   Reset
                 </button>
                 <button
                   type="submit"
                   :disabled="saving"
-                  class="relative px-8 py-2.5 rounded-xl font-semibold text-white overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  class="relative px-8 py-2.5 rounded-full font-semibold text-white overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   <div class="absolute inset-0 bg-gradient-to-r from-brand-violet to-brand-cyan group-hover:opacity-90 transition-opacity"></div>
                   <span class="relative flex items-center gap-2">
@@ -365,7 +365,7 @@
               <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Security Tips</h3>
               <div class="space-y-4">
                 <div v-for="(tip, i) in securityTips" :key="i" class="flex items-start gap-3">
-                  <div class="w-8 h-8 rounded-lg bg-brand-violet/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div class="w-8 h-8 rounded-full bg-brand-violet/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <span v-html="tip.icon"></span>
                   </div>
                   <div>
@@ -399,7 +399,7 @@
                       v-model="passwordForm.current_password"
                       :type="showCurrentPw ? 'text' : 'password'"
                       required
-                      class="w-full pl-12 pr-12 py-3 bg-dark-800/50 dark:bg-dark-800/50 bg-gray-50 border border-dark-600 dark:border-dark-600 border-gray-200 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet/50 transition-all"
+                      class="w-full pl-12 pr-12 py-3 bg-dark-800/50 dark:bg-dark-800/50 bg-gray-50 border border-dark-600 dark:border-dark-600 border-gray-200 rounded-full text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet/50 transition-all"
                       placeholder="Enter current password"
                     />
                     <button type="button" @click="showCurrentPw = !showCurrentPw" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-gray-300 transition-colors">
@@ -423,7 +423,7 @@
                       :type="showNewPw ? 'text' : 'password'"
                       required
                       minlength="8"
-                      class="w-full pl-12 pr-12 py-3 bg-dark-800/50 dark:bg-dark-800/50 bg-gray-50 border border-dark-600 dark:border-dark-600 border-gray-200 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet/50 transition-all"
+                      class="w-full pl-12 pr-12 py-3 bg-dark-800/50 dark:bg-dark-800/50 bg-gray-50 border border-dark-600 dark:border-dark-600 border-gray-200 rounded-full text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet/50 transition-all"
                       placeholder="Min. 8 characters"
                     />
                     <button type="button" @click="showNewPw = !showNewPw" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-gray-300 transition-colors">
@@ -453,7 +453,7 @@
                       v-model="passwordForm.password_confirmation"
                       :type="showConfirmPw ? 'text' : 'password'"
                       required
-                      class="w-full pl-12 pr-12 py-3 bg-dark-800/50 dark:bg-dark-800/50 bg-gray-50 border border-dark-600 dark:border-dark-600 border-gray-200 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet/50 transition-all"
+                      class="w-full pl-12 pr-12 py-3 bg-dark-800/50 dark:bg-dark-800/50 bg-gray-50 border border-dark-600 dark:border-dark-600 border-gray-200 rounded-full text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet/50 transition-all"
                       placeholder="Re-enter new password"
                     />
                     <button type="button" @click="showConfirmPw = !showConfirmPw" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-gray-300 transition-colors">
@@ -470,7 +470,7 @@
 
                 <!-- Success/Error Message -->
                 <transition name="fade">
-                  <div v-if="pwMsg" class="flex items-center gap-3 px-4 py-3 rounded-xl" :class="pwError ? 'bg-red-500/10 border border-red-500/20' : 'bg-green-500/10 border border-green-500/20'">
+                  <div v-if="pwMsg" class="flex items-center gap-3 px-4 py-3 rounded-full" :class="pwError ? 'bg-red-500/10 border border-red-500/20' : 'bg-green-500/10 border border-green-500/20'">
                     <svg v-if="!pwError" class="w-5 h-5 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     <svg v-else class="w-5 h-5 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" /></svg>
                     <p class="text-sm" :class="pwError ? 'text-red-400' : 'text-green-400'">{{ pwMsg }}</p>
@@ -479,13 +479,13 @@
 
                 <!-- Submit -->
                 <div class="flex items-center justify-end gap-3 pt-2">
-                  <button type="button" @click="resetPasswordForm" class="px-5 py-2.5 rounded-xl text-sm font-medium text-gray-400 hover:text-white hover:bg-dark-700/50 transition-all">
+                  <button type="button" @click="resetPasswordForm" class="px-5 py-2.5 rounded-full text-sm font-medium text-gray-400 hover:text-white hover:bg-dark-700/50 transition-all">
                     Cancel
                   </button>
                   <button
                     type="submit"
                     :disabled="savingPw"
-                    class="relative px-8 py-2.5 rounded-xl font-semibold text-white overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    class="relative px-8 py-2.5 rounded-full font-semibold text-white overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   >
                     <div class="absolute inset-0 bg-gradient-to-r from-brand-violet to-brand-cyan group-hover:opacity-90 transition-opacity"></div>
                     <span class="relative flex items-center gap-2">
@@ -518,7 +518,7 @@
                   <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Deactivate Account</h4>
                   <p class="text-sm text-gray-500 mt-1">Temporarily disable your account. You can reactivate it later by contacting support.</p>
                 </div>
-                <button class="px-5 py-2 rounded-xl border border-red-500/30 text-red-400 text-sm font-medium hover:bg-red-500/10 transition-all whitespace-nowrap">
+                <button class="px-5 py-2 rounded-full border border-red-500/30 text-red-400 text-sm font-medium hover:bg-red-500/10 transition-all whitespace-nowrap">
                   Deactivate
                 </button>
               </div>
@@ -528,7 +528,7 @@
                   <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Delete Account</h4>
                   <p class="text-sm text-gray-500 mt-1">Permanently delete your account and all associated data. This action cannot be undone.</p>
                 </div>
-                <button class="px-5 py-2 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm font-medium hover:bg-red-500/20 transition-all whitespace-nowrap">
+                <button class="px-5 py-2 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 text-sm font-medium hover:bg-red-500/20 transition-all whitespace-nowrap">
                   Delete Account
                 </button>
               </div>

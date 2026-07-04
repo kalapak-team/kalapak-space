@@ -54,7 +54,7 @@
               v-model="search"
               type="text"
               placeholder="Search projects..."
-              class="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 dark:bg-dark-700 border border-gray-200 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all duration-300"
+              class="w-full pl-10 pr-4 py-3 rounded-full bg-gray-50 dark:bg-dark-700 border border-gray-200 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all duration-300"
               @input="debouncedFetch"
             />
           </div>
@@ -85,7 +85,7 @@
           </div>
           <!-- Clear -->
           <button v-if="search || selectedTag || selectedStatus" @click="clearFilters"
-            class="px-4 py-3 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-brand-violet/5 dark:hover:bg-brand-cyan/5 transition-all duration-300 whitespace-nowrap">
+            class="px-4 py-3 rounded-full text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:bg-brand-violet/5 dark:hover:bg-brand-cyan/5 transition-all duration-300 whitespace-nowrap">
             Clear filters
           </button>
         </div>
@@ -129,24 +129,23 @@
               <!-- Tags -->
               <div class="flex flex-wrap gap-2 mb-6">
                 <span v-for="tag in (featuredProject.tags || []).slice(0, 5)" :key="tag.id"
-                  class="px-2.5 py-1 text-xs rounded-lg font-medium bg-brand-violet/8 text-brand-violet dark:bg-brand-cyan/10 dark:text-brand-cyan border border-brand-violet/10 dark:border-brand-cyan/15">
+                  class="px-2.5 py-1 text-xs rounded-full font-medium bg-brand-violet/8 text-brand-violet dark:bg-brand-cyan/10 dark:text-brand-cyan border border-brand-violet/10 dark:border-brand-cyan/15">
                   {{ tag.name }}
                 </span>
               </div>
               <!-- Actions -->
               <div class="flex flex-wrap items-center gap-3">
                 <router-link :to="`/projects/${featuredProject.slug}`"
-                  class="group/btn inline-flex items-center gap-2 px-6 py-3 bg-gradient-brand text-white font-semibold rounded-xl shadow-glow hover:shadow-glow-lg transition-all duration-300 hover:-translate-y-0.5 text-sm">
+                  class="group/btn inline-flex items-center gap-2 px-6 py-3 bg-gradient-brand text-white font-semibold rounded-full shadow-glow hover:shadow-glow-lg transition-all duration-300 hover:-translate-y-0.5 text-sm">
                   <span>View Project</span>
-                  <svg class="w-4 h-4 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 </router-link>
                 <a v-if="featuredProject.demo_url" :href="featuredProject.demo_url" target="_blank" rel="noopener noreferrer"
-                  class="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-gray-200 dark:border-dark-500 text-gray-700 dark:text-gray-300 text-sm font-medium hover:bg-gray-50 dark:hover:bg-dark-700/50 transition-all duration-300 hover:-translate-y-0.5">
+                  class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-gray-200 dark:border-dark-500 text-gray-700 dark:text-gray-300 text-sm font-medium hover:bg-gray-50 dark:hover:bg-dark-700/50 transition-all duration-300 hover:-translate-y-0.5">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
                   Live Demo
                 </a>
                 <a v-if="featuredProject.repo_url" :href="featuredProject.repo_url" target="_blank" rel="noopener noreferrer"
-                  class="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-gray-200 dark:border-dark-500 text-gray-700 dark:text-gray-300 text-sm font-medium hover:bg-gray-50 dark:hover:bg-dark-700/50 transition-all duration-300 hover:-translate-y-0.5">
+                  class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-gray-200 dark:border-dark-500 text-gray-700 dark:text-gray-300 text-sm font-medium hover:bg-gray-50 dark:hover:bg-dark-700/50 transition-all duration-300 hover:-translate-y-0.5">
                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                   Source
                 </a>
@@ -198,12 +197,12 @@
               <!-- Hover actions overlay -->
               <div class="absolute bottom-3 left-3 right-3 flex items-center gap-2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
                 <span v-if="project.demo_url" @click.prevent="openLink(project.demo_url)"
-                  class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white/90 dark:bg-dark-800/90 backdrop-blur-sm text-xs font-medium text-gray-700 dark:text-gray-200 hover:bg-white dark:hover:bg-dark-700 transition-colors">
+                  class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/90 dark:bg-dark-800/90 backdrop-blur-sm text-xs font-medium text-gray-700 dark:text-gray-200 hover:bg-white dark:hover:bg-dark-700 transition-colors">
                   <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
                   Demo
                 </span>
                 <span v-if="project.repo_url" @click.prevent="openLink(project.repo_url)"
-                  class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white/90 dark:bg-dark-800/90 backdrop-blur-sm text-xs font-medium text-gray-700 dark:text-gray-200 hover:bg-white dark:hover:bg-dark-700 transition-colors">
+                  class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/90 dark:bg-dark-800/90 backdrop-blur-sm text-xs font-medium text-gray-700 dark:text-gray-200 hover:bg-white dark:hover:bg-dark-700 transition-colors">
                   <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                   Code
                 </span>
@@ -249,9 +248,8 @@
                     {{ formatDate(project.created_at) }}
                   </span>
                 </div>
-                <span class="text-xs font-medium text-brand-violet dark:text-brand-cyan group-hover:translate-x-1 transition-transform duration-300 flex items-center gap-1">
+                <span class="text-xs font-medium text-brand-violet dark:text-brand-cyan transition-transform duration-300">
                   Details
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 </span>
               </div>
             </div>

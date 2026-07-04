@@ -593,7 +593,7 @@
                   if (el) cardRefs[i] = el;
                 }
               "
-              class="team-card-inner relative rounded-xl sm:rounded-[2rem] border border-gray-200 dark:border-dark-600/80 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm p-4 sm:p-6 lg:p-8 transition-all duration-500 hover:border-brand-cyan/40 hover:shadow-[0_0_50px_rgba(0,212,255,0.1)]"
+              class="team-card-inner relative rounded-full sm:rounded-[2rem] border border-gray-200 dark:border-dark-600/80 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm p-4 sm:p-6 lg:p-8 transition-all duration-500 hover:border-brand-cyan/40 hover:shadow-[0_0_50px_rgba(0,212,255,0.1)]"
             >
               <!-- Animated ring behind avatar -->
               <div

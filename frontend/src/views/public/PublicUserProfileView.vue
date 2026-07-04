@@ -86,12 +86,12 @@
 
       <!-- Content -->
       <section class="max-w-7xl mx-auto px-4 sm:px-6 -mt-8 relative z-20">
-        <div class="flex flex-wrap gap-2 p-1.5 rounded-xl bg-white/80 dark:bg-dark-800/80 backdrop-blur-md border border-gray-200 dark:border-dark-600 w-fit shadow-lg">
+        <div class="flex flex-wrap gap-2 p-1.5 rounded-full bg-white/80 dark:bg-dark-800/80 backdrop-blur-md border border-gray-200 dark:border-dark-600 w-fit shadow-lg">
           <button
             type="button"
             @click="activeTab = 'posts'"
             :class="activeTab === 'posts' ? 'tab-active' : 'tab-idle'"
-            class="px-5 py-2.5 rounded-lg text-sm font-medium transition-all"
+            class="px-5 py-2.5 rounded-full text-sm font-medium transition-all"
           >
             Blog posts
             <span class="ml-1.5 text-xs opacity-70">({{ postsMeta.total ?? posts.length }})</span>
@@ -100,7 +100,7 @@
             type="button"
             @click="activeTab = 'projects'"
             :class="activeTab === 'projects' ? 'tab-active' : 'tab-idle'"
-            class="px-5 py-2.5 rounded-lg text-sm font-medium transition-all"
+            class="px-5 py-2.5 rounded-full text-sm font-medium transition-all"
           >
             Projects
             <span class="ml-1.5 text-xs opacity-70">({{ projectsMeta.total ?? projects.length }})</span>

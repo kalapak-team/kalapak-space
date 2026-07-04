@@ -72,52 +72,22 @@
         <div
           data-aos="fade-up"
           data-aos-delay="400"
-          class="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4 mb-10 sm:mb-16 px-4 sm:px-0"
+          class="flex flex-row flex-wrap justify-center gap-3 sm:gap-4 mb-10 sm:mb-16 px-4 sm:px-0"
         >
           <router-link
             to="/projects"
-            class="group relative inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-gradient-brand text-white font-semibold rounded-xl shadow-glow hover:shadow-glow-lg transition-all duration-300 hover:-translate-y-0.5 text-sm sm:text-base"
+            class="group relative inline-flex items-center justify-center gap-3 px-6 sm:px-10 py-3 sm:py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-semibold rounded-full hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300 hover:-translate-y-0.5 text-sm sm:text-base shadow-lg"
           >
             <span>Explore Projects</span>
-            <svg
-              class="w-4 h-4 transition-transform group-hover:translate-x-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
           </router-link>
           <router-link
             to="/about"
-            class="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 border border-gray-200 dark:border-dark-500 text-gray-700 dark:text-gray-200 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-dark-700/50 transition-all duration-300 hover:-translate-y-0.5 backdrop-blur-sm text-sm sm:text-base"
+            class="inline-flex items-center justify-center gap-2 px-6 sm:px-10 py-3 sm:py-4 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-semibold rounded-full hover:bg-gray-50 dark:hover:bg-white/5 transition-all duration-300 hover:-translate-y-0.5 text-sm sm:text-base"
           >
             <span>Meet the Team</span>
           </router-link>
         </div>
 
-        <!-- Scroll indicator -->
-        <div
-          data-aos="fade-up"
-          data-aos-delay="600"
-          class="flex flex-col items-center gap-2"
-        >
-          <span class="text-[10px] uppercase tracking-[0.2em] text-gray-400"
-            >Scroll to explore</span
-          >
-          <div
-            class="w-5 h-8 rounded-full border-2 border-gray-300 dark:border-dark-500 flex justify-center pt-1"
-          >
-            <div
-              class="w-1 h-2 rounded-full bg-brand-violet dark:bg-brand-cyan animate-bounce"
-            />
-          </div>
-        </div>
       </div>
     </section>
 
@@ -241,19 +211,6 @@
             class="group inline-flex items-center gap-2 text-sm font-semibold text-brand-violet dark:text-brand-cyan hover:gap-3 transition-all"
           >
             View all projects
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
           </router-link>
         </div>
 
@@ -330,19 +287,6 @@
                   class="inline-flex items-center gap-1 text-xs font-semibold text-brand-violet dark:text-brand-cyan group-hover:gap-2 transition-all"
                 >
                   View project
-                  <svg
-                    class="w-3.5 h-3.5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M17 8l4 4m0 0l-4 4m4-4H3"
-                    />
-                  </svg>
                 </span>
               </div>
             </div>
@@ -400,7 +344,7 @@
                 height="160"
                 loading="lazy"
                 decoding="async"
-                class="w-full rounded-xl object-cover shadow-sm aspect-[4/3]"
+                class="w-full rounded-full object-cover shadow-sm aspect-[4/3]"
               />
             </div>
 
@@ -417,7 +361,7 @@
                   height="160"
                   loading="lazy"
                   decoding="async"
-                  class="mx-4 inline-block h-40 w-60 rounded-lg object-cover shadow-sm"
+                  class="mx-4 inline-block h-40 w-60 rounded-full object-cover shadow-sm"
                 />
               </div>
               <div class="team-velocity-row team-velocity-row-reverse">
@@ -430,7 +374,7 @@
                   height="160"
                   loading="lazy"
                   decoding="async"
-                  class="mx-4 inline-block h-40 w-60 rounded-lg object-cover shadow-sm"
+                  class="mx-4 inline-block h-40 w-60 rounded-full object-cover shadow-sm"
                 />
               </div>
               <div class="team-fade team-fade-left" />
@@ -477,27 +421,17 @@
             </div>
             <router-link
               to="/about"
-              class="group inline-flex items-center gap-2 px-6 py-3 border border-gray-200 dark:border-dark-500 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-200 hover:border-brand-violet dark:hover:border-brand-cyan hover:bg-brand-violet/5 dark:hover:bg-brand-cyan/5 transition-all"
+              class="group inline-flex items-center gap-2 px-6 py-3 border border-gray-200 dark:border-dark-500 rounded-full text-sm font-semibold text-gray-700 dark:text-gray-200 hover:border-brand-violet dark:hover:border-brand-cyan hover:bg-brand-violet/5 dark:hover:bg-brand-cyan/5 transition-all"
             >
               About our team
-              <svg
-                class="w-4 h-4 transition-transform group-hover:translate-x-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                />
-              </svg>
             </router-link>
           </div>
 
           <!-- Right: Values grid -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" data-aos="fade-left">
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 gap-4"
+            data-aos="fade-left"
+          >
             <div
               v-for="(val, i) in values"
               :key="i"
@@ -505,7 +439,7 @@
               :class="i === 0 ? 'sm:col-span-2' : ''"
             >
               <div
-                class="w-10 h-10 rounded-xl mb-4 flex items-center justify-center"
+                class="w-10 h-10 rounded-full mb-4 flex items-center justify-center"
                 :class="val.bgClass"
               >
                 <span class="text-lg">{{ val.icon }}</span>
@@ -551,19 +485,6 @@
             class="group inline-flex items-center gap-2 text-sm font-semibold text-brand-violet dark:text-brand-cyan hover:gap-3 transition-all"
           >
             Read all articles
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
           </router-link>
         </div>
 
@@ -621,7 +542,7 @@
                   <button
                     v-if="post.author?.username"
                     type="button"
-                    class="flex items-center gap-2 text-left rounded-lg -m-1 p-1 hover:bg-gray-50 dark:hover:bg-dark-700/50 transition-colors"
+                    class="flex items-center gap-2 text-left rounded-full -m-1 p-1 hover:bg-gray-50 dark:hover:bg-dark-700/50 transition-colors"
                     @click.stop.prevent="goProfile(post.author.username)"
                   >
                     <div
@@ -906,10 +827,10 @@ const techStack = [
 
 /** Same values on server and client (SSR hydration) — not cryptographically random */
 function particleRand(i, salt) {
-  let h = (Math.imul(i, 0x9e3779b9) ^ Math.imul(salt, 0x85ebca6b)) | 0
-  h = Math.imul(h ^ (h >>> 16), 0x7feb352d)
-  h ^= h >>> 15
-  return (h >>> 0) / 4294967296
+  let h = (Math.imul(i, 0x9e3779b9) ^ Math.imul(salt, 0x85ebca6b)) | 0;
+  h = Math.imul(h ^ (h >>> 16), 0x7feb352d);
+  h ^= h >>> 15;
+  return (h >>> 0) / 4294967296;
 }
 
 const particles = Array.from({ length: 20 }, (_, i) => ({
@@ -1191,9 +1112,23 @@ onMounted(async () => {
       rgba(248, 250, 252, 0.85) 14%,
       rgba(248, 250, 252, 0) 30%
     ),
-    radial-gradient(circle at 16% 18%, rgba(120, 95, 255, 0.14), transparent 34%),
-    radial-gradient(circle at 82% 24%, rgba(68, 178, 255, 0.13), transparent 40%),
-    radial-gradient(circle at 50% 55%, #ffffff 0%, #f4f8ff 30%, #e4efff 62%, #d9e8ff 100%);
+    radial-gradient(
+      circle at 16% 18%,
+      rgba(120, 95, 255, 0.14),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 82% 24%,
+      rgba(68, 178, 255, 0.13),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 50% 55%,
+      #ffffff 0%,
+      #f4f8ff 30%,
+      #e4efff 62%,
+      #d9e8ff 100%
+    );
 }
 
 .tech-section::after {
@@ -1328,8 +1263,14 @@ onMounted(async () => {
   width: 44%;
   height: 44%;
   border-radius: 50%;
-  background:
-    radial-gradient(circle at 50% 40%, rgba(232, 244, 255, 1) 0%, rgba(201, 223, 255, 0.85) 24%, rgba(145, 181, 242, 0.62) 56%, rgba(86, 126, 206, 0.78) 78%, rgba(46, 84, 160, 0.92) 100%);
+  background: radial-gradient(
+    circle at 50% 40%,
+    rgba(232, 244, 255, 1) 0%,
+    rgba(201, 223, 255, 0.85) 24%,
+    rgba(145, 181, 242, 0.62) 56%,
+    rgba(86, 126, 206, 0.78) 78%,
+    rgba(46, 84, 160, 0.92) 100%
+  );
   display: grid;
   place-items: center;
   box-shadow:
@@ -1343,7 +1284,12 @@ onMounted(async () => {
   width: 63%;
   height: 63%;
   border-radius: 50%;
-  background: radial-gradient(circle at 46% 42%, rgba(214, 231, 255, 0.99), rgba(113, 149, 224, 0.75) 58%, rgba(47, 84, 161, 0.92));
+  background: radial-gradient(
+    circle at 46% 42%,
+    rgba(214, 231, 255, 0.99),
+    rgba(113, 149, 224, 0.75) 58%,
+    rgba(47, 84, 161, 0.92)
+  );
   box-shadow: 0 0 0 1px rgba(109, 182, 255, 0.5);
 }
 
@@ -1366,8 +1312,7 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform:
-    translate(-50%, -50%)
+  transform: translate(-50%, -50%)
     rotate(calc((360deg / var(--count)) * var(--i)))
     translateY(calc(var(--orbit-radius) * -1))
     rotate(calc((360deg / var(--count)) * var(--i) * -1));
@@ -1427,9 +1372,23 @@ onMounted(async () => {
       rgba(4, 8, 31, 0.8) 14%,
       rgba(4, 8, 31, 0) 30%
     ),
-    radial-gradient(circle at 20% 20%, rgba(107, 85, 255, 0.16), transparent 32%),
-    radial-gradient(circle at 75% 30%, rgba(0, 212, 255, 0.13), transparent 38%),
-    radial-gradient(circle at 50% 55%, #1e315f 0%, #0a1540 34%, var(--space-1) 66%, var(--space-2) 100%);
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(107, 85, 255, 0.16),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 75% 30%,
+      rgba(0, 212, 255, 0.13),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 50% 55%,
+      #1e315f 0%,
+      #0a1540 34%,
+      var(--space-1) 66%,
+      var(--space-2) 100%
+    );
 }
 
 :root.dark .orbit-shell,
@@ -1458,8 +1417,14 @@ onMounted(async () => {
 
 :root.dark .event-horizon,
 .dark .event-horizon {
-  background:
-    radial-gradient(circle at 50% 40%, rgba(199, 225, 255, 0.92) 0%, rgba(154, 187, 255, 0.55) 25%, rgba(88, 114, 185, 0.25) 54%, rgba(13, 29, 71, 0.8) 74%, rgba(5, 12, 38, 1) 100%);
+  background: radial-gradient(
+    circle at 50% 40%,
+    rgba(199, 225, 255, 0.92) 0%,
+    rgba(154, 187, 255, 0.55) 25%,
+    rgba(88, 114, 185, 0.25) 54%,
+    rgba(13, 29, 71, 0.8) 74%,
+    rgba(5, 12, 38, 1) 100%
+  );
   box-shadow:
     0 0 0 1px rgba(146, 198, 255, 0.38),
     0 0 50px rgba(68, 109, 255, 0.45),
@@ -1469,7 +1434,12 @@ onMounted(async () => {
 
 :root.dark .event-horizon-core,
 .dark .event-horizon-core {
-  background: radial-gradient(circle at 46% 42%, rgba(183, 210, 255, 0.95), rgba(34, 51, 100, 0.65) 58%, rgba(6, 13, 34, 0.92));
+  background: radial-gradient(
+    circle at 46% 42%,
+    rgba(183, 210, 255, 0.95),
+    rgba(34, 51, 100, 0.65) 58%,
+    rgba(6, 13, 34, 0.92)
+  );
   box-shadow: 0 0 0 1px rgba(109, 182, 255, 0.38);
 }
 
