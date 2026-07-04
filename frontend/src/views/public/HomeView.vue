@@ -332,54 +332,6 @@
               Meet the people<br />behind the
               <span class="gradient-text">code</span>
             </h2>
-            <div
-              class="grid grid-cols-2 gap-3 mb-6 team-mobile-gallery lg:hidden"
-            >
-              <img
-                v-for="(src, idx) in teamImagesMobile"
-                :key="`team-mobile-${idx}`"
-                :src="src"
-                alt="Unsplash sample"
-                width="240"
-                height="160"
-                loading="lazy"
-                decoding="async"
-                class="w-full rounded-full object-cover shadow-sm aspect-[4/3]"
-              />
-            </div>
-
-            <div
-              class="relative overflow-hidden py-4 mb-6 team-velocity-wrap hidden lg:block"
-            >
-              <div class="team-velocity-row team-velocity-row-forward">
-                <img
-                  v-for="(src, idx) in teamImagesRowALoop"
-                  :key="`team-row-a-${idx}`"
-                  :src="src"
-                  alt="Unsplash sample"
-                  width="240"
-                  height="160"
-                  loading="lazy"
-                  decoding="async"
-                  class="mx-4 inline-block h-40 w-60 rounded-full object-cover shadow-sm"
-                />
-              </div>
-              <div class="team-velocity-row team-velocity-row-reverse">
-                <img
-                  v-for="(src, idx) in teamImagesRowBLoop"
-                  :key="`team-row-b-${idx}`"
-                  :src="src"
-                  alt="Unsplash sample"
-                  width="240"
-                  height="160"
-                  loading="lazy"
-                  decoding="async"
-                  class="mx-4 inline-block h-40 w-60 rounded-full object-cover shadow-sm"
-                />
-              </div>
-              <div class="team-fade team-fade-left" />
-              <div class="team-fade team-fade-right" />
-            </div>
             <p class="text-gray-500 dark:text-gray-400 mb-8 leading-relaxed">
               We're a group of passionate students and developers from Phnom
               Penh, Cambodia. United by our love for clean code and innovative
@@ -747,32 +699,6 @@ const values = [
   },
 ];
 
-const teamImagesRowA = [
-  "https://images.unsplash.com/photo-1749738456487-2af715ab65ea?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://plus.unsplash.com/premium_photo-1720139288219-e20aa9c8895b?q=80&w=1810&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-];
-
-const teamImagesRowB = [
-  "https://images.unsplash.com/photo-1749738456487-2af715ab65ea?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://plus.unsplash.com/premium_photo-1720139288219-e20aa9c8895b?q=80&w=1810&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-];
-
-const teamImagesRowALoop = [
-  ...teamImagesRowA,
-  ...teamImagesRowA,
-  ...teamImagesRowA,
-];
-const teamImagesRowBLoop = [
-  ...teamImagesRowB,
-  ...teamImagesRowB,
-  ...teamImagesRowB,
-];
-const teamImagesMobile = [
-  ...teamImagesRowA,
-  ...teamImagesRowB,
-  ...teamImagesRowA,
-  ...teamImagesRowB,
-];
 
 const techStack = [
   {
@@ -1481,84 +1407,7 @@ onMounted(async () => {
   }
 }
 
-.team-velocity-wrap {
-  isolation: isolate;
-}
-
-.team-mobile-gallery {
-  isolation: isolate;
-}
-
-.team-velocity-row {
-  display: flex;
-  width: max-content;
-  align-items: center;
-  margin-bottom: 0.75rem;
-  will-change: transform;
-}
-
-.team-velocity-row:last-of-type {
-  margin-bottom: 0;
-}
-
-.team-velocity-row-forward {
-  animation: teamVelocityLeft 24s linear infinite;
-}
-
-.team-velocity-row-reverse {
-  animation: teamVelocityRight 24s linear infinite;
-}
-
-.team-fade {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 22%;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.team-fade-left {
-  left: 0;
-  background: linear-gradient(to right, var(--team-fade-bg, #fff), transparent);
-}
-
-.team-fade-right {
-  right: 0;
-  background: linear-gradient(to left, var(--team-fade-bg, #fff), transparent);
-}
-
-.dark .team-fade-left {
-  --team-fade-bg: #020617;
-}
-
-.dark .team-fade-right {
-  --team-fade-bg: #020617;
-}
-
-@keyframes teamVelocityLeft {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-33.3333%);
-  }
-}
-
-@keyframes teamVelocityRight {
-  from {
-    transform: translateX(-33.3333%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
 @media (max-width: 768px) {
-  .team-mobile-gallery {
-    gap: 0.625rem;
-  }
-
   .tech-section {
     --orbit-size: min(95vw, 560px);
     --orbit-node-size: 50px;
@@ -1579,9 +1428,6 @@ onMounted(async () => {
   .stats-shell::before,
   .stats-orb,
   .stat-card {
-    animation: none;
-  }
-  .team-velocity-row {
     animation: none;
   }
   .stat-shine {
