@@ -206,13 +206,13 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue'
 import { publicApi } from '@/services/api'
+import { TURNSTILE_SITE_KEY } from '@/config/appUrls'
 import VueTurnstile from 'vue-turnstile'
 
-const runtimeConfig = useRuntimeConfig()
 const form = reactive({ name: '', email: '', subject: '', message: '' })
 const submitting = ref(false)
 const submitted = ref(false)
-const turnstileSiteKey = runtimeConfig.public.turnstileSiteKey || import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
+const turnstileSiteKey = TURNSTILE_SITE_KEY
 const turnstileToken = ref('')
 const error = ref('')
 const mounted = ref(false)

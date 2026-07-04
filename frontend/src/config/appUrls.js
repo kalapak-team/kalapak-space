@@ -2,6 +2,11 @@
 export const BACKEND_ORIGIN = 'https://api.kalapak-team.space'
 export const SITE_ORIGIN = 'https://kalapak-team.space'
 
+/** Cloudflare Turnstile public site key (safe to embed in frontend). */
+export const TURNSTILE_SITE_KEY =
+  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_TURNSTILE_SITE_KEY) ||
+  '0x4AAAAAAAC4BOzhJInXTTfSR'
+
 /** Base URL for OAuth redirects (no /api suffix). */
 export function resolveBackendOrigin() {
   const apiUrl =

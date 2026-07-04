@@ -39,14 +39,14 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { authApi } from '@/services/api'
+import { TURNSTILE_SITE_KEY } from '@/config/appUrls'
 import VueTurnstile from 'vue-turnstile'
 
 const email = ref('')
 const loading = ref(false)
 const sent = ref(false)
 const error = ref('')
-const runtimeConfig = useRuntimeConfig()
-const turnstileSiteKey = runtimeConfig.public.turnstileSiteKey || import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
+const turnstileSiteKey = TURNSTILE_SITE_KEY
 const turnstileToken = ref('')
 const mounted = ref(false)
 const isTurnstileReady = computed(() => mounted.value && !!turnstileSiteKey)

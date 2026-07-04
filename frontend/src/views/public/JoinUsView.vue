@@ -372,6 +372,7 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { memberApi } from '@/services/api'
 import CustomSelect from '@/components/common/CustomSelect.vue'
+import { TURNSTILE_SITE_KEY } from '@/config/appUrls'
 import VueTurnstile from 'vue-turnstile'
 
 const currentStep = ref(1)
@@ -379,8 +380,7 @@ const submitting = ref(false)
 const submitted = ref(false)
 const error = ref('')
 const openFaq = ref(null)
-const runtimeConfig = useRuntimeConfig()
-const turnstileSiteKey = runtimeConfig.public.turnstileSiteKey || import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
+const turnstileSiteKey = TURNSTILE_SITE_KEY
 const turnstileToken = ref('')
 const mounted = ref(false)
 const isTurnstileReady = computed(() => mounted.value && !!turnstileSiteKey)

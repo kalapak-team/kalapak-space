@@ -254,14 +254,13 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import { resolveBackendOrigin } from '@/config/appUrls'
+import { resolveBackendOrigin, TURNSTILE_SITE_KEY } from '@/config/appUrls'
 import VueTurnstile from 'vue-turnstile'
 
 const router = useRouter()
 const authStore = useAuthStore()
 
-const runtimeConfig = useRuntimeConfig()
-const turnstileSiteKey = runtimeConfig.public.turnstileSiteKey || import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
+const turnstileSiteKey = TURNSTILE_SITE_KEY
 const turnstileToken = ref('')
 const mounted = ref(false)
 const isTurnstileReady = computed(() => mounted.value && !!turnstileSiteKey)
