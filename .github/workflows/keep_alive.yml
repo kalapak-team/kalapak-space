@@ -2,7 +2,6 @@ name: Website Keep Alive
 
 on:
   schedule:
-    # ប្តូរពី */15 មកជា */5 ដើម្បីឱ្យវាបាញ់រៀងរាល់ ៥ នាទីម្តង
     - cron: '*/5 * * * *'
   workflow_dispatch:
 
@@ -12,5 +11,11 @@ jobs:
     steps:
       - name: Ping Kalapak Team Website
         run: |
-          curl -I https://www.kalapak-team.space
-          curl -I https://www.api.kalapak-team.space/up
+          echo "==> Pinging frontend..."
+          curl -sS -o /dev/null -w "Frontend:        HTTP %{http_code} (%{time_total}s)\n" https://kalapak-team.space || true
+
+          echo "==> Pinging backend (custom domain)..."
+          curl -sS -o /dev/null -w "Backend custom:  HTTP %{http_code} (%{time_total}s)\n" https://api.kalapak-team.space/ping.php || true
+
+          echo "==> Pinging backend (Render domain)..."
+          curl -sS -o /dev/null -w "Backend render:  HTTP %{http_code} (%{time_total}s)\n" https://kalapakspace-backends.onrender.com/ping.php || true
