@@ -67,5 +67,18 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('uploads', function (Request $request) {
             return Limit::perMinute(10)->by($request->user()?->id ?: $request->ip());
         });
+
+        // Strict per-second limit for DDoS-sensitive endpoints (auth, password reset)
+        RateLimiter::for('auth-strict', function (Request $request) {
+            return [
+                Limit::perMinute(10)->by($request->ip()),
+                Limit::perSecond(2)->by($request->ip()),
+            ];
+        });
+
+        // Public read endpoints (blog listing, team page) — generous but capped
+        RateLimiter::for('public-read', function (Request $request) {
+            return Limit::perMinute(120)->by($request->ip());
+        });
     }
 }
