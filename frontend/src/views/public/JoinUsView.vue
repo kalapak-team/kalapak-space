@@ -306,7 +306,7 @@
               <div>
                 <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">Why do you want to join Kalapak? <span class="text-red-400">*</span></label>
                 <textarea v-model="form.motivation" required rows="6" placeholder="Tell us about yourself, your experience, and why you'd like to join our team..."
-                  class="w-full px-4 py-3 rounded-full bg-white dark:bg-dark-700 border border-gray-300 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all duration-300 resize-none" />
+                  class="w-full px-4 py-3 rounded-2xl bg-white dark:bg-dark-700 border border-gray-300 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all duration-300 resize-none" />
                 <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-1 text-right">{{ form.motivation.length }} / 2000</p>
               </div>
             </div>

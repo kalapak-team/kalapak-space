@@ -115,7 +115,7 @@
               <div>
                 <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">Message <span class="text-red-400">*</span></label>
                 <textarea v-model="form.message" required rows="6" placeholder="Tell us what's on your mind..."
-                  class="w-full px-4 py-3 rounded-full bg-gray-50 dark:bg-dark-700 border border-gray-200 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all duration-300 resize-none" />
+                  class="w-full px-4 py-3 rounded-2xl bg-gray-50 dark:bg-dark-700 border border-gray-200 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all duration-300 resize-none" />
                 <p class="text-[10px] text-gray-400 mt-1 text-right">{{ form.message.length }} / 2000</p>
               </div>
               <div v-if="isTurnstileReady" class="flex justify-center">
@@ -144,7 +144,7 @@
                 Our Location
               </h3>
               <!-- Embedded map -->
-              <div class="rounded-full overflow-hidden mb-5 border border-gray-200 dark:border-dark-600">
+              <div class="rounded-2xl overflow-hidden mb-5 border border-gray-200 dark:border-dark-600">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125422.55623628148!2d104.84837849726563!3d11.5563738!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3109513dc76a6be3%3A0x9c010ee85ab525bb!2sPhnom%20Penh%2C%20Cambodia!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
                   width="100%" height="180" style="border:0;" allowfullscreen="" loading="lazy"

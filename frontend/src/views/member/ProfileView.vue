@@ -282,7 +282,7 @@
                     v-model="profileForm.bio"
                     rows="4"
                     maxlength="1000"
-                    class="w-full px-4 py-3 bg-dark-800/50 dark:bg-dark-800/50 bg-gray-50 border border-dark-600 dark:border-dark-600 border-gray-200 rounded-full text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet/50 transition-all resize-none"
+                    class="w-full px-4 py-3 bg-dark-800/50 dark:bg-dark-800/50 bg-gray-50 border border-dark-600 dark:border-dark-600 border-gray-200 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet/50 transition-all resize-none"
                     placeholder="Tell the world about yourself — what drives you, what you build, what you're passionate about..."
                   ></textarea>
                   <span class="absolute bottom-3 right-3 text-xs text-gray-500">{{ profileForm.bio?.length || 0 }}/1000</span>
