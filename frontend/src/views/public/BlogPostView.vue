@@ -271,14 +271,13 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, nextTick, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { Marked } from 'marked'
 import { markedHighlight } from 'marked-highlight'
 import DOMPurify from 'dompurify'
 import hljs from 'highlight.js'
 import dayjs from 'dayjs'
-import { publicApi } from '@/services/api'
 import EmptyState from '@/components/common/EmptyState.vue'
 
 const purifyConfig = {
@@ -299,11 +298,41 @@ const marked = new Marked(
 )
 
 const route = useRoute()
-const post = ref(null)
-const loading = ref(true)
+const config = useRuntimeConfig()
+const apiBase = useApiBase()
+const slug = computed(() => String(route.params.slug))
 const copied = ref(false)
 
-const currentUrl = computed(() => window.location.href)
+const { data: apiResponse, pending } = await useAsyncData(
+  () => `blog-post-${slug.value}`,
+  () =>
+    $fetch(`${apiBase}/blog/posts/${encodeURIComponent(slug.value)}`).catch(() => null),
+  { watch: [slug] },
+)
+
+const post = computed(() => apiResponse.value?.data ?? null)
+const loading = computed(() => pending.value)
+
+const currentUrl = computed(() => {
+  const siteUrl = String(config.public.siteUrl).replace(/\/$/, '')
+  return `${siteUrl}/blog/${slug.value}`
+})
+
+watch(
+  post,
+  (p) => {
+    if (!p) return
+    const siteUrl = String(config.public.siteUrl).replace(/\/$/, '')
+    useKalapakSeo({
+      title: p.title,
+      description: p.excerpt || p.title,
+      image: p.cover_image,
+      url: `${siteUrl}/blog/${p.slug}`,
+      type: 'article',
+    })
+  },
+  { immediate: true },
+)
 
 const bqKeywords = ['tip', 'info', 'warning', 'danger', 'success', 'note', 'important', 'quote', 'curly', 'qbox', 'qline', 'qround', 'qdash', 'qbold', 'qbubble', 'conclusion', 'condark', 'conmin', 'conbold', 'confresh']
 const bqKeywordRe = new RegExp('^(>\\s*)\\[(' + bqKeywords.join('|') + ')\\][ \\t]+(.+)$', 'gim')
@@ -315,6 +344,7 @@ const renderedContent = computed(() => {
     return `${prefix}[${kw}]\n${prefix}${rest}`
   })
   let html = marked.parse(md)
+  if (import.meta.server) return html
   return DOMPurify.sanitize(html, purifyConfig)
 })
 
@@ -441,17 +471,10 @@ function wrapTables() {
   })
 }
 
-onMounted(async () => {
-  try {
-    const { data } = await publicApi.getBlogPost(route.params.slug)
-    post.value = data.data
-  } catch {
-    post.value = null
-  } finally {
-    loading.value = false
-    addCopyButtons()
-    styleBlockquotes()
-    wrapTables()
-  }
+onMounted(() => {
+  if (!post.value) return
+  addCopyButtons()
+  styleBlockquotes()
+  wrapTables()
 })
 </script>
