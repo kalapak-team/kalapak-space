@@ -313,26 +313,29 @@ const { data: apiResponse, pending } = await useAsyncData(
 const post = computed(() => apiResponse.value?.data ?? null)
 const loading = computed(() => pending.value)
 
+function applyPostSeo(p) {
+  const siteUrl = String(config.public.siteUrl).replace(/\/$/, "")
+  useKalapakSeo({
+    title: p.title,
+    description: p.excerpt || p.title,
+    image: p.cover_image,
+    url: `${siteUrl}/blog/${p.slug}`,
+    type: "article",
+  })
+}
+
 const currentUrl = computed(() => {
   const siteUrl = String(config.public.siteUrl).replace(/\/$/, '')
   return `${siteUrl}/blog/${slug.value}`
 })
 
-watch(
-  post,
-  (p) => {
-    if (!p) return
-    const siteUrl = String(config.public.siteUrl).replace(/\/$/, '')
-    useKalapakSeo({
-      title: p.title,
-      description: p.excerpt || p.title,
-      image: p.cover_image,
-      url: `${siteUrl}/blog/${p.slug}`,
-      type: 'article',
-    })
-  },
-  { immediate: true },
-)
+if (apiResponse.value?.data) {
+  applyPostSeo(apiResponse.value.data)
+}
+
+watch(post, (p) => {
+  if (p) applyPostSeo(p)
+})
 
 const bqKeywords = ['tip', 'info', 'warning', 'danger', 'success', 'note', 'important', 'quote', 'curly', 'qbox', 'qline', 'qround', 'qdash', 'qbold', 'qbubble', 'conclusion', 'condark', 'conmin', 'conbold', 'confresh']
 const bqKeywordRe = new RegExp('^(>\\s*)\\[(' + bqKeywords.join('|') + ')\\][ \\t]+(.+)$', 'gim')

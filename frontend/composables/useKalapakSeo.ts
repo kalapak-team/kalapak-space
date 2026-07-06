@@ -35,6 +35,8 @@ export function useKalapakSeo(input: KalapakSeoInput = {}) {
     ogDescription: description,
     ogType: type,
     ogImage: image,
+    ogImageWidth: 1200,
+    ogImageHeight: 630,
     ogUrl: url,
     twitterCard: "summary_large_image",
     twitterTitle: title,

@@ -17,5 +17,8 @@ const { isDark } = storeToRefs(themeStore);
 onMounted(() => {
   themeStore.initTheme();
 });
-useKalapakSeo();
+// Default SEO for non-blog pages; blog posts override in BlogPostView.
+if (!useRoute().path.startsWith("/blog/") || useRoute().path === "/blog") {
+  useKalapakSeo();
+}
 </script>
