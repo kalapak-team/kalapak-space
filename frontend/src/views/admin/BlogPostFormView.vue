@@ -118,13 +118,13 @@
               </div>
             </div>
             <div class="relative">
-              <div v-if="imagePreview || existingImage" class="relative rounded-full overflow-hidden group">
+              <div v-if="imagePreview || existingImage" class="relative rounded-xl overflow-hidden group">
                 <img :src="imagePreview || existingImage" alt="Cover preview" class="w-full h-40 object-cover" />
                 <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <button type="button" @click="removeImage" class="px-3 py-1.5 bg-white/90 text-gray-800 text-xs rounded-full font-medium hover:bg-white transition-colors">Remove</button>
                 </div>
               </div>
-              <label v-else class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 dark:border-dark-500 rounded-full cursor-pointer hover:border-brand-violet dark:hover:border-brand-cyan transition-colors bg-gray-50/50 dark:bg-dark-700/30">
+              <label v-else class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 dark:border-dark-500 rounded-xl cursor-pointer hover:border-brand-violet dark:hover:border-brand-cyan transition-colors bg-gray-50/50 dark:bg-dark-700/30">
                 <svg class="w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
                 <span class="text-xs text-gray-500">Click to upload</span>
                 <span class="text-[10px] text-gray-400 mt-1">PNG, JPG up to 2MB</span>
@@ -189,7 +189,7 @@
               <svg class="w-4 h-4 text-brand-violet dark:text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
               SEO Preview
             </h2>
-            <div class="bg-white dark:bg-dark-700 rounded-full p-3 border border-gray-200 dark:border-dark-600">
+            <div class="bg-white dark:bg-dark-700 rounded-xl p-3 border border-gray-200 dark:border-dark-600">
               <p class="text-sm text-blue-600 dark:text-blue-400 font-medium truncate">{{ form.title || 'Post title' }}</p>
               <p class="text-[10px] text-green-600 dark:text-green-500 truncate mt-0.5">www.kalapak-team.space/blog/{{ form.slug || slugify(form.title || 'post-title') }}</p>
               <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">{{ form.excerpt || 'Add an excerpt to see the preview here...' }}</p>

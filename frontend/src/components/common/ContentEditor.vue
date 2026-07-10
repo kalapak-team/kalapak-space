@@ -1,5 +1,5 @@
 <template>
-  <div class="content-editor border border-gray-200 dark:border-dark-600 rounded-full overflow-hidden">
+  <div class="content-editor border border-gray-200 dark:border-dark-600 rounded-xl overflow-hidden">
     <!-- Mode Tabs -->
     <div class="flex items-center justify-between px-3 py-2 border-b border-gray-200 dark:border-dark-600 bg-gray-50 dark:bg-dark-700/30">
       <div class="flex items-center gap-1 bg-gray-100 dark:bg-dark-600 rounded-full p-0.5">
@@ -51,7 +51,7 @@
         <ToolBtn icon="ol" :active="editor.isActive('orderedList')" @click="editor.chain().focus().toggleOrderedList().run()" title="Ordered List" />
         <div class="relative">
           <ToolBtn icon="blockquote" :active="editor.isActive('blockquote')" @click="showBqMenu = !showBqMenu" title="Blockquote" />
-          <div v-if="showBqMenu" class="absolute top-full left-0 mt-1 z-50 w-48 bg-white dark:bg-dark-800 border border-gray-200 dark:border-dark-600 rounded-full shadow-xl py-1">
+          <div v-if="showBqMenu" class="absolute top-full left-0 mt-1 z-50 w-48 bg-white dark:bg-dark-800 border border-gray-200 dark:border-dark-600 rounded-lg shadow-xl py-1">
             <button v-for="bq in blockquoteTypes" :key="bq.value" type="button"
               @click="insertBlockquote(bq.value)"
               class="w-full text-left px-3 py-1.5 text-xs flex items-center gap-2 hover:bg-brand-violet/10 dark:hover:bg-brand-cyan/10 text-gray-700 dark:text-gray-300 hover:text-brand-violet dark:hover:text-brand-cyan transition-colors">
@@ -67,7 +67,7 @@
         <ToolBtn icon="code" :active="editor.isActive('code')" @click="editor.chain().focus().toggleCode().run()" title="Inline Code" />
         <div class="relative">
           <ToolBtn icon="codeblock" :active="editor.isActive('codeBlock')" @click="showLangMenu = !showLangMenu" title="Code Block" />
-          <div v-if="showLangMenu" class="absolute top-full left-0 mt-1 z-50 w-44 max-h-56 overflow-y-auto bg-white dark:bg-dark-800 border border-gray-200 dark:border-dark-600 rounded-full shadow-xl py-1 scrollbar-thin">
+          <div v-if="showLangMenu" class="absolute top-full left-0 mt-1 z-50 w-44 max-h-56 overflow-y-auto bg-white dark:bg-dark-800 border border-gray-200 dark:border-dark-600 rounded-lg shadow-xl py-1 scrollbar-thin">
             <button v-for="lang in languages" :key="lang.value" type="button"
               @click="insertCodeBlock(lang.value)"
               class="w-full text-left px-3 py-1.5 text-xs hover:bg-brand-violet/10 dark:hover:bg-brand-cyan/10 text-gray-700 dark:text-gray-300 hover:text-brand-violet dark:hover:text-brand-cyan transition-colors">
@@ -151,7 +151,7 @@
           <button type="button" @click="showMdLangMenu = !showMdLangMenu" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-dark-600 transition-colors" title="Code Block">
             <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
           </button>
-          <div v-if="showMdLangMenu" class="absolute top-full left-0 mt-1 z-50 w-44 max-h-56 overflow-y-auto bg-white dark:bg-dark-800 border border-gray-200 dark:border-dark-600 rounded-full shadow-xl py-1 scrollbar-thin">
+          <div v-if="showMdLangMenu" class="absolute top-full left-0 mt-1 z-50 w-44 max-h-56 overflow-y-auto bg-white dark:bg-dark-800 border border-gray-200 dark:border-dark-600 rounded-lg shadow-xl py-1 scrollbar-thin">
             <button v-for="lang in languages" :key="lang.value" type="button"
               @click="insertMd('```' + lang.value + '\n', '\n```'); showMdLangMenu = false"
               class="w-full text-left px-3 py-1.5 text-xs hover:bg-brand-violet/10 dark:hover:bg-brand-cyan/10 text-gray-700 dark:text-gray-300 hover:text-brand-violet dark:hover:text-brand-cyan transition-colors">
