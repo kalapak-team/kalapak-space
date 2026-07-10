@@ -139,8 +139,8 @@
             <td class="py-3 px-4">
               <div class="flex items-center gap-3">
                 <div class="relative flex-shrink-0">
-                  <img v-if="post.cover_image" :src="post.cover_image" :alt="post.title" class="w-14 h-10 object-cover rounded-full ring-1 ring-gray-200 dark:ring-dark-600" />
-                  <div v-else class="w-14 h-10 rounded-full bg-gradient-to-br from-brand-violet/20 to-brand-cyan/20 dark:from-brand-violet/10 dark:to-brand-cyan/10 flex items-center justify-center">
+                  <img v-if="post.cover_image" :src="post.cover_image" :alt="post.title" class="w-14 h-10 object-cover rounded-lg ring-1 ring-gray-200 dark:ring-dark-600" />
+                  <div v-else class="w-14 h-10 rounded-lg bg-gradient-to-br from-brand-violet/20 to-brand-cyan/20 dark:from-brand-violet/10 dark:to-brand-cyan/10 flex items-center justify-center">
                     <svg class="w-5 h-5 text-brand-violet/50 dark:text-brand-cyan/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
                   </div>
                   <span v-if="post.is_featured" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-yellow-400 flex items-center justify-center">
