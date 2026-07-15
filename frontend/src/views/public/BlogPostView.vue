@@ -112,11 +112,11 @@
                   prose-a:text-brand-violet dark:prose-a:text-brand-cyan prose-a:no-underline hover:prose-a:underline
                   prose-code:text-brand-violet dark:prose-code:text-brand-cyan prose-code:bg-brand-violet/5 dark:prose-code:bg-brand-cyan/5 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-[''] prose-code:after:content-['']
                   prose-pre:bg-[#0d1117] dark:prose-pre:bg-[#0d1117] prose-pre:border-0 prose-pre:rounded-none prose-pre:m-0 prose-pre:p-0
-                  prose-img:rounded-full prose-img:shadow-lg
+                  prose-img:rounded-xl prose-img:shadow-lg
                   prose-blockquote:border-brand-violet dark:prose-blockquote:border-brand-cyan prose-blockquote:bg-brand-violet/5 dark:prose-blockquote:bg-brand-cyan/5 prose-blockquote:rounded-r-xl prose-blockquote:py-1 prose-blockquote:px-6
                   prose-hr:border-gray-200 dark:prose-hr:border-dark-600
                   prose-strong:text-gray-900 dark:prose-strong:text-white
-                  prose-table:overflow-hidden prose-table:rounded-full prose-th:bg-gray-50 dark:prose-th:bg-dark-700 prose-td:border-gray-200 dark:prose-td:border-dark-600"
+                  prose-table:overflow-hidden prose-table:rounded-xl prose-th:bg-gray-50 dark:prose-th:bg-dark-700 prose-td:border-gray-200 dark:prose-td:border-dark-600"
                 v-html="renderedContent" />
             </article>
 
