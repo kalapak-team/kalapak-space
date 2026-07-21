@@ -758,7 +758,7 @@
             >
               <div
                 v-if="profileOpen"
-                class="absolute right-0 mt-2 w-60 rounded-full bg-white dark:bg-dark-800 shadow-xl shadow-black/8 dark:shadow-black/30 ring-1 ring-gray-200/80 dark:ring-white/[0.08] py-1.5 z-50"
+                class="absolute right-0 mt-2 w-60 rounded-xl bg-white dark:bg-dark-800 shadow-xl shadow-black/8 dark:shadow-black/30 ring-1 ring-gray-200/80 dark:ring-white/[0.08] py-1.5 z-50 overflow-hidden"
               >
                 <div
                   class="px-4 py-3 border-b border-gray-100 dark:border-white/[0.06]"
@@ -785,7 +785,7 @@
                 <div class="py-1 px-1.5">
                   <router-link
                     to="/member/profile"
-                    class="flex items-center gap-2.5 px-3 py-2 rounded-full text-[13px] text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-white/[0.04] transition-colors"
+                    class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-white/[0.04] transition-colors"
                     @click="profileOpen = false"
                   >
                     <svg
@@ -805,7 +805,7 @@
                   </router-link>
                   <router-link
                     to="/"
-                    class="flex items-center gap-2.5 px-3 py-2 rounded-full text-[13px] text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-white/[0.04] transition-colors"
+                    class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-white/[0.04] transition-colors"
                     @click="profileOpen = false"
                   >
                     <svg
@@ -833,7 +833,7 @@
                       handleLogout();
                       profileOpen = false;
                     "
-                    class="flex items-center gap-2.5 w-full px-3 py-2 rounded-full text-[13px] text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors"
+                    class="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-[13px] text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors"
                   >
                     <svg
                       class="w-4 h-4"
