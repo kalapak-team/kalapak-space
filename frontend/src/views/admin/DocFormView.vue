@@ -133,7 +133,7 @@
 
             <!-- Add another section shortcut (bottom) -->
             <button v-if="form.sections.length > 0" type="button" @click="addSection"
-              class="w-full flex items-center justify-center gap-2 py-3 rounded-full border-2 border-dashed border-gray-200 dark:border-white/[0.08] text-sm text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:border-brand-violet dark:hover:border-brand-cyan transition-all">
+              class="w-full flex items-center justify-center gap-2 py-3 rounded-full border-2 border-dashed border-gray-200 dark:border-white/[0.08] text-sm text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:border-black/[0.16] dark:hover:border-white/20 transition-all">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
               Add Another Section
             </button>

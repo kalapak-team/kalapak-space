@@ -94,7 +94,7 @@
 
     <!-- Drag & Drop Zone -->
     <div v-if="!media.length && !loading"
-      class="glass-card mb-6 border-2 border-dashed border-gray-300 dark:border-dark-500 hover:border-brand-violet dark:hover:border-brand-cyan transition-colors cursor-pointer"
+      class="glass-card mb-6 border-2 border-dashed border-gray-300 dark:border-dark-500 hover:border-black/[0.16] dark:hover:border-white/20 transition-colors cursor-pointer"
       :class="{ 'border-brand-violet dark:border-brand-cyan bg-brand-violet/5 dark:bg-brand-cyan/5': isDragging }"
       @dragover.prevent="isDragging = true" @dragleave="isDragging = false"
       @drop.prevent="handleDrop" @click="$refs.dropInput.click()">

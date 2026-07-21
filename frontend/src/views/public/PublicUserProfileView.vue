@@ -86,7 +86,7 @@
 
       <!-- Content -->
       <section class="max-w-7xl mx-auto px-4 sm:px-6 -mt-8 relative z-20">
-        <div class="flex flex-wrap gap-2 p-1.5 rounded-full bg-white/80 dark:bg-dark-800/80 backdrop-blur-md border border-gray-200 dark:border-dark-600 w-fit shadow-lg">
+        <div class="flex flex-wrap gap-2 p-1.5 rounded-full bg-white/80 dark:bg-dark-800/80 backdrop-blur-md border border-black/[0.08] dark:border-white/[0.08] w-fit shadow-lg">
           <button
             type="button"
             @click="activeTab = 'posts'"
@@ -113,7 +113,7 @@
             <button
               type="button"
               class="px-3 py-1.5 rounded-full text-xs font-medium border transition-colors"
-              :class="postSeriesFilter === 'all' ? 'border-brand-violet bg-brand-violet/10 text-brand-violet dark:border-brand-cyan dark:bg-brand-cyan/10 dark:text-brand-cyan' : 'border-gray-200 dark:border-dark-600 text-gray-600 dark:text-gray-400 hover:border-brand-violet/40'"
+              :class="postSeriesFilter === 'all' ? 'border-brand-violet bg-brand-violet/10 text-brand-violet dark:border-brand-cyan dark:bg-brand-cyan/10 dark:text-brand-cyan' : 'border-gray-200 dark:border-dark-600 text-gray-600 dark:text-gray-400 hover:border-black/[0.14]'"
               @click="postSeriesFilter = 'all'"
             >
               All
@@ -121,7 +121,7 @@
             <button
               type="button"
               class="px-3 py-1.5 rounded-full text-xs font-medium border transition-colors"
-              :class="postSeriesFilter === 'uncategorized' ? 'border-brand-violet bg-brand-violet/10 text-brand-violet dark:border-brand-cyan dark:bg-brand-cyan/10 dark:text-brand-cyan' : 'border-gray-200 dark:border-dark-600 text-gray-600 dark:text-gray-400 hover:border-brand-violet/40'"
+              :class="postSeriesFilter === 'uncategorized' ? 'border-brand-violet bg-brand-violet/10 text-brand-violet dark:border-brand-cyan dark:bg-brand-cyan/10 dark:text-brand-cyan' : 'border-gray-200 dark:border-dark-600 text-gray-600 dark:text-gray-400 hover:border-black/[0.14]'"
               @click="postSeriesFilter = 'uncategorized'"
             >
               Uncategorized
@@ -131,7 +131,7 @@
               :key="s.slug"
               type="button"
               class="px-3 py-1.5 rounded-full text-xs font-medium border transition-colors max-w-[200px] truncate"
-              :class="postSeriesFilter === s.slug ? 'border-brand-violet bg-brand-violet/10 text-brand-violet dark:border-brand-cyan dark:bg-brand-cyan/10 dark:text-brand-cyan' : 'border-gray-200 dark:border-dark-600 text-gray-600 dark:text-gray-400 hover:border-brand-violet/40'"
+              :class="postSeriesFilter === s.slug ? 'border-brand-violet bg-brand-violet/10 text-brand-violet dark:border-brand-cyan dark:bg-brand-cyan/10 dark:text-brand-cyan' : 'border-gray-200 dark:border-dark-600 text-gray-600 dark:text-gray-400 hover:border-black/[0.14]'"
               :title="s.name"
               @click="postSeriesFilter = s.slug"
             >
@@ -161,7 +161,7 @@
                     v-for="post in block.posts"
                     :key="post.id"
                     :to="`/blog/${post.slug}`"
-                    class="group flex flex-col rounded-2xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10"
+                    class="group flex flex-col rounded-2xl border border-black/[0.08] dark:border-white/[0.08] bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden hover:border-black/[0.16] dark:hover:border-white/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10"
                   >
                     <div class="relative aspect-[16/10] overflow-hidden bg-gray-100 dark:bg-dark-700">
                       <img v-if="post.cover_image" :src="post.cover_image" :alt="post.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -186,7 +186,7 @@
                     v-for="post in postSeriesBlocks.uncategorized"
                     :key="post.id"
                     :to="`/blog/${post.slug}`"
-                    class="group flex flex-col rounded-2xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                    class="group flex flex-col rounded-2xl border border-black/[0.08] dark:border-white/[0.08] bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden hover:border-black/[0.16] dark:hover:border-white/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                   >
                     <div class="relative aspect-[16/10] overflow-hidden bg-gray-100 dark:bg-dark-700">
                       <img v-if="post.cover_image" :src="post.cover_image" :alt="post.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -206,7 +206,7 @@
                 v-for="post in posts"
                 :key="post.id"
                 :to="`/blog/${post.slug}`"
-                class="group flex flex-col rounded-2xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10"
+                class="group flex flex-col rounded-2xl border border-black/[0.08] dark:border-white/[0.08] bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden hover:border-black/[0.16] dark:hover:border-white/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10"
               >
                 <div class="relative aspect-[16/10] overflow-hidden bg-gray-100 dark:bg-dark-700">
                   <img v-if="post.cover_image" :src="post.cover_image" :alt="post.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -237,7 +237,7 @@
             <button
               type="button"
               class="px-3 py-1.5 rounded-full text-xs font-medium border transition-colors"
-              :class="projectCollectionFilter === 'all' ? 'border-brand-violet bg-brand-violet/10 text-brand-violet dark:border-brand-cyan dark:bg-brand-cyan/10 dark:text-brand-cyan' : 'border-gray-200 dark:border-dark-600 text-gray-600 dark:text-gray-400 hover:border-brand-violet/40'"
+              :class="projectCollectionFilter === 'all' ? 'border-brand-violet bg-brand-violet/10 text-brand-violet dark:border-brand-cyan dark:bg-brand-cyan/10 dark:text-brand-cyan' : 'border-gray-200 dark:border-dark-600 text-gray-600 dark:text-gray-400 hover:border-black/[0.14]'"
               @click="projectCollectionFilter = 'all'"
             >
               All
@@ -245,7 +245,7 @@
             <button
               type="button"
               class="px-3 py-1.5 rounded-full text-xs font-medium border transition-colors"
-              :class="projectCollectionFilter === 'uncategorized' ? 'border-brand-violet bg-brand-violet/10 text-brand-violet dark:border-brand-cyan dark:bg-brand-cyan/10 dark:text-brand-cyan' : 'border-gray-200 dark:border-dark-600 text-gray-600 dark:text-gray-400 hover:border-brand-violet/40'"
+              :class="projectCollectionFilter === 'uncategorized' ? 'border-brand-violet bg-brand-violet/10 text-brand-violet dark:border-brand-cyan dark:bg-brand-cyan/10 dark:text-brand-cyan' : 'border-gray-200 dark:border-dark-600 text-gray-600 dark:text-gray-400 hover:border-black/[0.14]'"
               @click="projectCollectionFilter = 'uncategorized'"
             >
               Uncategorized
@@ -255,7 +255,7 @@
               :key="c.slug"
               type="button"
               class="px-3 py-1.5 rounded-full text-xs font-medium border transition-colors max-w-[200px] truncate"
-              :class="projectCollectionFilter === c.slug ? 'border-brand-violet bg-brand-violet/10 text-brand-violet dark:border-brand-cyan dark:bg-brand-cyan/10 dark:text-brand-cyan' : 'border-gray-200 dark:border-dark-600 text-gray-600 dark:text-gray-400 hover:border-brand-violet/40'"
+              :class="projectCollectionFilter === c.slug ? 'border-brand-violet bg-brand-violet/10 text-brand-violet dark:border-brand-cyan dark:bg-brand-cyan/10 dark:text-brand-cyan' : 'border-gray-200 dark:border-dark-600 text-gray-600 dark:text-gray-400 hover:border-black/[0.14]'"
               :title="c.name"
               @click="projectCollectionFilter = c.slug"
             >
@@ -285,7 +285,7 @@
                     v-for="project in block.projects"
                     :key="project.id"
                     :to="`/projects/${project.slug}`"
-                    class="group flex flex-col rounded-2xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                    class="group flex flex-col rounded-2xl border border-black/[0.08] dark:border-white/[0.08] bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden hover:border-black/[0.16] dark:hover:border-white/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                   >
                     <div class="relative aspect-video overflow-hidden bg-gray-100 dark:bg-dark-700">
                       <img v-if="project.cover_image" :src="project.cover_image" :alt="project.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -312,7 +312,7 @@
                     v-for="project in projectCollectionBlocks.uncategorized"
                     :key="project.id"
                     :to="`/projects/${project.slug}`"
-                    class="group flex flex-col rounded-2xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                    class="group flex flex-col rounded-2xl border border-black/[0.08] dark:border-white/[0.08] bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden hover:border-black/[0.16] dark:hover:border-white/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                   >
                     <div class="relative aspect-video overflow-hidden bg-gray-100 dark:bg-dark-700">
                       <img v-if="project.cover_image" :src="project.cover_image" :alt="project.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -334,7 +334,7 @@
                 v-for="project in projects"
                 :key="project.id"
                 :to="`/projects/${project.slug}`"
-                class="group flex flex-col rounded-2xl border border-gray-100 dark:border-dark-600 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                class="group flex flex-col rounded-2xl border border-black/[0.08] dark:border-white/[0.08] bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden hover:border-black/[0.16] dark:hover:border-white/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               >
                 <div class="relative aspect-video overflow-hidden bg-gray-100 dark:bg-dark-700">
                   <img v-if="project.cover_image" :src="project.cover_image" :alt="project.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />

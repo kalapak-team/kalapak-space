@@ -111,7 +111,7 @@
 
       <!-- Bottom — Quote -->
       <div class="relative z-10">
-        <blockquote class="border-l-2 border-brand-violet/40 pl-4">
+        <blockquote class="border-l border-black/[0.12] pl-4">
           <p class="text-gray-400 text-sm italic leading-relaxed">
             "ជីវិតដែលរស់នៅដើម្បីអ្នកដទៃ ទើបជាជីវិតដែលមានតម្លៃ"
           </p>

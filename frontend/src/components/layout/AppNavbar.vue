@@ -15,9 +15,9 @@
 
         <!-- ── Logo ── -->
         <router-link to="/" class="nav-logo group flex items-center gap-2.5 relative [transition:all_0.35s_ease]">
-          <img src="https://res.cloudinary.com/kalapak/image/upload/q_auto/f_auto/v1775860922/Logo_kalapak_om1ygl.png" alt="Kalapak Logo" class="rounded-full object-contain shadow-md shadow-brand-violet/20 dark:shadow-brand-cyan/20 group-hover:shadow-lg group-hover:shadow-brand-violet/30 dark:group-hover:shadow-brand-cyan/30 [transition:all_0.35s_ease] group-hover:scale-105" :class="isDocsPage ? 'w-9 h-9' : (scrolled ? 'w-8 h-8 scale-95' : 'w-11 h-11')" />
+          <img src="https://res.cloudinary.com/kalapak/image/upload/q_auto/f_auto/v1775860922/Logo_kalapak_om1ygl.png" alt="Kalapak Logo" class="rounded-full object-contain [transition:all_0.35s_cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]" :class="isDocsPage ? 'w-9 h-9' : (scrolled ? 'w-8 h-8 scale-95' : 'w-11 h-11')" />
           <div class="flex flex-col leading-none [transition:all_0.35s_ease]" :class="isDocsPage ? '' : (scrolled ? 'scale-95' : 'scale-100')">
-            <span class="font-sans font-bold tracking-tight text-gray-900 dark:text-white group-hover:text-brand-violet dark:group-hover:text-brand-cyan [transition:all_0.35s_ease]" :class="isDocsPage ? 'text-[15px]' : (scrolled ? 'text-[14px]' : 'text-[16px]')">Kalapak</span>
+            <span class="font-display font-bold tracking-tight text-gray-900 dark:text-white group-hover:text-brand-violet dark:group-hover:text-brand-cyan [transition:color_0.3s_ease]" :class="isDocsPage ? 'text-[15px]' : (scrolled ? 'text-[14px]' : 'text-[16px]')">Kalapak</span>
             <span class="font-medium uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500 [transition:all_0.35s_ease]" :class="isDocsPage ? 'text-[9px]' : (scrolled ? 'text-[8px]' : 'text-[10px]')">Code Team</span>
           </div>
           <template v-if="isDocsPage">
@@ -30,7 +30,7 @@
         <div v-if="isDocsPage" class="hidden lg:flex flex-1 items-center mx-6">
           <button
             @click="openSearch"
-            class="w-full max-w-xl flex items-center gap-3 px-4 py-2 rounded-full text-sm text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-white/[0.08] bg-gray-50 dark:bg-white/[0.03] hover:border-brand-violet/40 dark:hover:border-brand-cyan/30 hover:bg-white dark:hover:bg-white/[0.05] transition-all duration-200 group"
+            class="w-full max-w-xl flex items-center gap-3 px-4 py-2 rounded-xl text-sm text-gray-400 dark:text-gray-500 border border-black/[0.08] dark:border-white/[0.08] bg-gray-50/80 dark:bg-white/[0.03] hover:border-black/[0.16] dark:hover:border-white/20 hover:bg-white dark:hover:bg-white/[0.05] transition-all duration-200 ease-premium group"
           >
             <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
             <span class="flex-1 text-left">Search everything...</span>
@@ -38,15 +38,15 @@
           </button>
         </div>
         <div v-else class="hidden lg:flex items-center">
-          <div class="nav-links-container flex items-center gap-0.5 px-1 py-1 rounded-2xl bg-gray-100/70 dark:bg-white/[0.04] border border-gray-200/50 dark:border-white/[0.06]">
+          <div class="nav-links-container flex items-center gap-0.5 px-1 py-1 rounded-xl bg-gray-100/50 dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.06]">
             <router-link
               v-for="link in navLinks"
               :key="link.name"
               :to="link.to"
-              class="nav-link relative px-3 py-1.5 rounded-full text-[12.5px] font-semibold tracking-wide transition-all duration-300 whitespace-nowrap"
+              class="nav-link relative px-3.5 py-1.5 rounded-lg text-[12.5px] font-semibold tracking-wide transition-all duration-300 whitespace-nowrap"
               :class="[
                 isActive(link.name)
-                  ? 'nav-link-active text-white shadow-md shadow-brand-violet/25 dark:shadow-brand-cyan/25'
+                  ? 'nav-link-active text-white'
                   : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
               ]"
             >
@@ -56,12 +56,12 @@
               <!-- Active pill background -->
               <span
                 v-if="isActive(link.name)"
-                class="absolute inset-0 rounded-full bg-gradient-to-r from-brand-violet to-brand-cyan"
+                class="absolute inset-0 rounded-lg bg-gradient-to-r from-brand-violet to-brand-cyan"
               />
               <!-- Hover background -->
               <span
                 v-else
-                class="absolute inset-0 rounded-full bg-white dark:bg-white/[0.06] opacity-0 hover-bg transition-opacity duration-200"
+                class="absolute inset-0 rounded-lg bg-white dark:bg-white/[0.06] opacity-0 hover-bg transition-opacity duration-200"
               />
             </router-link>
           </div>
@@ -73,7 +73,7 @@
           <button
             v-if="!isDocsPage"
             @click="openSearch"
-            class="nav-action-btn hidden sm:flex items-center gap-2 px-3 py-2 rounded-full text-xs text-gray-400 dark:text-gray-500 border border-gray-200/70 dark:border-white/[0.06] bg-white/50 dark:bg-white/[0.02] hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 hover:text-gray-600 dark:hover:text-gray-300 transition-all duration-200"
+            class="nav-action-btn hidden sm:flex items-center gap-2 px-3 py-2 rounded-full text-xs text-gray-400 dark:text-gray-500 border border-black/[0.08] dark:border-white/[0.08] bg-white/50 dark:bg-white/[0.02] hover:border-black/[0.16] dark:hover:border-white/20 hover:text-gray-600 dark:hover:text-gray-300 transition-all duration-200"
             title="Search"
           >
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
@@ -595,15 +595,15 @@ async function handleLogout() {
 <style scoped>
 /* ── Docs mode: always-solid Laravel-style header ── */
 .docs-nav {
-  background: rgba(255, 255, 255, 0.98);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 :root.dark .docs-nav,
 .dark .docs-nav {
-  background: rgba(2, 0, 36, 0.98);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(5, 5, 8, 0.92);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 /* ── Nav background states ── */
@@ -618,13 +618,17 @@ async function handleLogout() {
 }
 
 .nav-scrolled {
-  background: linear-gradient(to bottom, rgba(255,255,255,0.92) 75%, transparent 100%);
-  border-bottom: none;
+  background: rgba(255, 255, 255, 0.82);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
 }
 :root.dark .nav-scrolled,
 .dark .nav-scrolled {
-  background: linear-gradient(to bottom, rgba(2,0,36,0.95) 75%, transparent 100%);
-  border-bottom: none;
+  background: rgba(5, 5, 8, 0.78);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
 }
 
 /* ── Active nav link ── */
@@ -648,7 +652,7 @@ async function handleLogout() {
   height: 2px;
   border-radius: 2px;
   background: currentColor;
-  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   transform-origin: center;
 }
 
@@ -658,11 +662,11 @@ async function handleLogout() {
   align-items: center;
   gap: 10px;
   padding: 9px 12px;
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: 13px;
   font-weight: 500;
   color: #374151;
-  transition: all 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 :root.dark .dropdown-item,
@@ -690,7 +694,4 @@ async function handleLogout() {
 :root.dark .dropdown-item-danger:hover,
 .dark .dropdown-item-danger:hover {
   background: rgba(239, 68, 68, 0.08) !important;
-}
-
-
-</style>
+}</style>

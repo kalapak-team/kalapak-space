@@ -21,7 +21,7 @@
             v-for="post in posts"
             :key="post.id"
             :to="`/blog/${post.slug}`"
-            class="group flex flex-col rounded-2xl border border-gray-100 dark:border-dark-600 bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm overflow-hidden hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all hover:-translate-y-1 hover:shadow-xl"
+            class="group flex flex-col rounded-2xl border border-black/[0.08] dark:border-white/[0.08] bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm overflow-hidden hover:border-black/[0.16] dark:hover:border-white/20 transition-all hover:-translate-y-1 hover:shadow-xl"
           >
             <div class="relative aspect-[16/10] overflow-hidden bg-gray-100 dark:bg-dark-700">
               <img v-if="post.cover_image" :src="post.cover_image" :alt="post.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />

@@ -17,7 +17,7 @@
                 alt="Kalapak Logo"
                 class="w-10 h-10 rounded-full object-contain"
               />
-              <span class="text-xl font-black tracking-tight text-gray-900 dark:text-white">Kalapak</span>
+              <span class="text-xl font-display font-bold tracking-tight text-gray-900 dark:text-white">Kalapak</span>
             </div>
 
             <!-- Tagline -->
@@ -93,9 +93,9 @@ const { isDark } = storeToRefs(themeStore)
 
 const footerBg = computed(() =>
   isDark.value
-    ? `radial-gradient(ellipse 130% 150% at 50% 130%, rgba(123,47,255,0.2) 0%, rgba(0,212,255,0.1) 32%, rgba(2,0,36,0) 62%),
-       #020024`
-    : `radial-gradient(ellipse 130% 140% at 50% 110%, rgba(123,47,255,0.58) 0%, rgba(0,212,255,0.20) 48%, rgba(248,250,252,0.98) 78%, #f8fafc 100%),
+    ? `radial-gradient(ellipse 100% 80% at 50% 120%, rgba(123,47,255,0.12) 0%, rgba(0,212,255,0.05) 35%, transparent 65%),
+       #050508`
+    : `radial-gradient(ellipse 100% 70% at 50% 110%, rgba(123,47,255,0.12) 0%, rgba(0,212,255,0.06) 40%, transparent 70%),
        #f8fafc`
 )
 
@@ -138,13 +138,13 @@ const resourceLinks = [
 
 /* ── Social icon button ── */
 .social-btn {
-  @apply w-9 h-9 rounded-full flex items-center justify-center
-         bg-white/80 dark:bg-white/5
-         border border-gray-200 dark:border-white/10
+  @apply w-9 h-9 rounded-xl flex items-center justify-center
+         bg-white dark:bg-white/[0.04]
+         border border-black/[0.08] dark:border-white/[0.08]
          text-gray-500 dark:text-gray-400
-         hover:bg-brand-violet hover:border-brand-violet hover:text-white
-         dark:hover:bg-brand-violet dark:hover:border-brand-violet dark:hover:text-white
-         transition-all duration-200 backdrop-blur-sm;
+         hover:border-black/[0.18] hover:text-brand-violet
+         dark:hover:border-white/20 dark:hover:text-brand-cyan
+         transition-all duration-300 ease-premium backdrop-blur-sm;
 }
 
 /* ── Column heading ── */

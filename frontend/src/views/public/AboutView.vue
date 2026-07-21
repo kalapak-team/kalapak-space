@@ -1,55 +1,46 @@
 <template>
-  <div class="about-page">
+  <div ref="pageRoot" class="about-page">
     <!-- ═══════════════════ HERO ═══════════════════ -->
     <section
-      class="relative min-h-[55vh] sm:min-h-[70vh] flex items-center justify-center overflow-hidden"
+      class="relative min-h-[70svh] sm:min-h-[75svh] flex items-center justify-center overflow-hidden"
     >
-      <!-- Animated grid background -->
+      <div class="absolute inset-0 about-hero-grid opacity-[0.04] dark:opacity-[0.06]" />
       <div
-        class="absolute inset-0 about-hero-grid opacity-[0.03] dark:opacity-[0.05]"
-      />
-      <!-- Gradient orbs -->
-      <div
-        class="absolute top-1/3 -left-20 sm:-left-40 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full bg-brand-violet/15 blur-[80px] sm:blur-[120px] animate-float"
+        class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white dark:to-dark-900 pointer-events-none"
       />
       <div
-        class="absolute bottom-1/3 -right-20 sm:-right-40 w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] rounded-full bg-brand-cyan/15 blur-[70px] sm:blur-[100px] animate-float"
+        class="absolute top-1/4 -left-32 w-[280px] sm:w-[480px] h-[280px] sm:h-[480px] rounded-full bg-brand-violet/12 blur-[100px] sm:blur-[140px] animate-float pointer-events-none"
+      />
+      <div
+        class="absolute bottom-1/3 -right-32 w-[240px] sm:w-[420px] h-[240px] sm:h-[420px] rounded-full bg-brand-cyan/10 blur-[100px] sm:blur-[140px] animate-float pointer-events-none"
         style="animation-delay: 3s"
       />
 
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-10">
-        <!-- Badge -->
-        <div
-          data-aos="fade-down"
-          data-aos-duration="800"
-          class="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-brand-violet/20 dark:border-brand-cyan/20 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm"
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-10 pt-20 pb-16">
+        <p
+          data-hero
+          class="font-display text-sm sm:text-base font-semibold uppercase tracking-[0.35em] text-brand-violet dark:text-brand-cyan mb-6 sm:mb-8"
         >
-          <span
-            class="text-xs font-code text-brand-violet dark:text-brand-cyan uppercase tracking-widest"
-            >// About us</span
-          >
-        </div>
+          About
+        </p>
         <h1
-          data-aos="fade-up"
-          data-aos-duration="1000"
-          class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-sans font-bold mb-4 sm:mb-6 leading-[1.1]"
+          data-hero
+          class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold tracking-tightest mb-4 sm:mb-6 leading-[1.02]"
         >
           <span class="text-gray-900 dark:text-white">Passionate about</span
           ><br />
           <span class="gradient-text">building the future</span>
         </h1>
         <p
-          data-aos="fade-up"
-          data-aos-delay="200"
-          class="text-base sm:text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto mb-3 sm:mb-4 font-sans leading-relaxed px-2 sm:px-0"
+          data-hero
+          class="text-base sm:text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto mb-3 sm:mb-4 leading-relaxed px-2 sm:px-0"
         >
           We are a team of developers from Cambodia, united by a shared vision
           of using technology to create meaningful impact.
         </p>
         <p
-          data-aos="fade-up"
-          data-aos-delay="300"
-          class="text-sm font-sans text-brand-violet/70 dark:text-brand-cyan/70 italic"
+          data-hero
+          class="text-sm text-brand-violet/70 dark:text-brand-cyan/70 italic"
         >
           "ជីវិតដែលរស់នៅដើម្បីអ្នកដទៃ ទើបជាជីវិតដែលមានតម្លៃ"
         </p>
@@ -61,13 +52,10 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <!-- Left: text content -->
-          <div data-aos="fade-right">
-            <span
-              class="inline-block text-xs font-code text-brand-violet dark:text-brand-cyan uppercase tracking-widest mb-3"
-              >// Our story</span
-            >
+          <div data-reveal>
+            <span class="section-label">Our story</span>
             <h2
-              class="text-2xl sm:text-3xl md:text-4xl font-sans font-bold text-gray-900 dark:text-white mb-4 sm:mb-6 leading-tight"
+              class="section-heading text-2xl sm:text-3xl md:text-4xl mb-4 sm:mb-6"
             >
               From university to<br /><span class="gradient-text"
                 >real-world impact</span
@@ -110,9 +98,9 @@
             </div>
           </div>
           <!-- Right: visual card -->
-          <div data-aos="fade-left" class="relative">
+          <div data-reveal class="relative">
             <div
-              class="about-visual-card relative rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-100 dark:border-dark-600 bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm p-5 sm:p-8 md:p-10 shadow-glass dark:shadow-glass-dark"
+              class="about-visual-card relative surface-panel overflow-hidden p-5 sm:p-8 md:p-10 shadow-glass dark:shadow-glass-dark"
             >
               <!-- Decorative code lines -->
               <div
@@ -221,22 +209,17 @@
     <!-- ═══════════════════ MISSION & VISION ═══════════════════ -->
     <section class="py-14 sm:py-18 lg:py-24 relative">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="text-center mb-16" data-aos="fade-up">
-          <span
-            class="inline-block text-xs font-code text-brand-violet dark:text-brand-cyan uppercase tracking-widest mb-3"
-            >// Purpose</span
-          >
-          <h2
-            class="text-2xl sm:text-3xl md:text-5xl font-sans font-bold text-gray-900 dark:text-white leading-tight"
-          >
+        <div class="text-center mb-16" data-reveal>
+          <span class="section-label">Purpose</span>
+          <h2 class="section-heading text-2xl sm:text-3xl md:text-5xl">
             What drives <span class="gradient-text">us forward</span>
           </h2>
         </div>
         <div class="grid md:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto">
           <!-- Mission -->
           <div
-            data-aos="fade-up"
-            class="group relative p-6 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10"
+            data-reveal
+            class="group relative surface-panel p-6 sm:p-8 md:p-10 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10"
           >
             <div
               class="mission-icon-wrap relative w-14 h-14 rounded-2xl mb-6 flex items-center justify-center bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
@@ -315,9 +298,9 @@
           </div>
           <!-- Vision -->
           <div
-            data-aos="fade-up"
-            data-aos-delay="100"
-            class="group relative p-6 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10"
+            data-reveal
+            :data-reveal-delay="100"
+            class="group relative surface-panel p-6 sm:p-8 md:p-10 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10"
           >
             <div
               class="vision-icon-wrap relative w-14 h-14 rounded-2xl mb-6 flex items-center justify-center bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
@@ -361,23 +344,18 @@
     <!-- ═══════════════════ CORE PRINCIPLES ═══════════════════ -->
     <section class="py-14 sm:py-18 lg:py-24 relative">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="text-center mb-16" data-aos="fade-up">
-          <span
-            class="inline-block text-xs font-code text-brand-violet dark:text-brand-cyan uppercase tracking-widest mb-3"
-            >// Values</span
-          >
-          <h2
-            class="text-2xl sm:text-3xl md:text-5xl font-sans font-bold text-gray-900 dark:text-white leading-tight"
-          >
+        <div class="text-center mb-16" data-reveal>
+          <span class="section-label">Values</span>
+          <h2 class="section-heading text-2xl sm:text-3xl md:text-5xl">
             Our Core <span class="gradient-text">Principles</span>
           </h2>
         </div>
         <div class="grid md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
           <!-- Common Thinking -->
           <div
-            data-aos="fade-up"
-            data-aos-delay="0"
-            class="group relative p-6 sm:p-8 rounded-2xl sm:rounded-3xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10"
+            data-reveal
+            :data-reveal-delay="0"
+            class="group relative surface-panel p-6 sm:p-8 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10"
           >
             <div
               class="relative w-14 h-14 rounded-2xl mb-6 flex items-center justify-center bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
@@ -407,9 +385,9 @@
           </div>
           <!-- Common Action -->
           <div
-            data-aos="fade-up"
-            data-aos-delay="100"
-            class="group relative p-6 sm:p-8 rounded-2xl sm:rounded-3xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10"
+            data-reveal
+            :data-reveal-delay="100"
+            class="group relative surface-panel p-6 sm:p-8 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10"
           >
             <div
               class="relative w-14 h-14 rounded-2xl mb-6 flex items-center justify-center bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
@@ -439,9 +417,9 @@
           </div>
           <!-- Common Responsibility -->
           <div
-            data-aos="fade-up"
-            data-aos-delay="200"
-            class="group relative p-6 sm:p-8 rounded-2xl sm:rounded-3xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10"
+            data-reveal
+            :data-reveal-delay="200"
+            class="group relative surface-panel p-6 sm:p-8 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10"
           >
             <div
               class="relative w-14 h-14 rounded-2xl mb-6 flex items-center justify-center bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
@@ -557,14 +535,9 @@
       </div>
 
       <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-        <div class="text-center mb-10 sm:mb-16" data-aos="fade-up">
-          <span
-            class="inline-block text-xs font-code text-brand-violet dark:text-brand-cyan uppercase tracking-widest mb-3"
-            >// The team</span
-          >
-          <h2
-            class="text-2xl sm:text-3xl md:text-5xl font-sans font-bold text-gray-900 dark:text-white leading-tight"
-          >
+        <div class="text-center mb-10 sm:mb-16" data-reveal>
+          <span class="section-label">The team</span>
+          <h2 class="section-heading text-2xl sm:text-3xl md:text-5xl">
             Meet the <span class="gradient-text">people</span>
           </h2>
           <p
@@ -581,8 +554,8 @@
           <div
             v-for="(member, i) in teamMembers"
             :key="member.id || i"
-            data-aos="fade-up"
-            :data-aos-delay="i * 120"
+            data-reveal
+            :data-reveal-delay="i * 120"
             class="team-card group relative text-center"
             @mousemove="handleCardTilt($event, i)"
             @mouseleave="resetCardTilt(i)"
@@ -593,7 +566,7 @@
                   if (el) cardRefs[i] = el;
                 }
               "
-              class="team-card-inner relative rounded-full sm:rounded-[2rem] border border-gray-200 dark:border-dark-600/80 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm p-4 sm:p-6 lg:p-8 transition-all duration-500 hover:border-brand-cyan/40 hover:shadow-[0_0_50px_rgba(0,212,255,0.1)]"
+              class="team-card-inner relative rounded-full sm:rounded-[2rem] border border-black/[0.08] dark:border-white/[0.08] bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm p-4 sm:p-6 lg:p-8 transition-all duration-500 hover:border-black/[0.16] dark:hover:border-white/20"
             >
               <!-- Animated ring behind avatar -->
               <div
@@ -716,7 +689,7 @@
                   :href="member.github_url"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="team-social-btn w-9 h-9 rounded-full flex items-center justify-center text-gray-500 border border-gray-300 dark:border-dark-500/50 hover:text-white hover:bg-brand-violet hover:border-brand-violet hover:shadow-[0_0_15px_rgba(123,47,255,0.4)] transition-all duration-300 hover:scale-110"
+                  class="team-social-btn w-9 h-9 rounded-xl flex items-center justify-center text-gray-500 border border-black/[0.08] dark:border-white/[0.08] hover:text-white hover:bg-brand-violet hover:border-brand-violet transition-all duration-300 hover:scale-110"
                   :style="{ transitionDelay: '0.05s' }"
                 >
                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -730,7 +703,7 @@
                   :href="member.linkedin_url"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="team-social-btn w-9 h-9 rounded-full flex items-center justify-center text-gray-500 border border-gray-300 dark:border-dark-500/50 hover:text-white hover:bg-brand-violet hover:border-brand-violet hover:shadow-[0_0_15px_rgba(123,47,255,0.4)] transition-all duration-300 hover:scale-110"
+                  class="team-social-btn w-9 h-9 rounded-xl flex items-center justify-center text-gray-500 border border-black/[0.08] dark:border-white/[0.08] hover:text-white hover:bg-brand-violet hover:border-brand-violet transition-all duration-300 hover:scale-110"
                   :style="{ transitionDelay: '0.1s' }"
                 >
                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -744,7 +717,7 @@
                   :href="member.telegram_url"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="team-social-btn w-9 h-9 rounded-full flex items-center justify-center text-gray-500 border border-gray-300 dark:border-dark-500/50 hover:text-white hover:bg-brand-cyan hover:border-brand-cyan hover:shadow-[0_0_15px_rgba(0,212,255,0.4)] transition-all duration-300 hover:scale-110"
+                  class="team-social-btn w-9 h-9 rounded-xl flex items-center justify-center text-gray-500 border border-black/[0.08] dark:border-white/[0.08] hover:text-white hover:bg-brand-cyan hover:border-brand-cyan transition-all duration-300 hover:scale-110"
                   :style="{ transitionDelay: '0.15s' }"
                 >
                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -756,7 +729,7 @@
                 <a
                   v-if="member.email"
                   :href="'mailto:' + member.email"
-                  class="team-social-btn w-9 h-9 rounded-full flex items-center justify-center text-gray-500 border border-gray-300 dark:border-dark-500/50 hover:text-white hover:bg-brand-cyan hover:border-brand-cyan hover:shadow-[0_0_15px_rgba(0,212,255,0.4)] transition-all duration-300 hover:scale-110"
+                  class="team-social-btn w-9 h-9 rounded-xl flex items-center justify-center text-gray-500 border border-black/[0.08] dark:border-white/[0.08] hover:text-white hover:bg-brand-cyan hover:border-brand-cyan transition-all duration-300 hover:scale-110"
                   :style="{ transitionDelay: '0.2s' }"
                 >
                   <svg
@@ -790,16 +763,11 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div
           class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-16"
-          data-aos="fade-up"
+          data-reveal
         >
           <div>
-            <span
-              class="inline-block text-xs font-code text-brand-violet dark:text-brand-cyan uppercase tracking-widest mb-3"
-              >// Core values</span
-            >
-            <h2
-              class="text-2xl sm:text-3xl md:text-5xl font-sans font-bold text-gray-900 dark:text-white leading-tight"
-            >
+            <span class="section-label">Core values</span>
+            <h2 class="section-heading text-2xl sm:text-3xl md:text-5xl">
               What we <span class="gradient-text">believe in</span>
             </h2>
           </div>
@@ -815,9 +783,9 @@
           <div
             v-for="(value, i) in values"
             :key="i"
-            data-aos="fade-up"
-            :data-aos-delay="i * 80"
-            class="group relative p-8 rounded-2xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10"
+            data-reveal
+            :data-reveal-delay="i * 80"
+            class="group relative surface-panel p-8 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10"
           >
             <div
               class="w-14 h-14 rounded-2xl mb-6 flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
@@ -862,14 +830,9 @@
       </div>
 
       <div class="max-w-4xl mx-auto px-4 sm:px-6">
-        <div class="text-center mb-10 sm:mb-16" data-aos="fade-up">
-          <span
-            class="inline-block text-xs font-code text-brand-violet dark:text-brand-cyan uppercase tracking-widest mb-3"
-            >// Our journey</span
-          >
-          <h2
-            class="text-2xl sm:text-3xl md:text-5xl font-sans font-bold text-gray-900 dark:text-white leading-tight"
-          >
+        <div class="text-center mb-10 sm:mb-16" data-reveal>
+          <span class="section-label">Our journey</span>
+          <h2 class="section-heading text-2xl sm:text-3xl md:text-5xl">
             How we <span class="gradient-text">got here</span>
           </h2>
         </div>
@@ -892,9 +855,8 @@
             v-for="(item, i) in timeline"
             :key="i"
             class="tl-item relative mb-16 last:mb-0"
-            :data-aos="i % 2 === 0 ? 'fade-right' : 'fade-left'"
-            :data-aos-delay="i * 150"
-            data-aos-duration="800"
+            data-reveal
+            :data-reveal-delay="i * 150"
           >
             <div
               class="flex items-start gap-6 md:gap-0"
@@ -909,7 +871,7 @@
                 >
                   <!-- Outer ping ring -->
                   <span
-                    class="absolute w-8 h-8 rounded-full border-2 border-brand-violet/40 dark:border-brand-cyan/40 tl-ping"
+                    class="absolute w-8 h-8 rounded-full border border-black/[0.12] dark:border-white/20 tl-ping"
                     :style="{ animationDelay: i * 0.8 + 's' }"
                   />
                   <!-- Middle glow ring -->
@@ -937,7 +899,7 @@
                 :class="i % 2 === 0 ? 'md:pr-12' : 'md:pl-12'"
               >
                 <div
-                  class="tl-card group relative p-6 rounded-2xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/70 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-brand-violet/10 dark:hover:shadow-brand-cyan/10 hover:border-brand-violet/30 dark:hover:border-brand-cyan/30"
+                  class="tl-card group relative surface-panel p-6 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-brand-violet/10 dark:hover:shadow-brand-cyan/10"
                 >
                   <!-- Connecting line from dot to card -->
                   <div
@@ -964,7 +926,7 @@
                   </div>
                   <!-- Date badge -->
                   <span
-                    class="inline-flex items-center gap-1.5 text-xs font-sans font-bold text-brand-violet dark:text-brand-cyan mb-2 px-2 py-0.5 rounded-full bg-brand-violet/10 dark:bg-brand-cyan/5 border border-brand-violet/20 dark:border-brand-cyan/10"
+                    class="inline-flex items-center gap-1.5 text-xs font-sans font-bold text-brand-violet dark:text-brand-cyan mb-2 px-2 py-0.5 rounded-full bg-brand-violet/10 dark:bg-brand-cyan/5 border border-black/[0.08] dark:border-white/[0.08]"
                   >
                     <span
                       class="w-1.5 h-1.5 rounded-full bg-brand-violet dark:bg-brand-cyan tl-date-dot"
@@ -1003,14 +965,9 @@
     <!-- ═══════════════════ WHY CHOOSE US ═══════════════════ -->
     <section class="py-14 sm:py-18 lg:py-24 relative">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="text-center mb-10 sm:mb-16" data-aos="fade-up">
-          <span
-            class="inline-block text-xs font-code text-brand-violet dark:text-brand-cyan uppercase tracking-widest mb-3"
-            >// Why us</span
-          >
-          <h2
-            class="text-2xl sm:text-3xl md:text-5xl font-sans font-bold text-gray-900 dark:text-white leading-tight"
-          >
+        <div class="text-center mb-10 sm:mb-16" data-reveal>
+          <span class="section-label">Why us</span>
+          <h2 class="section-heading text-2xl sm:text-3xl md:text-5xl">
             What makes us <span class="gradient-text">different</span>
           </h2>
         </div>
@@ -1019,9 +976,9 @@
           <div
             v-for="(item, i) in differentiators"
             :key="i"
-            data-aos="fade-up"
-            :data-aos-delay="i * 80"
-            class="group text-center p-8 rounded-2xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10"
+            data-reveal
+            :data-reveal-delay="i * 80"
+            class="group text-center surface-panel p-8 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-glow/10"
           >
             <div
               class="w-16 h-16 rounded-full mx-auto mb-5 flex items-center justify-center bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan group-hover:scale-110 transition-transform duration-500"
@@ -1044,8 +1001,12 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, nextTick } from "vue";
 import { publicApi } from "@/services/api";
+import { useHomeMotion } from "../../../composables/usePremiumMotion.js";
+
+const pageRoot = ref(null);
+const { refreshReveals } = useHomeMotion(pageRoot);
 
 const teamMembers = ref([
   {
@@ -1100,6 +1061,8 @@ onMounted(async () => {
     const { data } = await publicApi.getTeam();
     if (data.data && data.data.length) teamMembers.value = data.data;
   } catch {}
+  await nextTick();
+  refreshReveals();
 });
 
 const miniStats = [
@@ -1220,9 +1183,10 @@ const differentiators = [
 <style scoped>
 .about-hero-grid {
   background-image:
-    linear-gradient(rgba(123, 47, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(123, 47, 255, 0.1) 1px, transparent 1px);
-  background-size: 60px 60px;
+    linear-gradient(rgba(123, 47, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(123, 47, 255, 0.08) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 45%, black 15%, transparent 72%);
 }
 
 /* ── Team Card Animations ── */

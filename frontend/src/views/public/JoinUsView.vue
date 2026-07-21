@@ -1,27 +1,47 @@
 <template>
-  <div class="join-page">
+  <div ref="pageRoot" class="join-page">
 
     <!-- ═══════════════════ HERO ═══════════════════ -->
-    <section class="relative min-h-[45vh] sm:min-h-[55vh] flex items-center justify-center overflow-hidden">
-      <div class="absolute inset-0 join-hero-grid opacity-[0.03] dark:opacity-[0.05]" />
-      <div class="absolute top-1/4 -left-20 sm:-left-40 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full bg-brand-violet/15 blur-[80px] sm:blur-[120px] animate-float" />
-      <div class="absolute bottom-1/4 -right-20 sm:-right-40 w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] rounded-full bg-brand-cyan/15 blur-[70px] sm:blur-[100px] animate-float" style="animation-delay: 3s" />
-      <div class="absolute top-2/3 left-1/2 w-[200px] sm:w-[300px] h-[200px] sm:h-[300px] rounded-full bg-brand-violet/10 blur-[60px] sm:blur-[80px] animate-float" style="animation-delay: 5s" />
+    <section
+      class="relative min-h-[70svh] sm:min-h-[75svh] flex items-center justify-center overflow-hidden"
+    >
+      <div class="absolute inset-0 join-hero-grid opacity-[0.04] dark:opacity-[0.06]" />
+      <div
+        class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white dark:to-dark-900 pointer-events-none"
+      />
+      <div
+        class="absolute top-1/4 -left-32 w-[280px] sm:w-[480px] h-[280px] sm:h-[480px] rounded-full bg-brand-violet/12 blur-[100px] sm:blur-[140px] animate-float pointer-events-none"
+      />
+      <div
+        class="absolute bottom-1/3 -right-32 w-[240px] sm:w-[420px] h-[240px] sm:h-[420px] rounded-full bg-brand-cyan/10 blur-[100px] sm:blur-[140px] animate-float pointer-events-none"
+        style="animation-delay: 3s"
+      />
 
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-10">
-        <div data-aos="fade-down" data-aos-duration="800" class="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-brand-violet/20 dark:border-brand-cyan/20 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm">
-          <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span></span>
-          <span class="text-xs font-code text-brand-violet dark:text-brand-cyan uppercase tracking-widest">We're Hiring</span>
-        </div>
-        <h1 data-aos="fade-up" data-aos-duration="1000" class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-sans font-bold mb-4 sm:mb-6 leading-[1.1]">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center relative z-10 pt-20 pb-16">
+        <p
+          data-hero
+          class="font-display text-sm sm:text-base font-semibold uppercase tracking-[0.35em] text-brand-violet dark:text-brand-cyan mb-6 sm:mb-8"
+        >
+          Careers
+        </p>
+
+        <h1
+          data-hero
+          class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tightest mb-5 sm:mb-7 leading-[1.02]"
+        >
           <span class="text-gray-900 dark:text-white">Build the</span><br />
           <span class="gradient-text">Future With Us</span>
         </h1>
-        <p data-aos="fade-up" data-aos-delay="200" class="text-base sm:text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto font-sans leading-relaxed mb-6 sm:mb-8 px-2 sm:px-0">
+
+        <p
+          data-hero
+          class="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-10"
+        >
           We're looking for passionate developers, designers, and creators who want to build meaningful software and grow together.
         </p>
-        <div data-aos="fade-up" data-aos-delay="300">
-          <a href="#apply" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-brand text-white font-semibold rounded-full hover:shadow-glow transition-all duration-300 hover:-translate-y-1 text-sm">
+
+        <div data-hero>
+          <a href="#apply" class="btn-primary gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" /></svg>
             Apply Now
           </a>
@@ -32,26 +52,36 @@
     <!-- ═══════════════════ WHY JOIN US ═══════════════════ -->
     <section class="pb-14 sm:pb-20 relative z-10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="text-center mb-10 sm:mb-14">
-          <h2 data-aos="fade-up" class="text-2xl sm:text-3xl md:text-4xl font-sans font-bold text-gray-900 dark:text-white mb-4">
+        <div class="text-center mb-10 sm:mb-14" data-reveal>
+          <span class="section-label">Why join</span>
+          <h2 class="section-heading text-3xl md:text-4xl lg:text-5xl">
             Why <span class="gradient-text">Kalapak</span>?
           </h2>
-          <p data-aos="fade-up" data-aos-delay="100" class="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
+          <p
+            data-reveal
+            :data-reveal-delay="100"
+            class="section-subheading mx-auto mt-4"
+          >
             More than just a team — we're a community of builders shaping Cambodia's tech future.
           </p>
         </div>
 
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div v-for="(perk, i) in perks" :key="i"
-            data-aos="fade-up" :data-aos-delay="i * 80"
-            class="group relative rounded-2xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm p-7 hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl dark:hover:shadow-glow/10">
-            <div class="w-12 h-12 rounded-full flex items-center justify-center mb-5 transition-transform duration-500 group-hover:scale-110"
-              :class="perk.bgClass">
+          <div
+            v-for="(perk, i) in perks"
+            :key="i"
+            data-reveal
+            :data-reveal-delay="i * 80"
+            class="group surface-panel p-7 hover:-translate-y-2 hover:shadow-xl dark:hover:shadow-glow/10"
+          >
+            <div
+              class="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-transform duration-500 group-hover:scale-110"
+              :class="perk.bgClass"
+            >
               <div v-html="perk.icon" />
             </div>
             <h3 class="text-base font-sans font-bold text-gray-900 dark:text-white mb-2">{{ perk.title }}</h3>
             <p class="text-sm text-gray-700 dark:text-gray-400 leading-relaxed">{{ perk.desc }}</p>
-            <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-brand opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-b-2xl" />
           </div>
         </div>
       </div>
@@ -62,16 +92,16 @@
       <div class="max-w-5xl mx-auto px-4 sm:px-6">
         <div class="grid md:grid-cols-2 gap-6 sm:gap-8">
           <!-- What We Look For -->
-          <div data-aos="fade-right" class="rounded-2xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm p-6 sm:p-8 md:p-10">
+          <div data-reveal class="surface-panel p-6 sm:p-8 md:p-10">
             <div class="flex items-center gap-3 mb-7">
-              <div class="w-10 h-10 rounded-full bg-brand-violet/10 dark:bg-brand-violet/20 flex items-center justify-center">
+              <div class="w-10 h-10 rounded-xl bg-brand-violet/10 dark:bg-brand-violet/20 flex items-center justify-center">
                 <svg class="w-5 h-5 text-brand-violet" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
               </div>
-              <h3 class="text-xl font-sans font-bold text-gray-900 dark:text-white">What We Look For</h3>
+              <h3 class="text-xl font-display font-bold text-gray-900 dark:text-white">What We Look For</h3>
             </div>
             <ul class="space-y-4">
               <li v-for="(item, i) in lookFor" :key="i" class="flex items-start gap-3.5">
-                <div class="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div class="w-6 h-6 rounded-lg bg-green-100 dark:bg-green-900/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
                 </div>
                 <div>
@@ -83,16 +113,16 @@
           </div>
 
           <!-- What You'll Get -->
-          <div data-aos="fade-left" class="rounded-2xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm p-6 sm:p-8 md:p-10">
+          <div data-reveal :data-reveal-delay="100" class="surface-panel p-6 sm:p-8 md:p-10">
             <div class="flex items-center gap-3 mb-7">
-              <div class="w-10 h-10 rounded-full bg-brand-cyan/10 dark:bg-brand-cyan/20 flex items-center justify-center">
+              <div class="w-10 h-10 rounded-xl bg-brand-cyan/10 dark:bg-brand-cyan/20 flex items-center justify-center">
                 <svg class="w-5 h-5 text-brand-cyan" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/></svg>
               </div>
-              <h3 class="text-xl font-sans font-bold text-gray-900 dark:text-white">What You'll Get</h3>
+              <h3 class="text-xl font-display font-bold text-gray-900 dark:text-white">What You'll Get</h3>
             </div>
             <ul class="space-y-4">
               <li v-for="(item, i) in youGet" :key="i" class="flex items-start gap-3.5">
-                <div class="w-6 h-6 rounded-full bg-brand-cyan/20 dark:bg-brand-cyan/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div class="w-6 h-6 rounded-lg bg-brand-cyan/20 dark:bg-brand-cyan/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <svg class="w-3.5 h-3.5 text-brand-cyan" fill="currentColor" viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
                 </div>
                 <div>
@@ -109,37 +139,52 @@
     <!-- ═══════════════════ OPEN ROLES ═══════════════════ -->
     <section class="pb-14 sm:pb-20 relative z-10">
       <div class="max-w-5xl mx-auto px-4 sm:px-6">
-        <div class="text-center mb-8 sm:mb-12">
-          <h2 data-aos="fade-up" class="text-2xl sm:text-3xl md:text-4xl font-sans font-bold text-gray-900 dark:text-white mb-4">
+        <div class="text-center mb-8 sm:mb-12" data-reveal>
+          <span class="section-label">Open roles</span>
+          <h2 class="section-heading text-3xl md:text-4xl lg:text-5xl">
             Open <span class="gradient-text">Roles</span>
           </h2>
-          <p data-aos="fade-up" data-aos-delay="100" class="text-gray-500 dark:text-gray-400 max-w-lg mx-auto">
+          <p
+            data-reveal
+            :data-reveal-delay="100"
+            class="section-subheading mx-auto mt-4"
+          >
             Find a role that matches your skillset and passion. All positions are remote-friendly.
           </p>
         </div>
 
         <div class="space-y-4">
-          <div v-for="(role, i) in roles" :key="i"
-            data-aos="fade-up" :data-aos-delay="i * 60"
-            class="group rounded-2xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden hover:border-brand-violet/30 dark:hover:border-brand-cyan/30 transition-all duration-500 hover:shadow-lg dark:hover:shadow-glow/10">
+          <div
+            v-for="(role, i) in roles"
+            :key="i"
+            data-reveal
+            :data-reveal-delay="i * 60"
+            class="group surface-panel overflow-hidden hover:shadow-lg dark:hover:shadow-glow/10"
+          >
             <div class="p-6 md:p-7 flex flex-col md:flex-row md:items-center gap-5">
-              <!-- Icon -->
-              <div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-                :class="role.bgClass">
+              <div
+                class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                :class="role.bgClass"
+              >
                 <div v-html="role.icon" />
               </div>
-              <!-- Info -->
               <div class="flex-1 min-w-0">
                 <h3 class="text-base font-sans font-bold text-gray-900 dark:text-white mb-1">{{ role.title }}</h3>
                 <p class="text-sm text-gray-700 dark:text-gray-400">{{ role.desc }}</p>
               </div>
-              <!-- Tags -->
               <div class="flex flex-wrap gap-2">
-                <span v-for="tag in role.tags" :key="tag" class="px-2.5 py-1 rounded-full text-[10px] font-medium uppercase tracking-wider border border-gray-300 dark:border-dark-500 text-gray-600 dark:text-gray-400">
+                <span
+                  v-for="tag in role.tags"
+                  :key="tag"
+                  class="px-2.5 py-1 rounded-lg text-[10px] font-medium uppercase tracking-wider border border-black/[0.08] dark:border-white/[0.08] text-gray-600 dark:text-gray-400"
+                >
                   {{ tag }}
                 </span>
               </div>
-              <a href="#apply" class="flex-shrink-0 w-10 h-10 rounded-full border border-gray-300 dark:border-dark-500 flex items-center justify-center text-gray-500 group-hover:border-brand-violet dark:group-hover:border-brand-cyan group-hover:text-brand-violet dark:group-hover:text-brand-cyan group-hover:bg-brand-violet/5 dark:group-hover:bg-brand-cyan/5 transition-all duration-300">
+              <a
+                href="#apply"
+                class="flex-shrink-0 w-10 h-10 rounded-xl border border-black/[0.08] dark:border-white/[0.08] flex items-center justify-center text-gray-500 group-hover:border-black/[0.16] dark:group-hover:border-white/20 group-hover:text-brand-violet dark:group-hover:text-brand-cyan group-hover:bg-brand-violet/5 dark:group-hover:bg-brand-cyan/5 transition-all duration-300"
+              >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
               </a>
             </div>
@@ -151,25 +196,36 @@
     <!-- ═══════════════════ HOW IT WORKS ═══════════════════ -->
     <section class="pb-16 sm:pb-24 relative z-10">
       <div class="max-w-5xl mx-auto px-4 sm:px-6">
-        <div class="text-center mb-10 sm:mb-14">
-          <h2 data-aos="fade-up" class="text-2xl sm:text-3xl md:text-4xl font-sans font-bold text-gray-900 dark:text-white mb-4">
+        <div class="text-center mb-10 sm:mb-14" data-reveal>
+          <span class="section-label">Process</span>
+          <h2 class="section-heading text-3xl md:text-4xl lg:text-5xl">
             How It <span class="gradient-text">Works</span>
           </h2>
-          <p data-aos="fade-up" data-aos-delay="100" class="text-gray-500 dark:text-gray-400 max-w-lg mx-auto">
+          <p
+            data-reveal
+            :data-reveal-delay="100"
+            class="section-subheading mx-auto mt-4"
+          >
             Our application process is straightforward and transparent.
           </p>
         </div>
 
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          <div v-for="(step, i) in steps" :key="i"
-            data-aos="fade-up" :data-aos-delay="i * 100"
-            class="relative text-center">
-            <!-- Connector line -->
-            <div v-if="i < steps.length - 1" class="hidden lg:block absolute top-8 left-[60%] w-[80%] h-[2px] bg-gradient-to-r from-gray-200 dark:from-dark-500 to-transparent z-0" />
+          <div
+            v-for="(step, i) in steps"
+            :key="i"
+            data-reveal
+            :data-reveal-delay="i * 100"
+            class="relative text-center"
+          >
+            <div
+              v-if="i < steps.length - 1"
+              class="hidden lg:block absolute top-8 left-[60%] w-[80%] h-[2px] bg-gradient-to-r from-brand-violet/20 dark:from-white/10 to-transparent z-0"
+            />
             <div class="relative z-10 w-16 h-16 rounded-2xl bg-gradient-brand flex items-center justify-center mx-auto mb-5 shadow-lg shadow-brand-violet/20">
-              <span class="text-white font-sans font-bold text-xl">{{ i + 1 }}</span>
+              <span class="text-white font-display font-bold text-xl">{{ i + 1 }}</span>
             </div>
-            <h4 class="font-sans font-bold text-gray-900 dark:text-white mb-2 text-sm">{{ step.title }}</h4>
+            <h4 class="font-display font-bold text-gray-900 dark:text-white mb-2 text-sm">{{ step.title }}</h4>
             <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{{ step.desc }}</p>
           </div>
         </div>
@@ -179,23 +235,23 @@
     <!-- ═══════════════════ APPLICATION FORM ═══════════════════ -->
     <section id="apply" class="pb-16 sm:pb-24 relative z-10">
       <div class="max-w-3xl mx-auto px-4 sm:px-6">
-        <div class="rounded-2xl sm:rounded-3xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden">
+        <div class="surface-panel overflow-hidden" data-reveal>
           <!-- Form header -->
           <div class="relative p-5 sm:p-8 md:p-10 pb-0">
             <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-brand" />
             <div class="flex items-center gap-3 mb-2">
-              <div class="w-10 h-10 rounded-full bg-gradient-brand flex items-center justify-center">
+              <div class="w-10 h-10 rounded-xl bg-gradient-brand flex items-center justify-center">
                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
               </div>
               <div>
-                <h2 class="text-2xl font-sans font-bold text-gray-900 dark:text-white">Apply Now</h2>
+                <h2 class="text-2xl font-display font-bold text-gray-900 dark:text-white">Apply Now</h2>
                 <p class="text-xs text-gray-700 dark:text-gray-400">Fields marked with * are required</p>
               </div>
             </div>
           </div>
 
           <!-- Success -->
-          <div v-if="submitted" data-aos="zoom-in" class="p-8 md:p-10">
+          <div v-if="submitted" data-reveal class="p-8 md:p-10">
             <div class="text-center py-10">
               <div class="relative w-20 h-20 mx-auto mb-6">
                 <div class="absolute inset-0 bg-green-400/20 rounded-full animate-ping" />
@@ -203,11 +259,11 @@
                   <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
                 </div>
               </div>
-              <h3 class="text-2xl font-sans font-bold text-gray-900 dark:text-white mb-3">Application Submitted!</h3>
+              <h3 class="text-2xl font-display font-bold text-gray-900 dark:text-white mb-3">Application Submitted!</h3>
               <p class="text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-6 leading-relaxed">
                 Thank you for your interest in joining Kalapak Code Team. We'll review your application and get back to you within a few days.
               </p>
-              <button @click="resetForm" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border border-gray-200 dark:border-dark-500 text-gray-600 dark:text-gray-400 hover:border-brand-violet dark:hover:border-brand-cyan hover:text-brand-violet dark:hover:text-brand-cyan transition-all duration-300">
+              <button type="button" @click="resetForm" class="btn-secondary gap-2 text-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.992 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" /></svg>
                 Submit another application
               </button>
@@ -220,15 +276,24 @@
             <div class="flex items-center gap-3 mb-2">
               <div v-for="s in 3" :key="s" class="flex items-center gap-3 flex-1">
                 <div class="flex items-center gap-2">
-                  <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300"
-                    :class="currentStep >= s ? 'bg-gradient-brand text-white' : 'border border-gray-300 dark:border-dark-500 text-gray-400'">
+                  <div
+                    class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold transition-all duration-300"
+                    :class="currentStep >= s ? 'bg-gradient-brand text-white' : 'border border-black/[0.08] dark:border-white/[0.08] text-gray-400'"
+                  >
                     {{ s }}
                   </div>
-                  <span class="text-xs font-medium hidden sm:inline" :class="currentStep >= s ? 'text-brand-violet dark:text-brand-cyan' : 'text-gray-500 dark:text-gray-400'">
+                  <span
+                    class="text-xs font-medium hidden sm:inline"
+                    :class="currentStep >= s ? 'text-brand-violet dark:text-brand-cyan' : 'text-gray-500 dark:text-gray-400'"
+                  >
                     {{ ['Personal', 'Experience', 'Motivation'][s - 1] }}
                   </span>
                 </div>
-                <div v-if="s < 3" class="flex-1 h-[2px] rounded-full transition-all duration-300" :class="currentStep > s ? 'bg-gradient-brand' : 'bg-gray-200 dark:bg-dark-600'" />
+                <div
+                  v-if="s < 3"
+                  class="flex-1 h-[2px] rounded-full transition-all duration-300"
+                  :class="currentStep > s ? 'bg-gradient-brand' : 'bg-gray-200 dark:bg-dark-600'"
+                />
               </div>
             </div>
 
@@ -237,13 +302,23 @@
               <div class="grid sm:grid-cols-2 gap-5">
                 <div>
                   <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">Full Name <span class="text-red-400">*</span></label>
-                  <input v-model="form.name" type="text" required placeholder="e.g. Khat Vanna"
-                    class="w-full px-4 py-3 rounded-full bg-white dark:bg-dark-700 border border-gray-300 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all duration-300" />
+                  <input
+                    v-model="form.name"
+                    type="text"
+                    required
+                    placeholder="e.g. Khat Vanna"
+                    class="input-field text-sm text-gray-900 dark:text-white"
+                  />
                 </div>
                 <div>
                   <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email <span class="text-red-400">*</span></label>
-                  <input v-model="form.email" type="email" required placeholder="vanna@example.com"
-                    class="w-full px-4 py-3 rounded-full bg-white dark:bg-dark-700 border border-gray-300 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all duration-300" />
+                  <input
+                    v-model="form.email"
+                    type="email"
+                    required
+                    placeholder="vanna@example.com"
+                    class="input-field text-sm text-gray-900 dark:text-white"
+                  />
                 </div>
               </div>
               <div>
@@ -269,8 +344,13 @@
             <div v-show="currentStep === 2" class="space-y-5">
               <div>
                 <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">Skills <span class="text-red-400">*</span></label>
-                <input v-model="form.skills" type="text" required placeholder="e.g. Vue.js, Laravel, PostgreSQL, Docker"
-                  class="w-full px-4 py-3 rounded-full bg-white dark:bg-dark-700 border border-gray-300 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all duration-300" />
+                <input
+                  v-model="form.skills"
+                  type="text"
+                  required
+                  placeholder="e.g. Vue.js, Laravel, PostgreSQL, Docker"
+                  class="input-field text-sm text-gray-900 dark:text-white"
+                />
                 <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-1">Separate with commas</p>
               </div>
               <div class="grid sm:grid-cols-2 gap-5">
@@ -278,16 +358,24 @@
                   <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">GitHub URL</label>
                   <div class="relative">
                     <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                    <input v-model="form.github_url" type="url" placeholder="https://github.com/username"
-                      class="w-full pl-10 pr-4 py-3 rounded-full bg-white dark:bg-dark-700 border border-gray-300 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all duration-300" />
+                    <input
+                      v-model="form.github_url"
+                      type="url"
+                      placeholder="https://github.com/username"
+                      class="input-field pl-10 text-sm text-gray-900 dark:text-white"
+                    />
                   </div>
                 </div>
                 <div>
                   <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">LinkedIn URL</label>
                   <div class="relative">
                     <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                    <input v-model="form.linkedin_url" type="url" placeholder="https://linkedin.com/in/username"
-                      class="w-full pl-10 pr-4 py-3 rounded-full bg-white dark:bg-dark-700 border border-gray-300 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all duration-300" />
+                    <input
+                      v-model="form.linkedin_url"
+                      type="url"
+                      placeholder="https://linkedin.com/in/username"
+                      class="input-field pl-10 text-sm text-gray-900 dark:text-white"
+                    />
                   </div>
                 </div>
               </div>
@@ -295,8 +383,12 @@
                 <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">Portfolio URL</label>
                 <div class="relative">
                   <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"/></svg>
-                  <input v-model="form.portfolio_url" type="url" placeholder="https://your-portfolio.com"
-                    class="w-full pl-10 pr-4 py-3 rounded-full bg-white dark:bg-dark-700 border border-gray-300 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all duration-300" />
+                  <input
+                    v-model="form.portfolio_url"
+                    type="url"
+                    placeholder="https://your-portfolio.com"
+                    class="input-field pl-10 text-sm text-gray-900 dark:text-white"
+                  />
                 </div>
               </div>
             </div>
@@ -305,8 +397,13 @@
             <div v-show="currentStep === 3" class="space-y-5">
               <div>
                 <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">Why do you want to join Kalapak? <span class="text-red-400">*</span></label>
-                <textarea v-model="form.motivation" required rows="6" placeholder="Tell us about yourself, your experience, and why you'd like to join our team..."
-                  class="w-full px-4 py-3 rounded-2xl bg-white dark:bg-dark-700 border border-gray-300 dark:border-dark-500 text-sm text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-violet/30 dark:focus:ring-brand-cyan/30 focus:border-brand-violet dark:focus:border-brand-cyan transition-all duration-300 resize-none" />
+                <textarea
+                  v-model="form.motivation"
+                  required
+                  rows="6"
+                  placeholder="Tell us about yourself, your experience, and why you'd like to join our team..."
+                  class="input-field resize-none text-sm text-gray-900 dark:text-white"
+                />
                 <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-1 text-right">{{ form.motivation.length }} / 2000</p>
               </div>
             </div>
@@ -316,24 +413,39 @@
               <VueTurnstile :site-key="turnstileSiteKey" v-model="turnstileToken" />
             </div>
             <div class="flex items-center gap-4 pt-2">
-              <button v-if="currentStep > 1" type="button" @click="currentStep--"
-                class="px-5 py-3 rounded-full text-sm font-medium border border-gray-200 dark:border-dark-500 text-gray-600 dark:text-gray-400 hover:border-brand-violet dark:hover:border-brand-cyan hover:text-brand-violet dark:hover:text-brand-cyan transition-all duration-300">
+              <button
+                v-if="currentStep > 1"
+                type="button"
+                @click="currentStep--"
+                class="btn-secondary text-sm"
+              >
                 Back
               </button>
               <div class="flex-1" />
-              <button v-if="currentStep < 3" type="button" @click="nextStep"
-                class="px-6 py-3 rounded-full text-sm font-semibold bg-gradient-brand text-white hover:shadow-glow transition-all duration-300 hover:-translate-y-0.5">
+              <button
+                v-if="currentStep < 3"
+                type="button"
+                @click="nextStep"
+                class="btn-primary text-sm"
+              >
                 Continue
               </button>
-              <button v-else type="submit" :disabled="submitting"
-                class="inline-flex items-center gap-2 px-7 py-3 rounded-full text-sm font-semibold bg-gradient-brand text-white hover:shadow-glow transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none">
+              <button
+                v-else
+                type="submit"
+                :disabled="submitting"
+                class="btn-primary gap-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              >
                 <svg v-if="!submitting" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" /></svg>
                 <div v-else class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 {{ submitting ? 'Submitting...' : 'Submit Application' }}
               </button>
             </div>
 
-            <p v-if="error" class="text-sm text-red-500 text-center mt-2 px-4 py-2 rounded-full bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+            <p
+              v-if="error"
+              class="text-sm text-red-500 text-center mt-2 px-4 py-2 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800"
+            >
               {{ error }}
             </p>
           </form>
@@ -344,15 +456,20 @@
     <!-- ═══════════════════ FAQ ═══════════════════ -->
     <section class="pb-24 relative z-10">
       <div class="max-w-3xl mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2 data-aos="fade-up" class="text-3xl md:text-4xl font-sans font-bold text-gray-900 dark:text-white mb-4">
+        <div class="text-center mb-12" data-reveal>
+          <span class="section-label">FAQ</span>
+          <h2 class="section-heading text-3xl md:text-4xl lg:text-5xl">
             Frequently <span class="gradient-text">Asked</span>
           </h2>
         </div>
         <div class="space-y-3">
-          <div v-for="(faq, i) in faqs" :key="i"
-            data-aos="fade-up" :data-aos-delay="i * 60"
-            class="rounded-2xl border border-gray-200 dark:border-dark-600 bg-white/92 dark:bg-dark-800/60 backdrop-blur-sm overflow-hidden">
+          <div
+            v-for="(faq, i) in faqs"
+            :key="i"
+            data-reveal
+            :data-reveal-delay="i * 60"
+            class="surface-panel overflow-hidden"
+          >
             <button @click="toggleFaq(i)" class="w-full flex items-center justify-between p-5 md:p-6 text-left">
               <h4 class="text-sm font-sans font-bold text-gray-900 dark:text-white pr-4">{{ faq.q }}</h4>
               <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 flex-shrink-0 transition-transform duration-300" :class="{ 'rotate-180': openFaq === i }" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
@@ -374,6 +491,10 @@ import { memberApi } from '@/services/api'
 import CustomSelect from '@/components/common/CustomSelect.vue'
 import { TURNSTILE_SITE_KEY } from '@/config/appUrls'
 import VueTurnstile from 'vue-turnstile'
+import { useHomeMotion } from '../../../composables/usePremiumMotion.js'
+
+const pageRoot = ref(null)
+useHomeMotion(pageRoot)
 
 const currentStep = ref(1)
 const submitting = ref(false)
@@ -487,8 +608,9 @@ async function handleSubmit() {
 <style scoped>
 .join-hero-grid {
   background-image:
-    linear-gradient(rgba(123, 47, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(123, 47, 255, 0.1) 1px, transparent 1px);
-  background-size: 60px 60px;
+    linear-gradient(rgba(123, 47, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(123, 47, 255, 0.08) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 45%, black 15%, transparent 72%);
 }
 </style>

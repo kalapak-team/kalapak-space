@@ -122,7 +122,7 @@
                   <button type="button" @click="removeImage" class="px-3 py-1.5 bg-white/90 text-gray-800 text-xs rounded-full font-medium hover:bg-white transition-colors">Remove</button>
                 </div>
               </div>
-              <label v-else class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 dark:border-dark-500 rounded-xl cursor-pointer hover:border-brand-violet dark:hover:border-brand-cyan transition-colors bg-gray-50/50 dark:bg-dark-700/30">
+              <label v-else class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 dark:border-dark-500 rounded-xl cursor-pointer hover:border-black/[0.16] dark:hover:border-white/20 transition-colors bg-gray-50/50 dark:bg-dark-700/30">
                 <svg class="w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
                 <span class="text-xs text-gray-500">Click to upload</span>
                 <span class="text-[10px] text-gray-400 mt-1">PNG, JPG up to 2MB</span>

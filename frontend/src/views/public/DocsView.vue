@@ -1,30 +1,40 @@
 <template>
-  <div class="min-h-screen bg-white dark:bg-dark-900 flex">
+  <div ref="pageRoot" class="docs-page min-h-screen bg-white dark:bg-dark-900 flex relative">
+    <div class="pointer-events-none absolute inset-0 bg-gradient-mesh opacity-[0.35] dark:opacity-50" />
 
     <!-- ══ Left Sidebar ══ -->
     <aside
-      class="fixed top-0 left-0 h-full w-64 flex-shrink-0 z-20 bg-white dark:bg-dark-900 border-r border-gray-200 dark:border-white/[0.06] overflow-y-auto pt-[68px] transition-transform duration-300"
+      class="docs-sidebar fixed top-0 left-0 h-full w-64 flex-shrink-0 z-20 overflow-y-auto pt-[68px] transition-transform duration-300 ease-premium"
       :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
     >
       <div class="px-4 py-6">
+        <div class="mb-6 px-2">
+          <p class="section-label mb-1">Browse</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+            Guides & references
+          </p>
+        </div>
+
         <!-- Nav Groups -->
-        <div v-if="loading" class="space-y-4">
+        <div v-if="loading" class="space-y-4 px-1">
           <div v-for="i in 4" :key="i" class="animate-pulse">
-            <div class="h-3 bg-gray-200 dark:bg-white/10 rounded w-2/3 mb-3"></div>
+            <div class="h-3 bg-brand-violet/15 dark:bg-white/10 rounded w-2/3 mb-3"></div>
             <div v-for="j in 3" :key="j" class="h-3 bg-gray-100 dark:bg-white/5 rounded mb-2 ml-2"></div>
           </div>
         </div>
 
         <nav v-else>
-          <div v-for="mainMenu in filteredNavTree" :key="mainMenu.id" class="mb-4">
+          <div v-for="mainMenu in filteredNavTree" :key="mainMenu.id" class="mb-5">
             <!-- Main Menu header (collapsible) -->
             <button
               @click="toggleMenu(mainMenu.id)"
               class="w-full flex items-center justify-between px-2 mb-2 group"
             >
-              <span class="text-[11px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">{{ mainMenu.name }}</span>
+              <span
+                class="text-[11px] font-display font-bold uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500 group-hover:text-brand-violet dark:group-hover:text-brand-cyan transition-colors"
+              >{{ mainMenu.name }}</span>
               <svg
-                class="w-3 h-3 text-gray-400 dark:text-gray-500 transition-transform duration-200"
+                class="w-3 h-3 text-gray-400 dark:text-gray-500 transition-transform duration-200 ease-premium"
                 :class="collapsedMenus.has(mainMenu.id) ? '' : '-rotate-90'"
                 fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"
               ><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
@@ -36,19 +46,15 @@
                 <li v-for="page in mainMenu.pages" :key="page.slug">
                   <button
                     @click="loadDoc(page.slug)"
-                    class="w-full text-left px-3 py-1.5 rounded-full text-[13.5px] transition-colors duration-150"
-                    :class="currentSlug === page.slug
-                      ? 'bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan font-semibold border-l-2 border-brand-violet dark:border-brand-cyan'
-                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.04]'"
+                    class="docs-nav-link w-full text-left px-3 py-1.5 rounded-lg text-[13.5px] transition-all duration-200 ease-premium"
+                    :class="currentSlug === page.slug ? 'docs-nav-link-active' : 'docs-nav-link-idle'"
                   >{{ page.title }}</button>
-                  <ul v-if="page.children?.length" class="mt-0.5 ml-3 pl-3 border-l border-gray-200 dark:border-white/[0.07] space-y-0.5">
+                  <ul v-if="page.children?.length" class="mt-0.5 ml-3 pl-3 border-l border-black/[0.08] dark:border-white/[0.08] space-y-0.5">
                     <li v-for="sub in page.children" :key="sub.slug">
                       <button
                         @click="loadDoc(sub.slug)"
-                        class="w-full text-left px-2 py-1.5 rounded-full text-[13px] transition-colors duration-150"
-                        :class="currentSlug === sub.slug
-                          ? 'bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan font-semibold border-l-2 border-brand-violet dark:border-brand-cyan'
-                          : 'text-gray-500 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.04]'"
+                        class="docs-nav-link w-full text-left px-2 py-1.5 rounded-lg text-[13px] transition-all duration-200 ease-premium"
+                        :class="currentSlug === sub.slug ? 'docs-nav-link-active' : 'docs-nav-link-idle-muted'"
                       >{{ sub.title }}</button>
                     </li>
                   </ul>
@@ -57,25 +63,21 @@
 
               <!-- Sub-menus with their pages -->
               <div v-for="subMenu in mainMenu.children" :key="subMenu.id" class="mb-2">
-                <p class="px-3 pt-1 pb-0.5 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">{{ subMenu.name }}</p>
+                <p class="px-3 pt-1.5 pb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400 dark:text-gray-500">{{ subMenu.name }}</p>
                 <ul class="space-y-0.5">
                   <li v-for="page in subMenu.pages" :key="page.slug">
                     <button
                       @click="loadDoc(page.slug)"
-                      class="w-full text-left px-3 py-1.5 rounded-full text-[13.5px] transition-colors duration-150"
-                      :class="currentSlug === page.slug
-                        ? 'bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan font-semibold border-l-2 border-brand-violet dark:border-brand-cyan'
-                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.04]'"
+                      class="docs-nav-link w-full text-left px-3 py-1.5 rounded-lg text-[13.5px] transition-all duration-200 ease-premium"
+                      :class="currentSlug === page.slug ? 'docs-nav-link-active' : 'docs-nav-link-idle'"
                     >{{ page.title }}</button>
                     <!-- Subpages (indented under page) -->
-                    <ul v-if="page.children?.length" class="mt-0.5 ml-3 pl-3 border-l border-gray-200 dark:border-white/[0.07] space-y-0.5">
+                    <ul v-if="page.children?.length" class="mt-0.5 ml-3 pl-3 border-l border-black/[0.08] dark:border-white/[0.08] space-y-0.5">
                       <li v-for="sub in page.children" :key="sub.slug">
                         <button
                           @click="loadDoc(sub.slug)"
-                          class="w-full text-left px-2 py-1.5 rounded-full text-[13px] transition-colors duration-150"
-                          :class="currentSlug === sub.slug
-                            ? 'bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan font-semibold border-l-2 border-brand-violet dark:border-brand-cyan'
-                            : 'text-gray-500 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.04]'"
+                          class="docs-nav-link w-full text-left px-2 py-1.5 rounded-lg text-[13px] transition-all duration-200 ease-premium"
+                          :class="currentSlug === sub.slug ? 'docs-nav-link-active' : 'docs-nav-link-idle-muted'"
                         >{{ sub.title }}</button>
                       </li>
                     </ul>
@@ -95,54 +97,69 @@
     <!-- Mobile sidebar backdrop -->
     <div
       v-if="sidebarOpen"
-      class="fixed inset-0 z-10 bg-black/40 lg:hidden"
+      class="fixed inset-0 z-10 bg-black/40 backdrop-blur-sm lg:hidden"
       @click="sidebarOpen = false"
     />
 
     <!-- ══ Main Content ══ -->
-    <div class="flex-1 lg:ml-64 min-w-0">
-      <div class="px-8 sm:px-10 py-10 xl:pr-[320px]">
+    <div class="flex-1 lg:ml-64 min-w-0 relative z-10">
+      <div class="px-6 sm:px-10 py-10 xl:pr-[320px]">
 
         <!-- Mobile: sidebar toggle -->
         <button
           @click="sidebarOpen = !sidebarOpen"
-          class="lg:hidden mb-6 flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 dark:hover:text-white"
+          class="lg:hidden mb-6 inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-brand-violet dark:hover:text-brand-cyan transition-colors"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7"/></svg>
           Browse Docs
         </button>
 
         <!-- Loading -->
-        <div v-if="docLoading" class="space-y-4 animate-pulse">
-          <div class="h-8 bg-gray-200 dark:bg-white/10 rounded w-1/2"></div>
+        <div v-if="docLoading && !currentDoc" class="space-y-4 animate-pulse max-w-3xl">
+          <div class="h-3 bg-brand-violet/20 dark:bg-white/10 rounded w-24"></div>
+          <div class="h-10 bg-gray-200 dark:bg-white/10 rounded w-2/3"></div>
           <div class="h-4 bg-gray-100 dark:bg-white/5 rounded w-full"></div>
           <div class="h-4 bg-gray-100 dark:bg-white/5 rounded w-5/6"></div>
           <div class="h-4 bg-gray-100 dark:bg-white/5 rounded w-3/4"></div>
         </div>
 
         <!-- No doc selected -->
-        <div v-else-if="!currentDoc && !docLoading" class="text-center py-20">
-          <svg class="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
-          <h2 class="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">Select a document</h2>
-          <p class="text-gray-400 dark:text-gray-500 text-sm">Choose a topic from the sidebar to get started.</p>
+        <div v-else-if="!currentDoc && !docLoading" class="text-center py-20 max-w-lg mx-auto" data-hero>
+          <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-brand flex items-center justify-center shadow-glow/20">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+          </div>
+          <p class="section-label">Documentation</p>
+          <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white mb-3">
+            Select a document
+          </h2>
+          <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+            Choose a topic from the sidebar to get started.
+          </p>
         </div>
 
         <!-- Doc Content -->
-        <article v-else-if="currentDoc" class="doc-article">
+        <article v-else-if="currentDoc" class="doc-article max-w-3xl">
           <!-- Header -->
-          <div class="mb-8 pb-6 border-b border-gray-200 dark:border-white/[0.06]">
+          <div
+            data-doc-hero
+            class="mb-8 pb-6 border-b border-black/[0.08] dark:border-white/[0.08]"
+          >
             <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div class="min-w-0 flex-1">
-                <div class="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 mb-3">
-                  <span>{{ currentDoc.category }}</span>
-                  <span>·</span>
-                  <span>Updated {{ formatDate(currentDoc.updated_at) }}</span>
+                <div class="flex flex-wrap items-center gap-2 text-xs mb-3">
+                  <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan font-semibold tracking-wide uppercase text-[10px]">
+                    {{ currentDoc.category }}
+                  </span>
+                  <span class="text-gray-300 dark:text-white/20">·</span>
+                  <span class="text-gray-400 dark:text-gray-500">Updated {{ formatDate(currentDoc.updated_at) }}</span>
                 </div>
-                <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">{{ currentDoc.title }}</h1>
+                <h1 class="font-display text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tightest leading-[1.1]">
+                  {{ currentDoc.title }}
+                </h1>
               </div>
               <button
                 type="button"
-                class="xl:hidden shrink-0 inline-flex items-center gap-2 text-[13px] text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors self-start"
+                class="xl:hidden shrink-0 inline-flex items-center gap-2 text-[13px] font-medium text-gray-400 dark:text-gray-500 hover:text-brand-violet dark:hover:text-brand-cyan transition-colors self-start"
                 @click="copyDocAsMarkdown"
               >
                 <svg class="w-4 h-4 shrink-0 opacity-80" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
@@ -154,17 +171,48 @@
           </div>
 
           <!-- Rendered content: sections-based or legacy single-content -->
-          <template v-if="currentDoc.sections && currentDoc.sections.length">
-            <div v-for="(section, idx) in currentDoc.sections" :key="idx" class="mb-10">
-              <h2
-                :id="sectionAnchor(section.heading, idx)"
-                class="text-2xl font-bold text-gray-900 dark:text-white mt-0 mb-4 pb-3 border-b border-gray-200 dark:border-white/[0.06] scroll-mt-24"
-              >{{ section.heading }}</h2>
-              <div class="prose-doc" v-html="renderContent(section.content)" />
-            </div>
-          </template>
-          <div v-else class="prose-doc" v-html="renderContent(currentDoc.content)" />
+          <div data-doc-body>
+            <template v-if="currentDoc.sections && currentDoc.sections.length">
+              <div v-for="(section, idx) in currentDoc.sections" :key="idx" class="mb-10">
+                <h2
+                  :id="sectionAnchor(section.heading, idx)"
+                  class="font-display text-2xl font-bold text-gray-900 dark:text-white mt-0 mb-4 pb-3 border-b border-black/[0.08] dark:border-white/[0.08] scroll-mt-24"
+                >{{ section.heading }}</h2>
+                <div class="prose-doc" v-html="renderContent(section.content)" />
+              </div>
+            </template>
+            <div v-else class="prose-doc" v-html="renderContent(currentDoc.content)" />
+          </div>
 
+          <!-- Prev / Next -->
+          <nav
+            v-if="prevDoc || nextDoc"
+            class="mt-14 pt-8 border-t border-black/[0.08] dark:border-white/[0.08] grid sm:grid-cols-2 gap-4"
+          >
+            <button
+              v-if="prevDoc"
+              type="button"
+              class="group surface-panel p-4 text-left hover:-translate-y-0.5"
+              @click="loadDoc(prevDoc.slug)"
+            >
+              <span class="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400 dark:text-gray-500">Previous</span>
+              <span class="mt-1 block font-display font-semibold text-gray-900 dark:text-white group-hover:text-brand-violet dark:group-hover:text-brand-cyan transition-colors">
+                {{ prevDoc.title }}
+              </span>
+            </button>
+            <button
+              v-if="nextDoc"
+              type="button"
+              class="group surface-panel p-4 text-left sm:text-right sm:col-start-2 hover:-translate-y-0.5"
+              :class="{ 'sm:col-start-2': !prevDoc }"
+              @click="loadDoc(nextDoc.slug)"
+            >
+              <span class="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400 dark:text-gray-500">Next</span>
+              <span class="mt-1 block font-display font-semibold text-gray-900 dark:text-white group-hover:text-brand-violet dark:group-hover:text-brand-cyan transition-colors">
+                {{ nextDoc.title }}
+              </span>
+            </button>
+          </nav>
         </article>
       </div>
     </div>
@@ -175,7 +223,7 @@
         v-if="showScrollTop"
         @click="scrollToTop"
         aria-label="Scroll to top"
-        class="fixed bottom-8 right-8 z-50 w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-dark-800 border border-gray-200 dark:border-white/[0.10] shadow-md text-gray-500 dark:text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:border-brand-violet dark:hover:border-brand-cyan hover:shadow-lg transition-all duration-200"
+        class="fixed bottom-8 right-8 z-50 w-11 h-11 flex items-center justify-center rounded-xl bg-white dark:bg-dark-800 border border-black/[0.08] dark:border-white/[0.08] shadow-md text-gray-500 dark:text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan hover:border-black/[0.16] dark:hover:border-white/20 hover:shadow-lg transition-all duration-200 ease-premium"
       >
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/>
@@ -184,11 +232,14 @@
     </Transition>
 
     <!-- ══ Right: Copy markdown + On this page (TOC) ══ -->
-    <aside v-if="currentDoc" class="hidden xl:block fixed right-0 top-0 w-72 h-full overflow-y-auto pt-[68px] border-l border-gray-200 dark:border-white/[0.06] bg-white dark:bg-dark-900">
+    <aside
+      v-if="currentDoc"
+      class="docs-toc hidden xl:block fixed right-0 top-0 w-72 h-full overflow-y-auto pt-[68px] z-10"
+    >
       <div class="px-6 py-8">
         <button
           type="button"
-          class="w-full flex items-center gap-2 text-left text-[13px] text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors mb-6 group"
+          class="w-full flex items-center gap-2.5 text-left text-[13px] font-medium text-gray-500 dark:text-gray-400 hover:text-brand-violet dark:hover:text-brand-cyan transition-colors mb-7 group surface-panel px-3.5 py-2.5"
           @click="copyDocAsMarkdown"
         >
           <svg class="w-4 h-4 shrink-0 opacity-80 group-hover:opacity-100" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
@@ -198,23 +249,27 @@
         </button>
 
         <template v-if="tocItems.length">
-          <p class="text-[11px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-4">On this page</p>
-          <nav class="space-y-1">
+          <p class="section-label mb-3">On this page</p>
+          <nav class="space-y-0.5 border-l border-black/[0.08] dark:border-white/[0.08]">
             <a
               v-for="item in tocItems"
               :key="item.id"
               :href="`#${item.id}`"
               @click.prevent="scrollToSection(item.id)"
-              class="block text-[13px] py-1 transition-colors duration-150 hover:text-brand-violet dark:hover:text-brand-cyan"
+              class="block text-[13px] py-1.5 transition-colors duration-150 hover:text-brand-violet dark:hover:text-brand-cyan relative"
               :class="[
                 item.level === 2
-                  ? 'pl-0 font-medium'
-                  : 'pl-4 text-[12px] border-l border-gray-200 dark:border-white/[0.08] ml-1',
+                  ? 'pl-3.5 font-medium'
+                  : 'pl-6 text-[12px]',
                 activeToc === item.id
                   ? 'text-brand-violet dark:text-brand-cyan font-semibold'
                   : 'text-gray-500 dark:text-gray-400'
               ]"
             >
+              <span
+                v-if="activeToc === item.id"
+                class="absolute left-[-2px] top-1 bottom-1 w-0.5 rounded-full bg-brand-violet dark:bg-brand-cyan"
+              />
               {{ item.text }}
             </a>
           </nav>
@@ -225,7 +280,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { publicApi } from '@/services/api'
 import { marked } from 'marked'
@@ -234,6 +289,7 @@ import hljs from 'highlight.js'
 import DOMPurify from 'dompurify'
 import TurndownService from 'turndown'
 import { gfm } from 'turndown-plugin-gfm'
+import { usePremiumMotion } from '../../../composables/usePremiumMotion.js'
 
 const turndownService = new TurndownService({
   headingStyle: 'atx',
@@ -361,6 +417,8 @@ async function copyDocAsMarkdown() {
 
 const route = useRoute()
 const router = useRouter()
+const pageRoot = ref(null)
+const { heroEntrance, gsap, reduceMotion } = usePremiumMotion()
 
 const navTree = ref([])
 const loading = ref(true)
@@ -374,6 +432,28 @@ const activeToc = ref('')
 const collapsedMenus = ref(new Set())
 const showScrollTop = ref(false)
 const docCache = new Map()
+
+function animateDocEntrance() {
+  if (!gsap || !pageRoot.value) return
+  const parts = pageRoot.value.querySelectorAll('[data-doc-hero], [data-doc-body]')
+  if (!parts.length) return
+  if (reduceMotion) {
+    gsap.set(parts, { opacity: 1, y: 0, clearProps: 'filter' })
+    return
+  }
+  gsap.fromTo(
+    parts,
+    { opacity: 0, y: 18, filter: 'blur(4px)' },
+    {
+      opacity: 1,
+      y: 0,
+      filter: 'blur(0px)',
+      duration: 0.75,
+      stagger: 0.08,
+      ease: 'expo.out',
+    },
+  )
+}
 
 function toggleMenu(id) {
   if (collapsedMenus.value.has(id)) {
@@ -456,6 +536,7 @@ async function loadDoc(slug) {
     buildToc()
     addHeadingIds()
     addCopyButtons()
+    animateDocEntrance()
     setTimeout(() => buildToc(), 60)
     return
   }
@@ -471,6 +552,7 @@ async function loadDoc(slug) {
     buildToc()
     addHeadingIds()
     addCopyButtons()
+    animateDocEntrance()
     setTimeout(() => buildToc(), 60)
     window.scrollTo({ top: 0, behavior: 'smooth' })
     prefetchAdjacentDocs(slug)
@@ -659,11 +741,14 @@ onMounted(async () => {
       buildToc()
       addHeadingIds()
       addCopyButtons()
+      animateDocEntrance()
       setTimeout(() => buildToc(), 60)
       window.scrollTo({ top: 0, behavior: 'smooth' })
       prefetchAdjacentDocs(slug)
     } else {
       currentDoc.value = null
+      await nextTick()
+      heroEntrance(pageRoot)
     }
     docLoading.value = false
   } else {
@@ -671,6 +756,9 @@ onMounted(async () => {
     await fetchAllDocs()
     if (flatDocs.value.length) {
       await loadDoc(flatDocs.value[0].slug)
+    } else {
+      await nextTick()
+      heroEntrance(pageRoot)
     }
   }
 
@@ -683,6 +771,40 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.docs-sidebar {
+  background: rgba(255, 255, 255, 0.92);
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+:root.dark .docs-sidebar,
+.dark .docs-sidebar {
+  background: rgba(5, 5, 8, 0.88);
+  border-right-color: rgba(255, 255, 255, 0.08);
+}
+
+.docs-toc {
+  background: rgba(255, 255, 255, 0.92);
+  border-left: 1px solid rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+:root.dark .docs-toc,
+.dark .docs-toc {
+  background: rgba(5, 5, 8, 0.88);
+  border-left-color: rgba(255, 255, 255, 0.08);
+}
+
+.docs-nav-link-idle {
+  @apply text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-brand-violet/5 dark:hover:bg-white/[0.04];
+}
+.docs-nav-link-idle-muted {
+  @apply text-gray-500 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-brand-violet/5 dark:hover:bg-white/[0.04];
+}
+.docs-nav-link-active {
+  @apply bg-brand-violet/10 dark:bg-brand-cyan/10 text-brand-violet dark:text-brand-cyan font-semibold border-l-2 border-brand-violet dark:border-brand-cyan;
+}
+
 /* ── Doc prose styles ── */
 .prose-doc {
   color: #374151;
@@ -697,10 +819,12 @@ onUnmounted(() => {
 .prose-doc :deep(h2),
 .prose-doc :deep(h3),
 .prose-doc :deep(h4) {
+  font-family: Outfit, 'Google Sans', system-ui, sans-serif;
   font-weight: 700;
   color: #111827;
   scroll-margin-top: 90px;
   line-height: 1.3;
+  letter-spacing: -0.02em;
 }
 :root.dark .prose-doc :deep(h1),
 :root.dark .prose-doc :deep(h2),
@@ -714,10 +838,10 @@ onUnmounted(() => {
   margin-top: 2.5rem;
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 :root.dark .prose-doc :deep(h2) {
-  border-bottom-color: rgba(255,255,255,0.06);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 
 .prose-doc :deep(h3) {
@@ -792,8 +916,6 @@ onUnmounted(() => {
   display: block;
 }
 
-/* Copy button styles are in the global <style> block below (dynamically injected elements) */
-
 .prose-doc :deep(blockquote) {
   border-left: 3px solid #7b2fff;
   padding: 0.5rem 1rem;
@@ -805,7 +927,7 @@ onUnmounted(() => {
 }
 :root.dark .prose-doc :deep(blockquote) {
   border-left-color: #00d4ff;
-  background: rgba(0,212,255,0.05);
+  background: rgba(0, 212, 255, 0.05);
   color: #a5f3fc;
 }
 
@@ -820,30 +942,30 @@ onUnmounted(() => {
   text-align: left;
   padding: 0.6rem 0.8rem;
   font-weight: 600;
-  border: 1px solid #e5e7eb;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   color: #374151;
 }
 :root.dark .prose-doc :deep(th) {
-  background: rgba(255,255,255,0.05);
-  border-color: rgba(255,255,255,0.06);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
   color: #e5e7eb;
 }
 .prose-doc :deep(td) {
   padding: 0.55rem 0.8rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   vertical-align: top;
 }
 :root.dark .prose-doc :deep(td) {
-  border-color: rgba(255,255,255,0.06);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .prose-doc :deep(hr) {
   border: none;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
   margin: 2rem 0;
 }
 :root.dark .prose-doc :deep(hr) {
-  border-top-color: rgba(255,255,255,0.06);
+  border-top-color: rgba(255, 255, 255, 0.08);
 }
 
 .prose-doc :deep(img) {
@@ -854,11 +976,6 @@ onUnmounted(() => {
 
 .doc-article {
   min-height: 60vh;
-}
-
-/* Section headings created by the sections system */
-.doc-section-h2 {
-  scroll-margin-top: 90px;
 }
 
 /* Scroll-to-top button transitions */
