@@ -17,8 +17,9 @@
  * Modes:
  *   baseline  — 5 normal requests (should all be 200)
  *   burst     — 80 rapid /api/ requests (may trigger 429/403 if limits work)
- *   empty-ua  — request with empty User-Agent (Cloudflare should block → 403)
+ *   empty-ua  — empty User-Agent on homepage (Cloudflare should block → 403)
  *   scanner   — hit .env / wp-admin paths (Cloudflare should block → 403)
+ *   stress    — 150 mixed requests (heavier test, still capped — NOT real DDoS)
  *   all       — run every test
  */
 
@@ -26,6 +27,7 @@ const ALLOWED_HOSTS = ['kalapak-team.space', 'www.kalapak-team.space', 'localhos
 
 const DEFAULT_TARGET = process.env.TARGET || 'https://kalapak-team.space'
 const MAX_BURST = Number(process.env.MAX_BURST || 80)
+const MAX_STRESS = Math.min(Number(process.env.MAX_STRESS || 150), 200)
 const CONCURRENCY = Math.min(Number(process.env.CONCURRENCY || 8), 15)
 
 function parseArgs() {
@@ -96,8 +98,15 @@ function interpret(label, counts) {
     if (counts['200'] > 0 && (counts['429'] || counts['403'])) tips.push('ℹ️  Mixed 200 + block codes — partial limiting (expected)')
   }
   if (label.includes('empty-ua')) {
-    if (counts['403']) tips.push('✅ Empty User-Agent blocked (Rule: Block empty User-Agent)')
-    else tips.push('⚠️  Empty User-Agent not blocked — check Cloudflare custom rule')
+    if (counts['403']) tips.push('✅ Empty User-Agent blocked on homepage (Rule: Block empty User-Agent)')
+    else tips.push('⚠️  Empty User-Agent not blocked on homepage — check Cloudflare custom rule')
+  }
+  if (label.includes('stress')) {
+    const blocked = (counts['429'] || 0) + (counts['403'] || 0)
+    const ok = counts['200'] || 0
+    if (blocked > 0) tips.push(`✅ Stress test: ${blocked} requests blocked/limited — some protection triggered`)
+    if (ok > 0 && blocked === 0) tips.push('ℹ️  All stress requests returned 200 — site stayed up (Allow API skip + backend limits)')
+    if (counts['0']) tips.push('⚠️  Some requests failed (timeout/network) — server may be overloaded')
   }
   if (label.includes('scanner')) {
     const blocked = (counts['403'] || 0) + (counts['404'] || 0)
@@ -144,13 +153,39 @@ async function runBurst(base) {
 }
 
 async function runEmptyUa(base) {
-  const url = `${base}/api/team`
+  // Test homepage — /api/ is skipped by "Allow API requests" rule
+  const url = `${base}/`
   const results = [
     await request(url, { headers: { 'User-Agent': '' } }),
-    await request(url, { headers: { 'User-Agent': '   ' } }),
+    await request(`${base}/auth/login`, { headers: { 'User-Agent': '' } }),
   ]
-  const counts = summarize('Empty User-Agent test', results)
+  const counts = summarize('Empty User-Agent test (homepage + login page)', results)
   interpret('empty-ua', counts)
+}
+
+async function runStress(base) {
+  const urls = [
+    `${base}/api/team`,
+    `${base}/api/blog/categories`,
+    `${base}/api/projects?per_page=3`,
+    `${base}/`,
+  ]
+  console.log(`\nStress: ${MAX_STRESS} mixed requests (concurrency ${CONCURRENCY})`)
+  const results = []
+  let i = 0
+
+  async function worker() {
+    while (i < MAX_STRESS) {
+      const n = i++
+      if (n >= MAX_STRESS) break
+      const url = urls[n % urls.length]
+      results.push(await request(url))
+    }
+  }
+
+  await Promise.all(Array.from({ length: CONCURRENCY }, () => worker()))
+  const counts = summarize('Stress test (mixed endpoints)', results)
+  interpret('stress', counts)
 }
 
 async function runScanner(base) {
@@ -185,6 +220,7 @@ async function main() {
     burst: runBurst,
     'empty-ua': runEmptyUa,
     scanner: runScanner,
+    stress: runStress,
   }
 
   if (mode === 'all') {
@@ -193,7 +229,7 @@ async function main() {
     await tests[mode](base)
   } else {
     console.error('Unknown mode:', mode)
-    console.error('Use: baseline | burst | empty-ua | scanner | all')
+    console.error('Use: baseline | burst | empty-ua | scanner | stress | all')
     process.exit(1)
   }
 

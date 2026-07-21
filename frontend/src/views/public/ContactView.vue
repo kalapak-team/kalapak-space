@@ -262,7 +262,7 @@
                 <VueTurnstile :site-key="turnstileSiteKey" v-model="turnstileToken" />
               </div>
 
-              <button type="submit" class="btn-primary w-full text-sm" :disabled="submitting">
+              <button type="submit" class="btn-primary !rounded-full w-full text-sm" :disabled="submitting">
                 <span v-if="!submitting">Send Message</span>
                 <span v-else class="inline-flex items-center gap-2">
                   <span

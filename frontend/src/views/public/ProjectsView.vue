@@ -41,36 +41,31 @@
       </div>
     </section>
 
-    <!-- ═══════════════════ STATS ═══════════════════ -->
-    <section class="relative z-10 -mt-8 sm:-mt-10 mb-12 sm:mb-16">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6">
-        <div
-          class="stats-shell grid grid-cols-3 gap-0 overflow-hidden divide-x divide-brand-violet/15 dark:divide-white/10"
-          data-reveal
-        >
-          <div class="stat-card px-3 sm:px-6 py-5 sm:py-7 text-center">
-            <p class="font-display text-xl sm:text-3xl font-bold gradient-text mb-1 tabular-nums">
-              {{ totalProjects }}
-            </p>
-            <p class="text-[9px] sm:text-[11px] text-gray-500 dark:text-gray-400 font-semibold uppercase tracking-[0.14em]">
-              Total Projects
-            </p>
-          </div>
-          <div class="stat-card px-3 sm:px-6 py-5 sm:py-7 text-center">
-            <p class="font-display text-xl sm:text-3xl font-bold gradient-text mb-1 tabular-nums">
-              {{ activeCount }}
-            </p>
-            <p class="text-[9px] sm:text-[11px] text-gray-500 dark:text-gray-400 font-semibold uppercase tracking-[0.14em]">
-              Active
-            </p>
-          </div>
-          <div class="stat-card px-3 sm:px-6 py-5 sm:py-7 text-center">
-            <p class="font-display text-xl sm:text-3xl font-bold gradient-text mb-1 tabular-nums">
-              {{ openSourceCount }}
-            </p>
-            <p class="text-[9px] sm:text-[11px] text-gray-500 dark:text-gray-400 font-semibold uppercase tracking-[0.14em]">
-              Open Source
-            </p>
+    <!-- ═══════════════════ STATS (x.ai-style) ═══════════════════ -->
+    <section
+      ref="statsSection"
+      class="stats-section mb-12 sm:mb-16"
+      :class="{ 'is-inview': statsInView }"
+      @pointermove="onStatsPointer"
+      @pointerleave="onStatsPointerLeave"
+    >
+      <div class="stats-grid-bg" aria-hidden="true" />
+      <div
+        class="stats-spotlight"
+        aria-hidden="true"
+        :style="statsSpotlightStyle"
+      />
+
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+        <div class="stats-row grid grid-cols-3">
+          <div
+            v-for="(stat, i) in projectStats"
+            :key="stat.label"
+            class="stat-item"
+            :style="{ '--stat-i': i }"
+          >
+            <p class="stat-value">{{ stat.display }}</p>
+            <p class="stat-label">{{ stat.label }}</p>
           </div>
         </div>
       </div>
@@ -219,7 +214,7 @@
               <div class="flex flex-wrap items-center gap-3">
                 <router-link
                   :to="`/projects/${featuredProject.slug}`"
-                  class="btn-primary text-sm"
+                  class="btn-primary !rounded-full text-sm"
                 >
                   View Project
                 </router-link>
@@ -228,7 +223,7 @@
                   :href="featuredProject.demo_url"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="btn-secondary text-sm"
+                  class="btn-secondary !rounded-full text-sm"
                 >
                   Live Demo
                 </a>
@@ -237,7 +232,7 @@
                   :href="featuredProject.repo_url"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="btn-ghost text-sm"
+                  class="btn-ghost !rounded-full text-sm"
                 >
                   Source
                 </a>
@@ -418,7 +413,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { publicApi } from '@/services/api'
 import Pagination from '@/components/common/Pagination.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
@@ -447,15 +442,118 @@ const tags = ref([
   'TypeScript',
 ])
 
-const totalProjects = computed(() => meta.value.total || projects.value.length || 0)
+const statsSection = ref(null)
+const statsInView = ref(false)
+const statsReady = ref(false)
+const spotlight = ref({ x: 50, y: 50, active: false })
+const displayCounts = ref([0, 0, 0])
+
+const totalProjects = computed(() => Number(meta.value.total || projects.value.length || 0))
 const activeCount = computed(
   () =>
-    projects.value.filter((p) => p.status === 'active' || p.status === 'in_progress').length ||
-    '–',
+    projects.value.filter((p) => p.status === 'active' || p.status === 'in_progress').length,
 )
 const openSourceCount = computed(
-  () => projects.value.filter((p) => p.is_open_source).length || '–',
+  () => projects.value.filter((p) => p.is_open_source).length,
 )
+
+const statTargets = computed(() => [
+  totalProjects.value,
+  activeCount.value,
+  openSourceCount.value,
+])
+
+const projectStats = computed(() => [
+  { label: 'total projects', display: displayCounts.value[0] },
+  { label: 'active', display: displayCounts.value[1] },
+  { label: 'open source', display: displayCounts.value[2] },
+])
+
+const statsSpotlightStyle = computed(() => ({
+  opacity: spotlight.value.active ? '1' : '0',
+  '--spot-x': `${spotlight.value.x}%`,
+  '--spot-y': `${spotlight.value.y}%`,
+}))
+
+function onStatsPointer(e) {
+  const el = statsSection.value
+  if (!el) return
+  const rect = el.getBoundingClientRect()
+  spotlight.value = {
+    x: ((e.clientX - rect.left) / rect.width) * 100,
+    y: ((e.clientY - rect.top) / rect.height) * 100,
+    active: true,
+  }
+}
+
+function onStatsPointerLeave() {
+  spotlight.value = { ...spotlight.value, active: false }
+}
+
+function easeOutExpo(t) {
+  return t === 1 ? 1 : 1 - Math.pow(2, -10 * t)
+}
+
+function animateCount(index, target) {
+  const duration = 1400 + index * 120
+  const start = performance.now()
+  const from = 0
+
+  const tick = (now) => {
+    const progress = Math.min((now - start) / duration, 1)
+    const eased = easeOutExpo(progress)
+    displayCounts.value[index] = Math.round(from + (target - from) * eased)
+    if (progress < 1) requestAnimationFrame(tick)
+    else displayCounts.value[index] = target
+  }
+
+  requestAnimationFrame(tick)
+}
+
+function runStatsAnimation() {
+  if (!statsReady.value) return
+  statsInView.value = true
+
+  const reduce =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  const targets = statTargets.value
+
+  if (reduce) {
+    displayCounts.value = [...targets]
+    return
+  }
+
+  targets.forEach((target, index) => {
+    setTimeout(() => animateCount(index, target), 80 + index * 140)
+  })
+}
+
+let statsObserver = null
+let hasAnimatedStats = false
+
+function tryAnimateStats() {
+  if (!statsReady.value || !statsInView.value) return
+  if (hasAnimatedStats) {
+    displayCounts.value = [...statTargets.value]
+    return
+  }
+  hasAnimatedStats = true
+  runStatsAnimation()
+}
+
+watch(statTargets, () => {
+  if (loading.value) return
+  statsReady.value = true
+  tryAnimateStats()
+})
+
+watch(loading, (isLoading) => {
+  if (isLoading) return
+  statsReady.value = true
+  tryAnimateStats()
+})
 
 const featuredProject = computed(() => projects.value.find((p) => p.is_featured))
 const displayProjects = computed(() => {
@@ -535,7 +633,32 @@ function openLink(url) {
   window.open(url, '_blank', 'noopener,noreferrer')
 }
 
-onMounted(() => fetchProjects())
+onMounted(() => {
+  fetchProjects()
+
+  if (statsSection.value && typeof IntersectionObserver !== 'undefined') {
+    statsObserver = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          statsInView.value = true
+          tryAnimateStats()
+          statsObserver?.disconnect()
+          statsObserver = null
+        }
+      },
+      { threshold: 0.35, rootMargin: '0px 0px -8% 0px' },
+    )
+    statsObserver.observe(statsSection.value)
+  } else {
+    statsInView.value = true
+    tryAnimateStats()
+  }
+})
+
+onBeforeUnmount(() => {
+  statsObserver?.disconnect()
+  statsObserver = null
+})
 </script>
 
 <style scoped>
@@ -547,29 +670,144 @@ onMounted(() => fetchProjects())
   mask-image: radial-gradient(ellipse 75% 65% at 50% 45%, black 15%, transparent 72%);
 }
 
-.stats-shell {
-  border-radius: 1.25rem;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+/* ── Stats (x.ai-inspired) ── */
+.stats-section {
+  position: relative;
+  z-index: 10;
+  padding: 3.5rem 0 4rem;
+  isolation: isolate;
+  overflow: hidden;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: #fff;
 }
 
-.dark .stats-shell {
-  border-color: rgba(255, 255, 255, 0.08);
-  background: rgba(10, 10, 18, 0.78);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+.dark .stats-section {
+  border-top-color: rgba(255, 255, 255, 0.06);
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+  background: #050508;
 }
 
-.stat-card {
-  transition: background-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+.stats-grid-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.055) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 18%,
+    black 82%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 18%,
+    black 82%,
+    transparent
+  );
 }
 
-.stat-card:hover {
-  background: rgba(123, 47, 255, 0.04);
+.dark .stats-grid-bg {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
 }
 
-.dark .stat-card:hover {
-  background: rgba(0, 212, 255, 0.04);
+.stats-spotlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+  mix-blend-mode: multiply;
+  background: radial-gradient(
+    420px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(123, 47, 255, 0.12),
+    transparent 55%
+  );
+}
+
+.dark .stats-spotlight {
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    420px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(0, 212, 255, 0.1),
+    transparent 55%
+  );
+}
+
+.stats-row {
+  position: relative;
+}
+
+.stat-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.5rem 0.75rem;
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--stat-i, 0) * 90ms);
+  filter: blur(4px);
+}
+
+.stats-section.is-inview .stat-item {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+.stat-value {
+  font-family: var(--font-display, Outfit, system-ui, sans-serif);
+  font-size: clamp(2.5rem, 5.5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: #0a0a0a;
+  margin: 0 0 0.65rem;
+  font-variant-numeric: tabular-nums;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dark .stat-value {
+  color: #f5f5f7;
+}
+
+.stat-item:hover .stat-value {
+  transform: translateY(-1px);
+}
+
+.stat-label {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: #8b8b93;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  font-weight: 400;
+}
+
+.dark .stat-label {
+  color: #9a9aa3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stat-item {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
 }
 </style>

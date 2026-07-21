@@ -97,109 +97,150 @@
               </div>
             </div>
           </div>
-          <!-- Right: visual card -->
+          <!-- Right: x.ai-style animated agent / diff window -->
           <div data-reveal class="relative">
             <div
-              class="about-visual-card relative surface-panel overflow-hidden p-5 sm:p-8 md:p-10 shadow-glass dark:shadow-glass-dark"
+              ref="aboutCodeWindowRef"
+              class="about-code-window relative overflow-hidden rounded-xl border border-white/[0.1] bg-[#0a0a0b] text-[#e8e8ed] shadow-[0_12px_48px_rgba(0,0,0,0.45)]"
             >
-              <!-- Decorative code lines -->
-              <div
-                class="font-sans text-xs sm:text-sm space-y-2 sm:space-y-3 text-gray-400 dark:text-gray-500 overflow-x-auto"
-              >
-                <p>
-                  <span class="text-brand-violet dark:text-brand-cyan"
-                    >const</span
-                  >
-                  <span class="text-gray-700 dark:text-gray-300">team</span> = {
-                </p>
-                <p class="pl-6">
-                  <span class="text-brand-violet dark:text-brand-cyan"
-                    >name</span
-                  >:
-                  <span class="text-green-600 dark:text-green-400"
-                    >'Kalapak Code'</span
-                  >,
-                </p>
-                <p class="pl-6">
-                  <span class="text-brand-violet dark:text-brand-cyan"
-                    >founded</span
-                  >:
-                  <span class="text-amber-600 dark:text-amber-400">2024</span>,
-                </p>
-                <p class="pl-6">
-                  <span class="text-brand-violet dark:text-brand-cyan"
-                    >location</span
-                  >:
-                  <span class="text-green-600 dark:text-green-400"
-                    >'Phnom Penh, Cambodia'</span
-                  >,
-                </p>
-                <p class="pl-6">
-                  <span class="text-brand-violet dark:text-brand-cyan"
-                    >university</span
-                  >:
-                  <span class="text-green-600 dark:text-green-400"
-                    >'Norton University'</span
-                  >,
-                </p>
-                <p class="pl-6">
-                  <span class="text-brand-violet dark:text-brand-cyan"
-                    >mission</span
-                  >:
-                  <span class="text-green-600 dark:text-green-400"
-                    >'Package knowledge, deliver through code'</span
-                  >,
-                </p>
-                <p class="pl-6">
-                  <span class="text-brand-violet dark:text-brand-cyan"
-                    >stack</span
-                  >: [<span class="text-green-600 dark:text-green-400"
-                    >'Vue'</span
-                  >,
-                  <span class="text-green-600 dark:text-green-400"
-                    >'Laravel'</span
-                  >,
-                  <span class="text-green-600 dark:text-green-400"
-                    >'Flutter'</span
-                  >,
-                  <span class="text-green-600 dark:text-green-400"
-                    >'Docker'</span
-                  >],
-                </p>
-                <p class="pl-6">
-                  <span class="text-brand-violet dark:text-brand-cyan"
-                    >passion</span
-                  >:
-                  <span class="text-amber-600 dark:text-amber-400"
-                    >Infinity</span
-                  >,
-                </p>
-                <p>};</p>
-                <p class="mt-4">
-                  <span class="text-brand-violet dark:text-brand-cyan"
-                    >team</span
-                  >.<span class="text-yellow-600 dark:text-yellow-400"
-                    >build</span
-                  >(<span class="text-green-600 dark:text-green-400"
-                    >'the future'</span
-                  >);
-                  <span class="text-gray-400 dark:text-gray-600">// 🚀</span>
-                </p>
+              <!-- Title bar -->
+              <div class="flex items-center gap-3 px-4 py-2.5 border-b border-white/[0.07]">
+                <div class="flex items-center gap-1.5 shrink-0" aria-hidden="true">
+                  <span class="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+                  <span class="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
+                  <span class="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+                </div>
+                <span class="flex-1 text-center text-[11px] font-code text-gray-500 truncate">
+                  kalapak/main
+                </span>
+                <div class="flex items-center gap-2 shrink-0 min-w-[72px] justify-end">
+                  <div class="w-14 h-1 rounded-full bg-white/10 overflow-hidden">
+                    <div
+                      class="h-full rounded-full bg-gradient-to-r from-brand-violet to-brand-cyan transition-[width] duration-300 ease-out"
+                      :style="{ width: `${agentProgress}%` }"
+                    />
+                  </div>
+                  <span class="text-[10px] font-code text-gray-500 tabular-nums w-10 text-right">
+                    {{ agentProgress.toFixed(1) }}%
+                  </span>
+                </div>
               </div>
-              <!-- Glow accent -->
+
+              <!-- Fixed-height body — never expands while animating -->
+              <div class="font-code text-[11px] sm:text-[12px] p-3.5 sm:p-4 h-[420px] sm:h-[460px] overflow-hidden flex flex-col">
+                <div class="shrink-0 space-y-1.5 min-h-[88px]">
+                  <!-- Tool -->
+                  <div
+                    class="flex items-center gap-2 h-5 text-gray-400 transition-opacity duration-300"
+                    :class="showReadFile ? 'opacity-100' : 'opacity-0'"
+                  >
+                    <span class="text-brand-cyan shrink-0">▸</span>
+                    <span class="text-gray-500">read_file</span>
+                    <span class="text-gray-300">src/team/profile.js</span>
+                    <span class="ml-auto text-gray-600 shrink-0">42 lines</span>
+                  </div>
+
+                  <!-- Scan task -->
+                  <div
+                    class="flex items-center gap-2 h-5 text-gray-400 border-l-2 border-emerald-500/70 pl-2.5 transition-opacity duration-300"
+                    :class="showScan ? 'opacity-100' : 'opacity-0'"
+                  >
+                    <span class="flex-1 truncate">Scan team profile</span>
+                    <span class="text-gray-600 hidden sm:inline">explore</span>
+                    <span
+                      class="text-[10px] uppercase tracking-wide shrink-0"
+                      :class="scanDone ? 'text-emerald-400' : 'text-sky-400'"
+                    >
+                      [{{ scanDone ? 'done' : 'running' }}]
+                    </span>
+                  </div>
+
+                  <!-- Thought -->
+                  <div
+                    class="flex items-center gap-2 h-5 text-[#c4b5fd] transition-opacity duration-300"
+                    :class="showThought ? 'opacity-100' : 'opacity-0'"
+                  >
+                    <span class="text-brand-violet">◆</span>
+                    <span>Thought for {{ thoughtSeconds.toFixed(1) }}s</span>
+                  </div>
+
+                  <!-- Edit header -->
+                  <div
+                    class="flex items-center gap-2 h-5 transition-opacity duration-300"
+                    :class="showEditHeader ? 'opacity-100' : 'opacity-0'"
+                  >
+                    <span class="text-brand-violet">◆</span>
+                    <span class="font-semibold text-white">Edit</span>
+                    <span class="text-emerald-400/90">src/team/profile.js</span>
+                  </div>
+                </div>
+
+                <!-- Full team code — fixed height for all lines -->
+                <div
+                  class="mt-2 rounded-md overflow-hidden border border-white/[0.08] bg-[#0e0e10] shrink-0"
+                  :style="{ height: `${DIFF_ROW_H * diffRows.length}px` }"
+                >
+                  <div
+                    v-for="(row, i) in diffDisplayRows"
+                    :key="`diff-${i}`"
+                    class="flex items-stretch"
+                    :style="{ height: `${DIFF_ROW_H}px` }"
+                    :class="{
+                      'bg-emerald-500/[0.12]': row.kind === 'add' && (row.visible || row.active),
+                    }"
+                  >
+                    <span
+                      class="w-9 shrink-0 text-right pr-2 select-none border-r border-white/[0.04] tabular-nums"
+                      :style="{ lineHeight: `${DIFF_ROW_H}px` }"
+                      :class="{
+                        'text-emerald-400': row.kind === 'add' && (row.visible || row.active),
+                        'text-gray-600': !(row.visible || row.active),
+                      }"
+                    >{{ row.num }}</span>
+                    <span
+                      class="flex-1 px-2.5 whitespace-pre overflow-hidden"
+                      :style="{ lineHeight: `${DIFF_ROW_H}px` }"
+                    >
+                      <template v-if="row.visible || row.active">
+                        <span v-html="row.html || '&nbsp;'" />
+                        <span
+                          v-if="row.active"
+                          class="about-code-caret"
+                          aria-hidden="true"
+                        />
+                      </template>
+                      <template v-else>&nbsp;</template>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="flex-1 min-h-2" />
+
+                <!-- Prompt (bottom, like x.ai) -->
+                <div class="shrink-0 flex items-center gap-2 pt-2 text-gray-200">
+                  <span class="text-brand-cyan shrink-0">❯</span>
+                  <span>Build Kalapak team profile module.</span>
+                </div>
+                <div
+                  class="shrink-0 h-4 mt-1 text-[10px] text-gray-600 transition-opacity"
+                  :class="showThinkingHint ? 'opacity-100' : 'opacity-0'"
+                >
+                  Thinking...
+                </div>
+              </div>
+
+              <!-- Footer -->
               <div
-                class="absolute -bottom-20 -right-20 w-40 h-40 bg-brand-violet/10 dark:bg-brand-cyan/10 rounded-full blur-3xl"
-              />
-            </div>
-            <!-- Floating decorative dots -->
-            <div
-              class="absolute -top-4 -right-4 w-20 h-20 hidden sm:grid grid-cols-3 gap-2 opacity-20"
-            >
-              <span
-                v-for="d in 9"
-                :key="d"
-                class="w-2 h-2 rounded-full bg-brand-violet dark:bg-brand-cyan"
-              />
+                class="flex items-center justify-between px-4 py-2.5 border-t border-white/[0.08] bg-black/40"
+              >
+                <span class="text-[11px] font-medium text-gray-300">Build</span>
+                <router-link
+                  to="/projects"
+                  class="text-[11px] font-medium text-gray-300 hover:text-white transition-colors"
+                >
+                  Explore →
+                </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -1001,12 +1042,237 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, nextTick } from "vue";
+import { ref, reactive, computed, onMounted, onBeforeUnmount, nextTick } from "vue";
 import { publicApi } from "@/services/api";
 import { useHomeMotion } from "../../../composables/usePremiumMotion.js";
 
 const pageRoot = ref(null);
 const { refreshReveals } = useHomeMotion(pageRoot);
+
+const aboutCodeWindowRef = ref(null);
+const agentProgress = ref(0);
+const showReadFile = ref(false);
+const showScan = ref(false);
+const scanDone = ref(false);
+const showThought = ref(false);
+const thoughtSeconds = ref(0);
+const showEditHeader = ref(false);
+const showThinkingHint = ref(false);
+const activeDiffIndex = ref(-1);
+const typedChars = ref("");
+const revealedDiffCount = ref(0);
+
+const DIFF_ROW_H = 22;
+
+// Full Kalapak team snippet — fixed rows so the box never grows while typing
+const teamCodeLines = [
+  "const team = {",
+  "  name: 'Kalapak Code',",
+  "  founded: 2024,",
+  "  location: 'Phnom Penh, Cambodia',",
+  "  university: 'Norton University',",
+  "  mission: 'Package knowledge, deliver through code',",
+  "  stack: ['Vue', 'Laravel', 'Flutter', 'Docker'],",
+  "  passion: Infinity,",
+  "};",
+  "",
+  "team.build('the future'); // 🚀",
+];
+
+const diffRows = teamCodeLines.map((text, i) => ({
+  num: 10 + i,
+  kind: "add",
+  text,
+}));
+
+const diffDisplayRows = computed(() =>
+  diffRows.map((row, i) => {
+    const visible = i < revealedDiffCount.value;
+    const active = activeDiffIndex.value === i;
+    let text = "";
+    if (active) text = typedChars.value;
+    else if (visible) text = row.text;
+
+    return {
+      ...row,
+      visible,
+      active,
+      html: text ? highlightCodeLine(text) : "",
+    };
+  }),
+);
+
+function highlightCodeLine(line) {
+  if (!line) return "&nbsp;";
+  let html = line
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+
+  html = html.replace(
+    /\b(const)\b/g,
+    '<span class="text-[#ff7eb6]">$1</span>',
+  );
+  html = html.replace(
+    /^(\s*)(name|founded|location|university|mission|stack|passion)(\s*:)/g,
+    '$1<span class="text-[#ff9f6b]">$2</span><span class="text-gray-500">$3</span>',
+  );
+  html = html.replace(
+    /('[^']*')/g,
+    '<span class="text-[#7dd3fc]">$1</span>',
+  );
+  html = html.replace(
+    /\b(2024|Infinity)\b/g,
+    '<span class="text-[#fdba74]">$1</span>',
+  );
+  html = html.replace(
+    /\.(build)\(/,
+    '.<span class="text-[#60a5fa]">$1</span>(',
+  );
+  html = html.replace(
+    /(\/\/.*)$/,
+    '<span class="text-gray-500">$1</span>',
+  );
+  return html;
+}
+
+let agentTimers = [];
+let agentObserver = null;
+let agentRunning = false;
+let reduceMotion = false;
+
+function agentDelay(ms) {
+  return new Promise((resolve) => {
+    const id = setTimeout(resolve, ms);
+    agentTimers.push(id);
+  });
+}
+
+function clearAgentTimers() {
+  agentTimers.forEach(clearTimeout);
+  agentTimers = [];
+}
+
+function resetAgentState() {
+  agentProgress.value = 0;
+  showReadFile.value = false;
+  showScan.value = false;
+  scanDone.value = false;
+  showThought.value = false;
+  thoughtSeconds.value = 0;
+  showEditHeader.value = false;
+  showThinkingHint.value = false;
+  activeDiffIndex.value = -1;
+  typedChars.value = "";
+  revealedDiffCount.value = 0;
+}
+
+async function typeDiffRow(index) {
+  const row = diffRows[index];
+  activeDiffIndex.value = index;
+  typedChars.value = "";
+
+  // Empty line: brief pause, then commit
+  if (!row.text) {
+    await agentDelay(reduceMotion ? 20 : 180);
+    revealedDiffCount.value = index + 1;
+    activeDiffIndex.value = -1;
+    typedChars.value = "";
+    agentProgress.value = Math.min(96, agentProgress.value + 2);
+    return;
+  }
+
+  for (let i = 0; i < row.text.length; i++) {
+    if (!agentRunning) return;
+    typedChars.value = row.text.slice(0, i + 1);
+    agentProgress.value = Math.min(96, agentProgress.value + 0.28);
+    await agentDelay(reduceMotion ? 0 : 14 + Math.random() * 16);
+  }
+  await agentDelay(reduceMotion ? 20 : 220);
+
+  revealedDiffCount.value = index + 1;
+  activeDiffIndex.value = -1;
+  typedChars.value = "";
+}
+
+async function runAgentSequence() {
+  if (agentRunning) return;
+  agentRunning = true;
+
+  while (agentRunning) {
+    resetAgentState();
+    showThinkingHint.value = true;
+    await agentDelay(reduceMotion ? 40 : 350);
+
+    showReadFile.value = true;
+    agentProgress.value = 8;
+    await agentDelay(reduceMotion ? 40 : 450);
+
+    showScan.value = true;
+    agentProgress.value = 16;
+    await agentDelay(reduceMotion ? 40 : 500);
+    scanDone.value = true;
+    agentProgress.value = 28;
+    await agentDelay(reduceMotion ? 40 : 350);
+
+    showThought.value = true;
+    for (let s = 0; s < 10; s++) {
+      if (!agentRunning) return;
+      thoughtSeconds.value = Number(((s + 1) * 0.28).toFixed(1));
+      agentProgress.value = Math.min(42, 30 + s);
+      await agentDelay(reduceMotion ? 10 : 85);
+    }
+
+    showEditHeader.value = true;
+    showThinkingHint.value = false;
+    agentProgress.value = 48;
+    await agentDelay(reduceMotion ? 40 : 300);
+
+    for (let i = 0; i < diffRows.length; i++) {
+      if (!agentRunning) return;
+      await typeDiffRow(i);
+    }
+
+    agentProgress.value = 100;
+    await agentDelay(reduceMotion ? 600 : 2800);
+  }
+}
+
+function stopAgentSequence() {
+  agentRunning = false;
+  clearAgentTimers();
+}
+
+function startAgentWhenVisible() {
+  if (typeof window === "undefined" || !aboutCodeWindowRef.value) return;
+  reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (reduceMotion) {
+    resetAgentState();
+    showReadFile.value = true;
+    showScan.value = true;
+    scanDone.value = true;
+    showThought.value = true;
+    thoughtSeconds.value = 2.8;
+    showEditHeader.value = true;
+    revealedDiffCount.value = diffRows.length;
+    agentProgress.value = 100;
+    return;
+  }
+
+  agentObserver = new IntersectionObserver(
+    (entries) => {
+      const entry = entries[0];
+      if (entry?.isIntersecting) {
+        if (!agentRunning) runAgentSequence();
+      } else {
+        stopAgentSequence();
+      }
+    },
+    { threshold: 0.35 },
+  );
+  agentObserver.observe(aboutCodeWindowRef.value);
+}
 
 const teamMembers = ref([
   {
@@ -1063,6 +1329,15 @@ onMounted(async () => {
   } catch {}
   await nextTick();
   refreshReveals();
+  startAgentWhenVisible();
+});
+
+onBeforeUnmount(() => {
+  stopAgentSequence();
+  if (agentObserver) {
+    agentObserver.disconnect();
+    agentObserver = null;
+  }
 });
 
 const miniStats = [
@@ -1596,6 +1871,34 @@ const differentiators = [
   50% {
     opacity: 1;
     transform: scale(1.3);
+  }
+}
+
+.about-code-caret {
+  display: inline-block;
+  width: 7px;
+  height: 1.05em;
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  background: #00d4ff;
+  animation: aboutCaretBlink 0.9s steps(1) infinite;
+}
+
+@keyframes aboutCaretBlink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-code-caret {
+    animation: none;
+    opacity: 1;
   }
 }
 </style>

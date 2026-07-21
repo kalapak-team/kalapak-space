@@ -44,10 +44,10 @@
           data-hero
           class="flex flex-row flex-wrap justify-center gap-3 sm:gap-4"
         >
-          <router-link to="/projects" class="btn-primary">
+          <router-link to="/projects" class="btn-primary !rounded-full">
             Explore Projects
           </router-link>
-          <router-link to="/about" class="btn-secondary">
+          <router-link to="/about" class="btn-secondary !rounded-full">
             Meet the Team
           </router-link>
         </div>
@@ -61,32 +61,33 @@
       </div>
     </section>
 
-    <!-- ═══════════════════ STATS ═══════════════════ -->
-    <section class="stats-section">
-      <div class="max-w-6xl mx-auto px-4">
-        <div
-          class="stats-shell grid grid-cols-2 md:grid-cols-4 gap-0 overflow-hidden"
-          data-reveal
-        >
+    <!-- ═══════════════════ STATS (x.ai-style) ═══════════════════ -->
+    <section
+      ref="statsSection"
+      class="stats-section"
+      :class="{ 'is-inview': statsInView }"
+      @pointermove="onStatsPointer"
+      @pointerleave="onStatsPointerLeave"
+    >
+      <div class="stats-grid-bg" aria-hidden="true" />
+      <div
+        class="stats-spotlight"
+        aria-hidden="true"
+        :style="statsSpotlightStyle"
+      />
+
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+        <div class="stats-row grid grid-cols-2 md:grid-cols-4">
           <div
             v-for="(stat, i) in stats"
-            :key="i"
-            class="stat-card px-4 sm:px-6 py-6 sm:py-8 text-center border-black/[0.08] dark:border-white/[0.08]"
-            :class="[
-              i >= 2 ? 'border-t md:border-t-0' : '',
-              i > 0 ? 'border-l md:border-l' : '',
-            ]"
+            :key="stat.label"
+            class="stat-item"
+            :style="{ '--stat-i': i }"
           >
-            <p
-              class="font-display text-2xl sm:text-3xl md:text-4xl font-bold gradient-text mb-1"
-            >
-              {{ animatedStats[i]?.display || stat.value }}
+            <p class="stat-value" :data-infinite="stat.infinite || undefined">
+              {{ animatedStats[i]?.display }}
             </p>
-            <p
-              class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 font-semibold uppercase tracking-wider"
-            >
-              {{ stat.label }}
-            </p>
+            <p class="stat-label" v-html="stat.labelHtml || stat.label" />
           </div>
         </div>
       </div>
@@ -509,7 +510,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import { publicApi } from "@/services/api";
 import dayjs from "dayjs";
@@ -530,15 +531,50 @@ const projects = ref([]);
 const posts = ref([]);
 const team = ref([]);
 
+const statsSection = ref(null);
+const statsInView = ref(false);
+const statsAnimated = ref(false);
+const spotlight = ref({ x: 50, y: 50, active: false });
+
 const stats = [
-  { value: "4+", label: "Team Members" },
-  { value: "10+", label: "Projects" },
-  { value: "100%", label: "Passion" },
-  { value: "∞", label: "Lines of Code" },
+  { value: "4+", label: "team members", target: 4, suffix: "+" },
+  { value: "10+", label: "projects shipped", target: 10, suffix: "+" },
+  { value: "100%", label: "passion", target: 100, suffix: "%" },
+  {
+    value: "∞",
+    label: "lines of code",
+    infinite: true,
+    labelHtml: "lines of <span class=\"stat-accent\">code</span>",
+  },
 ];
+
 const animatedStats = ref(
-  stats.map((stat) => ({ ...stat, display: stat.value })),
+  stats.map((stat) => ({
+    ...stat,
+    display: stat.infinite ? "" : "0",
+  })),
 );
+
+const statsSpotlightStyle = computed(() => ({
+  opacity: spotlight.value.active ? "1" : "0",
+  "--spot-x": `${spotlight.value.x}%`,
+  "--spot-y": `${spotlight.value.y}%`,
+}));
+
+function onStatsPointer(e) {
+  const el = statsSection.value;
+  if (!el) return;
+  const rect = el.getBoundingClientRect();
+  spotlight.value = {
+    x: ((e.clientX - rect.left) / rect.width) * 100,
+    y: ((e.clientY - rect.top) / rect.height) * 100,
+    active: true,
+  };
+}
+
+function onStatsPointerLeave() {
+  spotlight.value = { ...spotlight.value, active: false };
+}
 
 const services = [
   {
@@ -674,28 +710,31 @@ function formatDate(date) {
   return date ? dayjs(date).format("MMM D, YYYY") : "";
 }
 
-function animateStatValue(index, finalValue) {
-  const matched = finalValue.match(/^(\d+)(.*)$/);
-  if (!matched) {
-    animatedStats.value[index].display = finalValue;
+function easeOutExpo(t) {
+  return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+}
+
+function animateStatValue(index, stat) {
+  if (stat.infinite) {
+    animatedStats.value[index].display = "∞";
     return;
   }
 
-  const target = Number.parseInt(matched[1], 10);
-  const suffix = matched[2] || "";
-  const duration = 1300;
+  const target = stat.target;
+  const suffix = stat.suffix || "";
+  const duration = 1600 + index * 120;
   const start = performance.now();
 
   const tick = (now) => {
     const progress = Math.min((now - start) / duration, 1);
-    const eased = 1 - Math.pow(1 - progress, 3);
-    const current = Math.max(1, Math.round(target * eased));
+    const eased = easeOutExpo(progress);
+    const current = Math.round(target * eased);
     animatedStats.value[index].display = `${current}${suffix}`;
 
     if (progress < 1) {
       requestAnimationFrame(tick);
     } else {
-      animatedStats.value[index].display = finalValue;
+      animatedStats.value[index].display = stat.value;
     }
   };
 
@@ -703,10 +742,27 @@ function animateStatValue(index, finalValue) {
 }
 
 function runStatsAnimation() {
+  if (statsAnimated.value) return;
+  statsAnimated.value = true;
+  statsInView.value = true;
+
+  const reduce =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (reduce) {
+    stats.forEach((stat, index) => {
+      animatedStats.value[index].display = stat.value;
+    });
+    return;
+  }
+
   stats.forEach((stat, index) => {
-    setTimeout(() => animateStatValue(index, stat.value), 150 * index);
+    setTimeout(() => animateStatValue(index, stat), 80 + index * 140);
   });
 }
+
+let statsObserver = null;
 
 onMounted(async () => {
   try {
@@ -721,7 +777,27 @@ onMounted(async () => {
   } catch {
     // Silently fail for public page
   }
-  runStatsAnimation();
+
+  if (statsSection.value && typeof IntersectionObserver !== "undefined") {
+    statsObserver = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          runStatsAnimation();
+          statsObserver?.disconnect();
+          statsObserver = null;
+        }
+      },
+      { threshold: 0.35, rootMargin: "0px 0px -8% 0px" },
+    );
+    statsObserver.observe(statsSection.value);
+  } else {
+    runStatsAnimation();
+  }
+});
+
+onBeforeUnmount(() => {
+  statsObserver?.disconnect();
+  statsObserver = null;
 });
 </script>
 
@@ -779,48 +855,180 @@ onMounted(async () => {
   }
 }
 
-/* ── Stats bar ── */
+/* ── Stats (x.ai-inspired) ── */
 .stats-section {
   position: relative;
   z-index: 10;
-  margin-top: -2.5rem;
+  margin-top: 0;
+  padding: 4.5rem 0 5rem;
   isolation: isolate;
+  overflow: hidden;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: #fff;
 }
 
-@media (min-width: 640px) {
-  .stats-section {
-    margin-top: -3.5rem;
+.dark .stats-section {
+  border-top-color: rgba(255, 255, 255, 0.06);
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+  background: #050508;
+}
+
+.stats-grid-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.055) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 18%,
+    black 82%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 18%,
+    black 82%,
+    transparent
+  );
+}
+
+.dark .stats-grid-bg {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+}
+
+.stats-spotlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+  mix-blend-mode: multiply;
+  background: radial-gradient(
+    420px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(123, 47, 255, 0.12),
+    transparent 55%
+  );
+}
+
+.dark .stats-spotlight {
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    420px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(0, 212, 255, 0.1),
+    transparent 55%
+  );
+}
+
+.stats-row {
+  position: relative;
+}
+
+.stat-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.75rem 1rem;
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--stat-i, 0) * 90ms);
+  filter: blur(4px);
+}
+
+.stats-section.is-inview .stat-item {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+.stat-value {
+  font-family: var(--font-display, Outfit, system-ui, sans-serif);
+  font-size: clamp(2.75rem, 6vw, 4.25rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: #0a0a0a;
+  margin: 0 0 0.65rem;
+  font-variant-numeric: tabular-nums;
+  will-change: contents;
+}
+
+.dark .stat-value {
+  color: #f5f5f7;
+}
+
+.stat-value[data-infinite] {
+  background: linear-gradient(105deg, #7b2fff 0%, #00d4ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.stat-label {
+  margin: 0;
+  max-width: 12rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: #8b8b93;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  font-weight: 400;
+}
+
+.dark .stat-label {
+  color: #9a9aa3;
+}
+
+.stat-accent {
+  font-family: ui-monospace, "Fira Code", SFMono-Regular, Menlo, monospace;
+  font-size: 0.78em;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6b6b76;
+}
+
+.dark .stat-accent {
+  color: #b0b0ba;
+}
+
+.stat-item:hover .stat-value {
+  transform: translateY(-1px);
+}
+
+.stat-value {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (max-width: 767px) {
+  .stat-item:nth-child(n + 3) {
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .dark .stat-item:nth-child(n + 3) {
+    border-top-color: rgba(255, 255, 255, 0.06);
   }
 }
 
-.stats-shell {
-  border-radius: 1.25rem;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  box-shadow:
-    0 16px 40px rgba(15, 23, 42, 0.08),
-    0 1px 0 rgba(255, 255, 255, 0.8) inset;
-}
-
-.dark .stats-shell {
-  border-color: rgba(255, 255, 255, 0.08);
-  background: rgba(10, 10, 18, 0.78);
-  box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.35),
-    0 1px 0 rgba(255, 255, 255, 0.04) inset;
-}
-
-.stat-card {
-  transition: background-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.stat-card:hover {
-  background: rgba(123, 47, 255, 0.04);
-}
-
-.dark .stat-card:hover {
-  background: rgba(0, 212, 255, 0.04);
+@media (prefers-reduced-motion: reduce) {
+  .stat-item {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
 }
 
 /* ── Tech Stack Black Hole ── */

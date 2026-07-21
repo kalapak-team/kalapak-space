@@ -48,6 +48,8 @@ run_setup() {
     RUN_MIGRATIONS=1
   fi
   if [ "${RUN_MIGRATIONS}" = "1" ] || [ "${RUN_MIGRATIONS}" = "true" ]; then
+    echo "==> [DB] Ensuring public schema exists (Neon fresh DBs may omit it)..."
+    php artisan tinker --execute="DB::statement('CREATE SCHEMA IF NOT EXISTS public'); DB::statement('GRANT ALL ON SCHEMA public TO CURRENT_USER'); DB::statement('GRANT ALL ON SCHEMA public TO PUBLIC');" 2>&1 || true
     echo "==> [DB] Running migrations..."
     if command -v timeout >/dev/null 2>&1; then
       timeout "${MIGRATE_TIMEOUT:-120}" php artisan migrate --force --no-interaction 2>&1

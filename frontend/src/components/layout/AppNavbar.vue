@@ -30,7 +30,7 @@
         <div v-if="isDocsPage" class="hidden lg:flex flex-1 items-center mx-6">
           <button
             @click="openSearch"
-            class="w-full max-w-xl flex items-center gap-3 px-4 py-2 rounded-xl text-sm text-gray-400 dark:text-gray-500 border border-black/[0.08] dark:border-white/[0.08] bg-gray-50/80 dark:bg-white/[0.03] hover:border-black/[0.16] dark:hover:border-white/20 hover:bg-white dark:hover:bg-white/[0.05] transition-all duration-200 ease-premium group"
+            class="w-full max-w-xl flex items-center gap-3 px-4 py-2 rounded-full text-sm text-gray-400 dark:text-gray-500 border border-black/[0.08] dark:border-white/[0.08] bg-gray-50/80 dark:bg-white/[0.03] hover:border-black/[0.16] dark:hover:border-white/20 hover:bg-white dark:hover:bg-white/[0.05] transition-all duration-200 ease-premium group"
           >
             <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
             <span class="flex-1 text-left">Search everything...</span>
@@ -38,31 +38,27 @@
           </button>
         </div>
         <div v-else class="hidden lg:flex items-center">
-          <div class="nav-links-container flex items-center gap-0.5 px-1 py-1 rounded-xl bg-gray-100/50 dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.06]">
+          <div
+            ref="navLinksContainerRef"
+            class="nav-links-container relative flex items-center gap-0.5 p-1 rounded-full bg-gray-100/60 dark:bg-white/[0.04] border border-black/[0.06] dark:border-white/[0.06]"
+            @pointerleave="onNavLeave"
+          >
+            <!-- Instatus sliding hover pill -->
+            <span
+              class="nav-slider-pill absolute top-1 bottom-1 rounded-full pointer-events-none"
+              :style="navPillStyle"
+              aria-hidden="true"
+            />
             <router-link
               v-for="link in navLinks"
               :key="link.name"
+              :ref="(el) => setNavLinkRef(link.name, el)"
               :to="link.to"
-              class="nav-link relative px-3.5 py-1.5 rounded-lg text-[12.5px] font-semibold tracking-wide transition-all duration-300 whitespace-nowrap"
-              :class="[
-                isActive(link.name)
-                  ? 'nav-link-active text-white'
-                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-              ]"
+              class="nav-link relative z-10 px-3.5 py-1.5 rounded-full text-[12.5px] font-semibold tracking-wide whitespace-nowrap transition-colors duration-200"
+              :class="navLinkTextClass(link.name)"
+              @pointerenter="onNavEnter(link.name)"
             >
-              <span class="relative z-10">
-                {{ link.label }}
-              </span>
-              <!-- Active pill background -->
-              <span
-                v-if="isActive(link.name)"
-                class="absolute inset-0 rounded-lg bg-gradient-to-r from-brand-violet to-brand-cyan"
-              />
-              <!-- Hover background -->
-              <span
-                v-else
-                class="absolute inset-0 rounded-lg bg-white dark:bg-white/[0.06] opacity-0 hover-bg transition-opacity duration-200"
-              />
+              {{ link.label }}
             </router-link>
           </div>
         </div>
@@ -296,12 +292,18 @@
             </div>
           </template>
 
-          <!-- Guest actions -->
+          <!-- Guest actions — original style -->
           <template v-else>
-            <router-link :to="{ name: 'login' }" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-semibold text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100/80 dark:hover:bg-white/[0.05] transition-all duration-200">
+            <router-link
+              :to="{ name: 'login' }"
+              class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-semibold text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100/80 dark:hover:bg-white/[0.05] transition-all duration-200"
+            >
               Sign In
             </router-link>
-            <router-link :to="{ name: 'register' }" class="nav-cta-btn group relative hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] font-bold text-white overflow-hidden shadow-md shadow-brand-violet/20 dark:shadow-brand-cyan/20 hover:shadow-lg hover:shadow-brand-violet/30 dark:hover:shadow-brand-cyan/30 hover:-translate-y-[1px] transition-all duration-300">
+            <router-link
+              :to="{ name: 'register' }"
+              class="nav-cta-btn group relative hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] font-bold text-white overflow-hidden shadow-md shadow-brand-violet/20 dark:shadow-brand-cyan/20 hover:shadow-lg hover:shadow-brand-violet/30 dark:hover:shadow-brand-cyan/30 hover:-translate-y-[1px] transition-all duration-300"
+            >
               <span class="relative z-10">Get Started</span>
               <span class="absolute inset-0 bg-gradient-to-r from-brand-violet to-brand-cyan" />
               <span class="absolute inset-0 bg-gradient-to-r from-brand-cyan to-brand-violet opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -421,7 +423,7 @@
 </template>
 
 <script setup>
-import { ref, h, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, h, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useNotificationStore } from '@/stores/notifications'
@@ -560,19 +562,6 @@ function isActive(name) {
   return route.name === name
 }
 
-onMounted(() => {
-  authChromeReady.value = true
-  document.addEventListener('click', handleClickOutside)
-  document.addEventListener('keydown', handleSearchKeydown)
-  window.addEventListener('scroll', handleScroll, { passive: true })
-})
-
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside)
-  document.removeEventListener('keydown', handleSearchKeydown)
-  window.removeEventListener('scroll', handleScroll)
-})
-
 const navLinks = [
   { name: 'about', to: '/about', label: 'About', icon: IconAbout },
   { name: 'projects', to: '/projects', label: 'Portfolio', icon: IconPortfolio },
@@ -581,6 +570,113 @@ const navLinks = [
   { name: 'contact', to: '/contact', label: 'Contact', icon: IconContact },
   { name: 'docs', to: '/docs', label: 'Docs', icon: IconDocs },
 ]
+
+// ── Instatus-style sliding nav pill ──
+const navLinksContainerRef = ref(null)
+const navLinkEls = {}
+const hoveredNav = ref(null)
+const navPill = ref({ left: 0, width: 0, visible: false })
+
+function resolveEl(el) {
+  if (!el) return null
+  if (el instanceof HTMLElement) return el
+  return el.$el instanceof HTMLElement ? el.$el : null
+}
+
+function setNavLinkRef(name, el) {
+  const node = resolveEl(el)
+  if (!node) {
+    delete navLinkEls[name]
+    return
+  }
+  navLinkEls[name] = node
+}
+
+const navPillStyle = computed(() => {
+  const { left, width, visible } = navPill.value
+  return {
+    width: `${Math.max(width, 0)}px`,
+    transform: `translate3d(${left}px, 0, 0)`,
+    opacity: visible ? 1 : 0,
+  }
+})
+
+function navLinkTextClass(name) {
+  if (hoveredNav.value === name || isActive(name)) {
+    return 'text-gray-900 dark:text-white'
+  }
+  return 'text-gray-500 dark:text-gray-400'
+}
+
+function measurePill(container, elMap, name, targetRef) {
+  const el = elMap[name]
+  if (!container || !el) {
+    targetRef.value = { left: 0, width: 0, visible: false }
+    return
+  }
+  const cRect = container.getBoundingClientRect()
+  const eRect = el.getBoundingClientRect()
+  targetRef.value = {
+    left: eRect.left - cRect.left,
+    width: eRect.width,
+    visible: true,
+  }
+}
+
+function onNavEnter(name) {
+  hoveredNav.value = name
+  measurePill(navLinksContainerRef.value, navLinkEls, name, navPill)
+}
+
+function onNavLeave() {
+  hoveredNav.value = null
+  const active = navLinks.find((l) => isActive(l.name))?.name
+  if (active) {
+    nextTick(() => measurePill(navLinksContainerRef.value, navLinkEls, active, navPill))
+  } else {
+    navPill.value = { ...navPill.value, visible: false }
+  }
+}
+
+function syncPills() {
+  const navTarget = hoveredNav.value || navLinks.find((l) => isActive(l.name))?.name
+  if (navTarget) {
+    measurePill(navLinksContainerRef.value, navLinkEls, navTarget, navPill)
+  } else {
+    navPill.value = { ...navPill.value, visible: false }
+  }
+}
+
+watch(
+  () => route.name,
+  () => {
+    hoveredNav.value = null
+    nextTick(syncPills)
+  },
+)
+
+watch(
+  () => [authStore.isAuthenticated, authChromeReady.value],
+  () => nextTick(() => requestAnimationFrame(syncPills)),
+)
+
+onMounted(() => {
+  authChromeReady.value = true
+  document.addEventListener('click', handleClickOutside)
+  document.addEventListener('keydown', handleSearchKeydown)
+  window.addEventListener('scroll', handleScroll, { passive: true })
+  window.addEventListener('resize', syncPills)
+  nextTick(() => {
+    requestAnimationFrame(syncPills)
+  })
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+  document.removeEventListener('keydown', handleSearchKeydown)
+  window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('resize', syncPills)
+})
 
 async function handleLogout() {
   await authStore.logout()
@@ -631,18 +727,35 @@ async function handleLogout() {
   -webkit-backdrop-filter: blur(20px) saturate(1.2);
 }
 
-/* ── Active nav link ── */
-.nav-link {
-  position: relative;
+/* ── Instatus-style sliding nav pill ── */
+.nav-links-container {
   isolation: isolate;
 }
 
-.nav-link .hover-bg {
+.nav-slider-pill {
+  left: 0;
   z-index: 0;
+  background: #ffffff;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(0, 0, 0, 0.04);
+  transition:
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.25s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+  will-change: transform, width;
 }
 
-.nav-link:hover .hover-bg {
-  opacity: 1;
+:root.dark .nav-slider-pill,
+.dark .nav-slider-pill {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: none;
+}
+
+.nav-link {
+  position: relative;
 }
 
 /* ── Hamburger lines ── */
