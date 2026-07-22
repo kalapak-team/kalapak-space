@@ -52,13 +52,6 @@
           </router-link>
         </div>
       </div>
-
-      <div class="hero-scroll-hint hidden sm:flex" data-hero>
-        <span class="scroll-dot" aria-hidden="true" />
-        <span class="text-[10px] font-medium uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">
-          Scroll
-        </span>
-      </div>
     </section>
 
     <!-- ═══════════════════ STATS (x.ai-style) ═══════════════════ -->
@@ -819,42 +812,6 @@ onBeforeUnmount(() => {
   );
 }
 
-.hero-scroll-hint {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.scroll-dot {
-  display: block;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: rgba(123, 47, 255, 0.55);
-  animation: scrollDot 2.2s ease-in-out infinite;
-}
-
-.dark .scroll-dot {
-  background: rgba(0, 212, 255, 0.55);
-}
-
-@keyframes scrollDot {
-  0%,
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  50% {
-    transform: translateY(10px);
-    opacity: 0.35;
-  }
-}
-
 /* ── Stats (x.ai-inspired) ── */
 .stats-section {
   position: relative;
@@ -1439,7 +1396,6 @@ onBeforeUnmount(() => {
   .blackhole-ring {
     animation: none;
   }
-  .scroll-dot,
   .animate-float {
     animation: none;
   }

@@ -1,24 +1,20 @@
 <template>
   <nav
-    class="fixed top-0 left-0 right-0 z-50 [transition:all_0.35s_ease]"
-    :class="[
-      isDocsPage
-        ? 'docs-nav'
-        : (scrolled ? 'nav-scrolled' : 'nav-top')
-    ]"
+    class="fixed top-0 left-0 right-0 z-50 transition-[background,border-color,backdrop-filter] duration-300"
+    :class="isDocsPage ? 'docs-nav' : (scrolled ? 'nav-scrolled' : 'nav-top')"
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div
-        class="flex items-center justify-between [transition:all_0.35s_ease]"
-        :class="isDocsPage ? 'h-[68px]' : (scrolled ? 'h-[55px]' : 'h-[90px]')"
+        class="flex items-center justify-between"
+        :class="isDocsPage ? 'h-[68px]' : 'h-[72px]'"
       >
 
         <!-- ── Logo ── -->
-        <router-link to="/" class="nav-logo group flex items-center gap-2.5 relative [transition:all_0.35s_ease]">
-          <img src="https://res.cloudinary.com/kalapak/image/upload/q_auto/f_auto/v1775860922/Logo_kalapak_om1ygl.png" alt="Kalapak Logo" class="rounded-full object-contain [transition:all_0.35s_cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]" :class="isDocsPage ? 'w-9 h-9' : (scrolled ? 'w-8 h-8 scale-95' : 'w-11 h-11')" />
-          <div class="flex flex-col leading-none [transition:all_0.35s_ease]" :class="isDocsPage ? '' : (scrolled ? 'scale-95' : 'scale-100')">
-            <span class="font-display font-bold tracking-tight text-gray-900 dark:text-white group-hover:text-brand-violet dark:group-hover:text-brand-cyan [transition:color_0.3s_ease]" :class="isDocsPage ? 'text-[15px]' : (scrolled ? 'text-[14px]' : 'text-[16px]')">Kalapak</span>
-            <span class="font-medium uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500 [transition:all_0.35s_ease]" :class="isDocsPage ? 'text-[9px]' : (scrolled ? 'text-[8px]' : 'text-[10px]')">Code Team</span>
+        <router-link to="/" class="nav-logo group flex items-center gap-2.5 relative">
+          <img src="https://res.cloudinary.com/kalapak/image/upload/q_auto/f_auto/v1775860922/Logo_kalapak_om1ygl.png" alt="Kalapak Logo" class="rounded-full object-contain transition-transform duration-300 group-hover:scale-[1.04]" :class="isDocsPage ? 'w-9 h-9' : 'w-10 h-10'" />
+          <div class="flex flex-col leading-none">
+            <span class="font-display font-bold tracking-tight text-[15px] text-gray-900 dark:text-white group-hover:text-brand-violet dark:group-hover:text-brand-cyan transition-colors duration-300">Kalapak</span>
+            <span class="font-medium uppercase tracking-[0.2em] text-[9px] text-gray-400 dark:text-gray-500">Code Team</span>
           </div>
           <template v-if="isDocsPage">
             <span class="hidden sm:block text-gray-300 dark:text-white/20 mx-1 text-xl font-thin">/</span>
