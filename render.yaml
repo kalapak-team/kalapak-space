@@ -34,9 +34,11 @@ services:
         generateValue: true
       - key: APP_DEBUG
         value: "false"
-      # Run Laravel migrations on each deploy so new tables/columns exist (e.g. series, collections).
+      # Migrations run delayed after boot (see docker-entrypoint.sh) to avoid OOM crash-loops on free tier.
       - key: RUN_MIGRATIONS
         value: "1"
+      - key: MIGRATE_DELAY_SECONDS
+        value: "60"
       - key: APP_URL
         value: https://api.kalapak-team.space
       - key: FRONTEND_URL

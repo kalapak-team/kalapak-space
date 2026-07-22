@@ -2,20 +2,56 @@ name: Website Keep Alive
 
 on:
   schedule:
+    # Every 5 minutes — Render free tier sleeps after ~15 min idle.
     - cron: '*/5 * * * *'
   workflow_dispatch:
 
 jobs:
   ping_server:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Ping Kalapak Team Website
         run: |
+          set -u
+
+          ping_url() {
+            local label="$1"
+            local url="$2"
+            local expect="$3"
+            local attempt code body
+            for attempt in 1 2 3 4 5; do
+              body="$(mktemp)"
+              code="$(curl -sS -o "$body" -w "%{http_code}" \
+                --connect-timeout 15 \
+                --max-time 90 \
+                --retry 0 \
+                "$url" || true)"
+              echo "$label attempt $attempt: HTTP ${code} ($url)"
+              if [ -n "$expect" ]; then
+                if [ "$code" = "200" ] && grep -q "$expect" "$body"; then
+                  rm -f "$body"
+                  return 0
+                fi
+              elif [ "$code" = "200" ]; then
+                rm -f "$body"
+                return 0
+              fi
+              rm -f "$body"
+              sleep $((attempt * 5))
+            done
+            echo "$label FAILED after retries"
+            return 1
+          }
+
           echo "==> Pinging frontend..."
-          curl -sS -o /dev/null -w "Frontend:        HTTP %{http_code} (%{time_total}s)\n" https://kalapak-team.space || true
+          curl -sS -o /dev/null -w "Frontend: HTTP %{http_code} (%{time_total}s)\n" \
+            --max-time 30 https://kalapak-team.space || true
 
-          echo "==> Pinging backend (custom domain)..."
-          curl -sS -o /dev/null -w "Backend custom:  HTTP %{http_code} (%{time_total}s)\n" https://api.kalapak-team.space/ping.php || true
+          echo "==> Waking backend (Render origin)..."
+          ping_url "Backend render" "https://kalapakspace-backends.onrender.com/ping.php" "pong"
 
-          echo "==> Pinging backend (Render domain)..."
-          curl -sS -o /dev/null -w "Backend render:  HTTP %{http_code} (%{time_total}s)\n" https://kalapakspace-backends.onrender.com/ping.php || true
+          echo "==> Warming Laravel via custom domain..."
+          # /up boots Laravel; tolerate cold-start delays after ping is healthy.
+          ping_url "Backend /up" "https://api.kalapak-team.space/up" "" || \
+          ping_url "Backend /api/team" "https://api.kalapak-team.space/api/team" "success" || true
