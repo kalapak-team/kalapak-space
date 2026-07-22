@@ -4,7 +4,7 @@
 
     <!-- ══ Left Sidebar ══ -->
     <aside
-      class="docs-sidebar fixed top-0 left-0 h-full w-64 flex-shrink-0 z-20 overflow-y-auto pt-[68px] transition-transform duration-300 ease-premium"
+      class="docs-sidebar scrollbar-docs fixed top-0 left-0 h-full w-64 flex-shrink-0 z-20 overflow-y-auto pt-[68px] transition-transform duration-300 ease-premium"
       :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
     >
       <div class="px-4 py-6">
@@ -234,7 +234,7 @@
     <!-- ══ Right: Copy markdown + On this page (TOC) ══ -->
     <aside
       v-if="currentDoc"
-      class="docs-toc hidden xl:block fixed right-0 top-0 w-72 h-full overflow-y-auto pt-[68px] z-10"
+      class="docs-toc scrollbar-docs hidden xl:block fixed right-0 top-0 w-72 h-full overflow-y-auto pt-[68px] z-10"
     >
       <div class="px-6 py-8">
         <button
