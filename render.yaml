@@ -34,11 +34,15 @@ services:
         generateValue: true
       - key: APP_DEBUG
         value: "false"
-      # Migrations run delayed after boot (see docker-entrypoint.sh) to avoid OOM crash-loops on free tier.
+      # Migrations off by default on free tier — concurrent migrate OOMs artisan serve.
+      # Run once manually from Render shell: php artisan migrate --force
       - key: RUN_MIGRATIONS
-        value: "1"
+        value: "0"
       - key: MIGRATE_DELAY_SECONDS
-        value: "60"
+        value: "120"
+      # Redis TLS + Predis blows the 512MB budget; file cache keeps the API alive.
+      - key: ALLOW_REDIS
+        value: "0"
       - key: APP_URL
         value: https://api.kalapak-team.space
       - key: FRONTEND_URL
@@ -89,9 +93,9 @@ services:
       - key: REDIS_PASSWORD
         sync: false # Set in Render dashboard
       - key: CACHE_DRIVER
-        value: redis
+        value: file
       - key: QUEUE_CONNECTION
-        value: redis
+        value: sync
       - key: SESSION_DRIVER
         value: database
       - key: TURNSTILE_SECRET_KEY

@@ -15,6 +15,11 @@ class DdosProtection
 
     public function handle(Request $request, Closure $next): Response
     {
+        // Health probes must never touch cache/Redis (starves single-threaded artisan serve).
+        if ($request->is('up', 'ping.php', 'ping')) {
+            return $next($request);
+        }
+
         try {
             $ip = $request->ip();
 

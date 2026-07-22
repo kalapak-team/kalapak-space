@@ -7,8 +7,13 @@ PORT=${PORT:-10000}
 
 export PGSSLMODE="${DB_SSLMODE:-prefer}"
 
-# Redis fallback: if CACHE_DRIVER=redis but no password, fall back to file.
-if [ "$CACHE_DRIVER" = "redis" ] || [ "$SESSION_DRIVER" = "redis" ]; then
+# Render free (~512MB): Redis TLS + migrate + artisan serve OOMs and crash-loops.
+# Prefer file/sync unless explicitly overridden with ALLOW_REDIS=1.
+if [ "$APP_ENV" = "production" ] && [ "${ALLOW_REDIS}" != "1" ]; then
+  echo "==> [Memory] Forcing CACHE_DRIVER=file QUEUE_CONNECTION=sync (set ALLOW_REDIS=1 to use Redis)."
+  export CACHE_DRIVER=file
+  export QUEUE_CONNECTION=sync
+elif [ "$CACHE_DRIVER" = "redis" ] || [ "$SESSION_DRIVER" = "redis" ]; then
   if [ "$APP_ENV" = "production" ] && [ -z "$REDIS_PASSWORD" ]; then
     echo "==> [Redis] No REDIS_PASSWORD in production — using file/sync drivers."
     export CACHE_DRIVER=file
@@ -40,18 +45,11 @@ chmod -R 775 storage bootstrap/cache 2>/dev/null || true
 
 run_migrations() {
   echo "==> [DB] DB_HOST=${DB_HOST} DB_DATABASE=${DB_DATABASE}"
-  if [ -z "${RUN_MIGRATIONS}" ] && [ "${APP_ENV}" = "production" ]; then
-    RUN_MIGRATIONS=1
-  fi
-  if [ "${RUN_MIGRATIONS}" = "1" ] || [ "${RUN_MIGRATIONS}" = "true" ]; then
-    # Skip heavy tinker schema bootstrap on every boot (OOM risk on Render free).
-    # Only migrate, with a tight memory cap so the OOM killer prefers this child.
-    echo "==> [DB] Running migrations (delayed, memory-capped)..."
-    if command -v timeout >/dev/null 2>&1; then
-      timeout "${MIGRATE_TIMEOUT:-90}" php -d memory_limit=128M artisan migrate --force --no-interaction 2>&1 || true
-    else
-      php -d memory_limit=128M artisan migrate --force --no-interaction 2>&1 || true
-    fi
+  echo "==> [DB] Running migrations (memory-capped)..."
+  if command -v timeout >/dev/null 2>&1; then
+    timeout "${MIGRATE_TIMEOUT:-90}" php -d memory_limit=96M artisan migrate --force --no-interaction 2>&1 || true
+  else
+    php -d memory_limit=96M artisan migrate --force --no-interaction 2>&1 || true
   fi
 }
 
@@ -59,18 +57,24 @@ run_migrations() {
 # concurrently with artisan serve — that OOMs and crash-loops (Cloudflare 502).
 if [ "$APP_ENV" = "production" ]; then
   echo "==> Caching config..."
-  php -d memory_limit=128M artisan config:cache 2>&1 || true
+  php -d memory_limit=96M artisan config:cache 2>&1 || true
 
-  # Delay migrations so health checks pass and RSS settles before migrate runs.
-  (
-    sleep "${MIGRATE_DELAY_SECONDS:-60}"
-    run_migrations
-  ) &
+  # Migrations are opt-in — delayed migrate still OOMs under traffic on free tier.
+  if [ "${RUN_MIGRATIONS}" = "1" ] || [ "${RUN_MIGRATIONS}" = "true" ]; then
+    (
+      sleep "${MIGRATE_DELAY_SECONDS:-120}"
+      run_migrations
+    ) &
+  else
+    echo "==> Skipping migrations (set RUN_MIGRATIONS=1 to enable delayed migrate)."
+  fi
 
   echo "==> Listening on 0.0.0.0:${PORT} (health: /ping.php, Laravel: /up)"
-  exec php artisan serve --host=0.0.0.0 --port="${PORT}" --no-reload
+  exec php -d memory_limit=192M artisan serve --host=0.0.0.0 --port="${PORT}" --no-reload
 fi
 
-run_migrations
+if [ "${RUN_MIGRATIONS}" = "1" ] || [ "${RUN_MIGRATIONS}" = "true" ]; then
+  run_migrations
+fi
 echo "==> Listening on 0.0.0.0:${PORT} (health: /ping.php, Laravel: /up)"
 exec php artisan serve --host=0.0.0.0 --port="${PORT}" --no-reload
