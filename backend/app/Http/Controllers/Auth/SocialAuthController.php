@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserResource;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -60,13 +59,14 @@ class SocialAuthController extends Controller
                 $email = (string) $googleUser->getEmail();
                 $usernameBase = Str::before($email, '@') ?: Str::slug((string) $googleUser->getName(), '_') ?: 'user';
                 $user = User::create([
-                    'name' => $googleUser->getName(),
+                    'name' => $googleUser->getName() ?: 'Google User',
                     'username' => User::generateUniqueUsername($usernameBase),
                     'email' => $email,
                     'google_id' => $googleUser->getId(),
                     'avatar' => $googleUser->getAvatar(),
-                    'password' => null,
+                    'password' => Str::random(64),
                     'role_id' => $memberRole->id,
+                    'email_verified_at' => now(),
                 ]);
             }
 
@@ -127,13 +127,14 @@ class SocialAuthController extends Controller
                     ?: Str::before($email, '@')
                     ?: Str::slug((string) ($githubUser->getName() ?? 'githubuser'), '_');
                 $user = User::create([
-                    'name' => $githubUser->getName() ?? $githubUser->getNickname(),
-                    'username' => User::generateUniqueUsername($usernameBase),
+                    'name' => $githubUser->getName() ?? $githubUser->getNickname() ?? 'GitHub User',
+                    'username' => User::generateUniqueUsername($usernameBase ?: 'user'),
                     'email' => $email,
                     'github_id' => $githubUser->getId(),
                     'avatar' => $githubUser->getAvatar(),
-                    'password' => null,
+                    'password' => Str::random(64),
                     'role_id' => $memberRole->id,
+                    'email_verified_at' => now(),
                 ]);
             }
 
