@@ -5,6 +5,9 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
+    // Prisma Postgres pooled connections reject DDL inside transactions.
+    public $withinTransaction = false;
+
     public function up(): void
     {
         Schema::create('roles', function (Blueprint $table) {

@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
+    public $withinTransaction = false;
     public function up(): void
     {
         // Safely create docs table if it was never created in production

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
 return new class extends Migration {
+    public $withinTransaction = false;
     public function up(): void
     {
         // 1. Add parent_id to doc_menus (Main Menu → Sub-Menu hierarchy)

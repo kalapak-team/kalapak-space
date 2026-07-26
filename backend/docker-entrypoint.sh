@@ -21,10 +21,11 @@ elif [ "$CACHE_DRIVER" = "redis" ] || [ "$SESSION_DRIVER" = "redis" ]; then
   fi
 fi
 
-# Web routes use the session middleware. Upstash Redis is for cache/queue only —
-# database sessions are reliable on Render and avoid Redis session driver failures.
-if [ "$APP_ENV" = "production" ]; then
-  export SESSION_DRIVER=database
+# Database sessions need the sessions table (created by migrate). Until then,
+# force file sessions so "/" does not 500. Opt in later with ALLOW_DB_SESSIONS=1.
+if [ "$APP_ENV" = "production" ] && [ "${ALLOW_DB_SESSIONS}" != "1" ]; then
+  echo "==> SESSION_DRIVER=file (set ALLOW_DB_SESSIONS=1 after migrations for database sessions)."
+  export SESSION_DRIVER=file
 fi
 
 if [ ! -f vendor/autoload.php ]; then
@@ -53,21 +54,24 @@ run_migrations() {
   fi
 }
 
-# Production on Render free tier (~512MB): never run migrate/config:cache
-# concurrently with artisan serve — that OOMs and crash-loops (Cloudflare 502).
+# Run migrations before serving so tables (e.g. sessions) exist on first request.
+# Set MIGRATE_DELAY_SECONDS>0 only on tiny hosts where migrate+serve OOMs.
 if [ "$APP_ENV" = "production" ]; then
+  if [ "${RUN_MIGRATIONS}" = "1" ] || [ "${RUN_MIGRATIONS}" = "true" ]; then
+    if [ "${MIGRATE_DELAY_SECONDS:-0}" -gt 0 ] 2>/dev/null; then
+      (
+        sleep "${MIGRATE_DELAY_SECONDS}"
+        run_migrations
+      ) &
+    else
+      run_migrations
+    fi
+  else
+    echo "==> Skipping migrations (set RUN_MIGRATIONS=1 to enable)."
+  fi
+
   echo "==> Caching config..."
   php -d memory_limit=96M artisan config:cache 2>&1 || true
-
-  # Migrations are opt-in — delayed migrate still OOMs under traffic on free tier.
-  if [ "${RUN_MIGRATIONS}" = "1" ] || [ "${RUN_MIGRATIONS}" = "true" ]; then
-    (
-      sleep "${MIGRATE_DELAY_SECONDS:-120}"
-      run_migrations
-    ) &
-  else
-    echo "==> Skipping migrations (set RUN_MIGRATIONS=1 to enable delayed migrate)."
-  fi
 
   echo "==> Listening on 0.0.0.0:${PORT} (health: /ping.php, Laravel: /up)"
   exec php -d memory_limit=192M artisan serve --host=0.0.0.0 --port="${PORT}" --no-reload
