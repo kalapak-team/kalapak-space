@@ -5,8 +5,10 @@ namespace App\Http\Controllers\PublicApi;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
+use App\Support\PublicApiCache;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ProjectController extends Controller
 {
@@ -53,27 +55,37 @@ class ProjectController extends Controller
         };
 
         $perPage = min(50, max(1, (int) $request->get('per_page', 12)));
-        $projects = $query->paginate($perPage);
+        $cacheKey = PublicApiCache::listKey('projects', $request->query());
 
-        return response()->json([
-            'success' => true,
-            'data' => ProjectResource::collection($projects),
-            'meta' => [
-                'current_page' => $projects->currentPage(),
-                'last_page' => $projects->lastPage(),
-                'per_page' => $projects->perPage(),
-                'total' => $projects->total(),
-            ],
-        ]);
+        $payload = Cache::remember($cacheKey, PublicApiCache::ttl(), function () use ($query, $perPage) {
+            $projects = (clone $query)->paginate($perPage);
+
+            return [
+                'success' => true,
+                'data' => ProjectResource::collection($projects)->resolve(),
+                'meta' => [
+                    'current_page' => $projects->currentPage(),
+                    'last_page' => $projects->lastPage(),
+                    'per_page' => $projects->perPage(),
+                    'total' => $projects->total(),
+                ],
+            ];
+        });
+
+        return response()->json($payload);
     }
 
     public function show(string $slug): JsonResponse
     {
-        $project = Project::with(['tags', 'creator', 'collection'])->where('slug', $slug)->firstOrFail();
+        $payload = Cache::remember(PublicApiCache::projectShowKey($slug), PublicApiCache::ttl(), function () use ($slug) {
+            $project = Project::with(['tags', 'creator', 'collection'])->where('slug', $slug)->firstOrFail();
 
-        return response()->json([
-            'success' => true,
-            'data' => new ProjectResource($project),
-        ]);
+            return [
+                'success' => true,
+                'data' => (new ProjectResource($project))->resolve(),
+            ];
+        });
+
+        return response()->json($payload);
     }
 }

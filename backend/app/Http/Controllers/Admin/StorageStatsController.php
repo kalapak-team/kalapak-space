@@ -255,10 +255,19 @@ class StorageStatsController extends Controller
                  LIMIT 10"
             );
 
-            // Neon free: 512 MB; Render/generic: 1 GB
+            // Neon free: 512 MB; Aiven hobby: often 1–5 GB; Render/generic: 1 GB
             $isNeon = str_contains($host, 'neon.tech');
-            $limit = $isNeon ? (512 * 1024 * 1024) : (1024 * 1024 * 1024);
-            $provider = $isNeon ? 'Neon' : 'PostgreSQL';
+            $isAiven = str_contains($host, 'aivencloud.com');
+            $limit = match (true) {
+                $isNeon => 512 * 1024 * 1024,
+                $isAiven => 1024 * 1024 * 1024,
+                default => 1024 * 1024 * 1024,
+            };
+            $provider = match (true) {
+                $isNeon => 'Neon',
+                $isAiven => 'Aiven',
+                default => 'PostgreSQL',
+            };
 
             return [
                 'configured' => true,

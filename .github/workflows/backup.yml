@@ -18,7 +18,7 @@ jobs:
           DB_URL: ${{ secrets.DB_URL }}
         run: |
           filename="backup-$(TZ=Asia/Phnom_Penh date +'%Y-%m-%d-%H%M').sql"
-          # Neon is PostgreSQL 18 — use matching client via official Docker image.
+          # Aiven / managed Postgres — use a pg_dump client version close to your server.
           docker run --rm \
             -e PGSSLMODE=require \
             postgres:18 \

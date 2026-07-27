@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\BlogPostResource;
 use App\Models\BlogCategory;
 use App\Models\BlogPost;
+use App\Support\PublicApiCache;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class BlogController extends Controller
 {
@@ -46,26 +48,38 @@ class BlogController extends Controller
         }
 
         $perPage = min(50, max(1, (int) $request->get('per_page', 9)));
-        $posts = $query->orderByRaw('COALESCE(published_at, created_at) DESC')->paginate($perPage);
+        $cacheKey = PublicApiCache::listKey('blog', $request->query());
 
-        return response()->json([
-            'success' => true,
-            'data' => BlogPostResource::collection($posts),
-            'meta' => [
-                'current_page' => $posts->currentPage(),
-                'last_page' => $posts->lastPage(),
-                'per_page' => $posts->perPage(),
-                'total' => $posts->total(),
-            ],
-        ]);
+        $payload = Cache::remember($cacheKey, PublicApiCache::ttl(), function () use ($query, $perPage) {
+            $posts = (clone $query)->orderByRaw('COALESCE(published_at, created_at) DESC')->paginate($perPage);
+
+            return [
+                'success' => true,
+                'data' => BlogPostResource::collection($posts)->resolve(),
+                'meta' => [
+                    'current_page' => $posts->currentPage(),
+                    'last_page' => $posts->lastPage(),
+                    'per_page' => $posts->perPage(),
+                    'total' => $posts->total(),
+                ],
+            ];
+        });
+
+        return response()->json($payload);
     }
 
     public function show(string $slug): JsonResponse
     {
-        $post = BlogPost::with(['author', 'category', 'series', 'approvedComments.user', 'approvedComments.replies'])
-            ->where('slug', $slug)
-            ->where('status', 'published')
-            ->firstOrFail();
+        $post = Cache::remember(
+            PublicApiCache::blogShowKey($slug),
+            PublicApiCache::ttl(),
+            function () use ($slug) {
+                return BlogPost::with(['author', 'category', 'series', 'approvedComments.user', 'approvedComments.replies'])
+                    ->where('slug', $slug)
+                    ->where('status', 'published')
+                    ->firstOrFail();
+            }
+        );
 
         $post->increment('views_count');
 
@@ -77,7 +91,9 @@ class BlogController extends Controller
 
     public function categories(): JsonResponse
     {
-        $categories = BlogCategory::withCount(['posts' => fn($q) => $q->where('status', 'published')])->get();
+        $categories = Cache::remember(PublicApiCache::KEY_BLOG_CATEGORIES, PublicApiCache::ttl(), function () {
+            return BlogCategory::withCount(['posts' => fn ($q) => $q->where('status', 'published')])->get();
+        });
 
         return response()->json([
             'success' => true,

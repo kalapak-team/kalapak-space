@@ -12,20 +12,28 @@ export PGSSLMODE="${DB_SSLMODE:-prefer}"
 if [ "$APP_ENV" = "production" ] && [ "${ALLOW_REDIS}" != "1" ]; then
   echo "==> [Memory] Forcing CACHE_DRIVER=file QUEUE_CONNECTION=sync (set ALLOW_REDIS=1 to use Redis)."
   export CACHE_DRIVER=file
+  export CACHE_STORE=file
   export QUEUE_CONNECTION=sync
-elif [ "$CACHE_DRIVER" = "redis" ] || [ "$SESSION_DRIVER" = "redis" ]; then
+  export SESSION_DRIVER=file
+elif [ "$CACHE_DRIVER" = "redis" ] || [ "$CACHE_STORE" = "redis" ] || [ "$SESSION_DRIVER" = "redis" ]; then
   if [ "$APP_ENV" = "production" ] && [ -z "$REDIS_PASSWORD" ]; then
     echo "==> [Redis] No REDIS_PASSWORD in production — using file/sync drivers."
     export CACHE_DRIVER=file
+    export CACHE_STORE=file
     export QUEUE_CONNECTION=sync
+    export SESSION_DRIVER=file
+  else
+    if [ "$CACHE_DRIVER" = "redis" ] || [ "$CACHE_STORE" = "redis" ]; then
+      export CACHE_DRIVER="${CACHE_DRIVER:-redis}"
+      export CACHE_STORE="${CACHE_STORE:-redis}"
+    fi
+    echo "==> [Redis] Upstash enabled (cache=${CACHE_STORE:-$CACHE_DRIVER}, session=${SESSION_DRIVER})."
   fi
 fi
 
-# Database sessions need the sessions table (created by migrate). Until then,
-# force file sessions so "/" does not 500. Opt in later with ALLOW_DB_SESSIONS=1.
-if [ "$APP_ENV" = "production" ] && [ "${ALLOW_DB_SESSIONS}" != "1" ]; then
-  echo "==> SESSION_DRIVER=file (set ALLOW_DB_SESSIONS=1 after migrations for database sessions)."
-  export SESSION_DRIVER=file
+# Legacy: database sessions only when explicitly opted in (redis sessions preferred with ALLOW_REDIS=1).
+if [ "$APP_ENV" = "production" ] && [ "${ALLOW_DB_SESSIONS}" = "1" ] && [ "${ALLOW_REDIS}" != "1" ]; then
+  export SESSION_DRIVER=database
 fi
 
 if [ ! -f vendor/autoload.php ]; then

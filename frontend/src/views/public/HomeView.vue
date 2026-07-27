@@ -6,7 +6,9 @@
     >
       <MilkyWayGalaxy />
 
-      <div class="absolute inset-0 hero-grid opacity-[0.04] dark:opacity-[0.06]" />
+      <div
+        class="absolute inset-0 hero-grid opacity-[0.04] dark:opacity-[0.06]"
+      />
 
       <div
         class="absolute top-1/4 -left-32 w-[280px] sm:w-[480px] h-[280px] sm:h-[480px] rounded-full bg-brand-violet/12 blur-[100px] sm:blur-[140px] animate-float pointer-events-none"
@@ -16,7 +18,9 @@
         style="animation-delay: 3s"
       />
 
-      <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center relative z-10 pt-16 pb-28">
+      <div
+        class="max-w-5xl mx-auto px-4 sm:px-6 text-center relative z-10 pt-16 pb-28"
+      >
         <p
           data-hero
           class="font-display text-sm sm:text-base font-semibold uppercase tracking-[0.35em] text-brand-violet dark:text-brand-cyan mb-6 sm:mb-8"
@@ -28,7 +32,8 @@
           data-hero
           class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[5.5rem] font-bold tracking-tightest mb-5 sm:mb-7 leading-[1.02]"
         >
-          <span class="text-gray-900 dark:text-white">Learning to be</span><br />
+          <span class="text-gray-900 dark:text-white">Learning to be</span
+          ><br />
           <span class="gradient-text">a pillar for one another</span>
         </h1>
 
@@ -36,8 +41,8 @@
           data-hero
           class="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-10 sm:mb-12 leading-relaxed"
         >
-          A student-driven engineering collective from Cambodia — building real-world
-          software with purpose, collaboration, and pride.
+          A student-driven engineering collective from Cambodia — building
+          real-world software with purpose, collaboration, and pride.
         </p>
 
         <div
@@ -133,7 +138,9 @@
     </section>
 
     <!-- ═══════════════════ FEATURED PROJECTS ═══════════════════ -->
-    <section class="py-16 sm:py-20 lg:py-28 relative z-10 bg-gray-50/60 dark:bg-dark-900/50">
+    <section
+      class="py-16 sm:py-20 lg:py-28 relative z-10 bg-gray-50/60 dark:bg-dark-900/50"
+    >
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div
           class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14 sm:mb-16"
@@ -150,8 +157,18 @@
             class="group inline-flex items-center gap-2 text-sm font-semibold text-brand-violet dark:text-brand-cyan hover:gap-3 transition-all duration-300 ease-premium"
           >
             View all projects
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
             </svg>
           </router-link>
         </div>
@@ -171,7 +188,9 @@
             <div
               class="surface-panel overflow-hidden hover:-translate-y-1.5 hover:shadow-xl dark:hover:shadow-glow/10"
             >
-              <div class="aspect-[16/10] overflow-hidden bg-gray-100 dark:bg-dark-700">
+              <div
+                class="aspect-[16/10] overflow-hidden bg-gray-100 dark:bg-dark-700"
+              >
                 <img
                   v-if="resolveMediaUrl(project.cover_image)"
                   :src="resolveMediaUrl(project.cover_image)"
@@ -182,7 +201,9 @@
                   v-else
                   class="w-full h-full flex items-center justify-center"
                 >
-                  <div class="w-14 h-14 rounded-xl bg-gradient-brand/10 flex items-center justify-center">
+                  <div
+                    class="w-14 h-14 rounded-xl bg-gradient-brand/10 flex items-center justify-center"
+                  >
                     <svg
                       class="w-7 h-7 text-brand-violet/40 dark:text-brand-cyan/40"
                       fill="none"
@@ -214,7 +235,9 @@
                 >
                   {{ project.title }}
                 </h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-4">
+                <p
+                  class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-4"
+                >
                   {{ project.description }}
                 </p>
                 <span
@@ -295,7 +318,9 @@
                 <p class="text-sm font-semibold text-gray-900 dark:text-white">
                   {{ team.length }}+ Members
                 </p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Full-stack developers</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  Full-stack developers
+                </p>
               </div>
             </div>
             <router-link to="/about" class="btn-secondary text-sm">
@@ -318,10 +343,14 @@
               >
                 {{ val.mark }}
               </div>
-              <h4 class="font-display font-bold text-gray-900 dark:text-white mb-1.5">
+              <h4
+                class="font-display font-bold text-gray-900 dark:text-white mb-1.5"
+              >
                 {{ val.title }}
               </h4>
-              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p
+                class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed"
+              >
                 {{ val.desc }}
               </p>
             </div>
@@ -331,7 +360,9 @@
     </section>
 
     <!-- ═══════════════════ LATEST BLOG ═══════════════════ -->
-    <section class="py-16 sm:py-20 lg:py-28 relative z-10 bg-gray-50/60 dark:bg-dark-900/50">
+    <section
+      class="py-16 sm:py-20 lg:py-28 relative z-10 bg-gray-50/60 dark:bg-dark-900/50"
+    >
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div
           class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14 sm:mb-16"
@@ -348,8 +379,18 @@
             class="group inline-flex items-center gap-2 text-sm font-semibold text-brand-violet dark:text-brand-cyan hover:gap-3 transition-all duration-300 ease-premium"
           >
             Read all articles
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
             </svg>
           </router-link>
         </div>
@@ -396,7 +437,9 @@
                 >
                   {{ post.title }}
                 </h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-3 mb-4 flex-1">
+                <p
+                  class="text-sm text-gray-500 dark:text-gray-400 line-clamp-3 mb-4 flex-1"
+                >
                   {{ post.excerpt }}
                 </p>
                 <div
@@ -537,7 +580,7 @@ const stats = [
     value: "∞",
     label: "lines of code",
     infinite: true,
-    labelHtml: "lines of <span class=\"stat-accent\">code</span>",
+    labelHtml: 'lines of <span class="stat-accent">code</span>',
   },
 ];
 

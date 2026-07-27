@@ -5,7 +5,9 @@ namespace App\Http\Controllers\PublicApi;
 use App\Http\Controllers\Controller;
 use App\Models\Doc;
 use App\Models\DocMenu;
+use App\Support\PublicApiCache;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 
 class DocController extends Controller
 {
@@ -15,7 +17,11 @@ class DocController extends Controller
      */
     public function nav(): JsonResponse
     {
-        return response()->json(['success' => true, 'data' => $this->loadNavTree()]);
+        $data = Cache::remember(PublicApiCache::KEY_DOCS_NAV, PublicApiCache::ttl(), function () {
+            return $this->loadNavTree()->toArray();
+        });
+
+        return response()->json(['success' => true, 'data' => $data]);
     }
 
     /**
@@ -70,36 +76,41 @@ class DocController extends Controller
      */
     public function index(): JsonResponse
     {
-        $docs = Doc::where('status', 'published')
-            ->whereNull('parent_id')
-            ->with([
-                'docMenu',
-                'children' => fn($q) => $q
-                    ->where('status', 'published')
-                    ->select('id', 'title', 'slug', 'parent_id', 'order_num', 'updated_at')
-                    ->orderBy('order_num')
-                    ->with([
-                        'children' => fn($q2) => $q2
-                            ->where('status', 'published')
-                            ->select('id', 'title', 'slug', 'parent_id', 'order_num', 'updated_at')
-                            ->orderBy('order_num')
-                    ])
-            ])
-            ->select('id', 'title', 'slug', 'category', 'category_order', 'order_num', 'parent_id', 'doc_menu_id', 'updated_at')
-            ->orderBy('category_order')
-            ->orderBy('order_num')
-            ->get()
-            ->groupBy(fn($d) => $d->docMenu?->name ?? $d->category ?? 'General');
+        $docs = Cache::remember(PublicApiCache::KEY_DOCS_INDEX, PublicApiCache::ttl(), function () {
+            return Doc::where('status', 'published')
+                ->whereNull('parent_id')
+                ->with([
+                    'docMenu',
+                    'children' => fn ($q) => $q
+                        ->where('status', 'published')
+                        ->select('id', 'title', 'slug', 'parent_id', 'order_num', 'updated_at')
+                        ->orderBy('order_num')
+                        ->with([
+                            'children' => fn ($q2) => $q2
+                                ->where('status', 'published')
+                                ->select('id', 'title', 'slug', 'parent_id', 'order_num', 'updated_at')
+                                ->orderBy('order_num'),
+                        ]),
+                ])
+                ->select('id', 'title', 'slug', 'category', 'category_order', 'order_num', 'parent_id', 'doc_menu_id', 'updated_at')
+                ->orderBy('category_order')
+                ->orderBy('order_num')
+                ->get()
+                ->groupBy(fn ($d) => $d->docMenu?->name ?? $d->category ?? 'General')
+                ->toArray();
+        });
 
         return response()->json(['success' => true, 'data' => $docs]);
     }
 
     public function show(string $slug): JsonResponse
     {
-        $doc = Doc::where('slug', $slug)
-            ->where('status', 'published')
-            ->with(['sections' => fn($q) => $q->orderBy('order_num')])
-            ->firstOrFail();
+        $doc = Cache::remember(PublicApiCache::docShowKey($slug), PublicApiCache::ttl(), function () use ($slug) {
+            return Doc::where('slug', $slug)
+                ->where('status', 'published')
+                ->with(['sections' => fn ($q) => $q->orderBy('order_num')])
+                ->firstOrFail();
+        });
 
         return response()->json(['success' => true, 'data' => $doc]);
     }

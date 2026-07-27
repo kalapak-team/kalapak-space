@@ -40,9 +40,15 @@ services:
         value: "0"
       - key: MIGRATE_DELAY_SECONDS
         value: "120"
-      # Redis TLS + Predis blows the 512MB budget; file cache keeps the API alive.
+      # Redis TLS + Predis — reduces Postgres query load on managed DB (Upstash).
       - key: ALLOW_REDIS
-        value: "0"
+        value: "1"
+      - key: CACHE_DRIVER
+        value: redis
+      - key: CACHE_STORE
+        value: redis
+      - key: SESSION_DRIVER
+        value: redis
       - key: APP_URL
         value: https://api.kalapak-team.space
       - key: FRONTEND_URL
@@ -55,26 +61,19 @@ services:
         value: stderr
       - key: DB_CONNECTION
         value: pgsql
+      # External Aiven PostgreSQL (set DB_PASSWORD and optionally DATABASE_URL in Render dashboard)
       - key: DB_HOST
-        fromDatabase:
-          name: kalapak-db
-          property: host
+        value: kalapak-db-kalapak-space.j.aivencloud.com
       - key: DB_PORT
-        fromDatabase:
-          name: kalapak-db
-          property: port
+        value: "16826"
       - key: DB_DATABASE
-        fromDatabase:
-          name: kalapak-db
-          property: database
+        value: defaultdb
       - key: DB_USERNAME
-        fromDatabase:
-          name: kalapak-db
-          property: user
+        value: avnadmin
       - key: DB_PASSWORD
-        fromDatabase:
-          name: kalapak-db
-          property: password
+        sync: false
+      - key: DATABASE_URL
+        sync: false
       - key: DB_SSLMODE
         value: require
       - key: SANCTUM_STATEFUL_DOMAINS
@@ -87,17 +86,13 @@ services:
       - key: REDIS_SCHEME
         value: tls
       - key: REDIS_HOST
-        value: living-tadpole-83117.upstash.io
+        value: humorous-flounder-79841.upstash.io
       - key: REDIS_PORT
         value: "6379"
       - key: REDIS_PASSWORD
         sync: false # Set in Render dashboard
-      - key: CACHE_DRIVER
-        value: file
       - key: QUEUE_CONNECTION
-        value: sync
-      - key: SESSION_DRIVER
-        value: database
+        value: redis
       - key: TURNSTILE_SECRET_KEY
         sync: false # Set manually: get from Cloudflare Dashboard → Turnstile → your site → Secret Key
       # ── Mail (required for Forgot Password emails) ──
@@ -162,11 +157,5 @@ services:
       - key: NUXT_PUBLIC_SITE_URL
         value: https://kalapak-team.space
 
-# -------------------------------------------------
-# PostgreSQL Database
-# -------------------------------------------------
-databases:
-  - name: kalapak-db
-    plan: free
-    databaseName: kalapak_db
-    user: kalapak_user
+# Database: Aiven PostgreSQL (configure via backend env vars above).
+# Remove or ignore any old Render Postgres (kalapak-db) service if you no longer use it.

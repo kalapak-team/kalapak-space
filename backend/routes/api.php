@@ -43,7 +43,9 @@ use App\Models\TeamMember;
 use App\Models\User;
 use App\Http\Resources\TeamMemberResource;
 use App\Services\SupabaseStorage;
+use App\Support\PublicApiCache;
 use Cloudinary\Cloudinary;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 
@@ -184,7 +186,10 @@ Route::get('/og/blog/{slug}', [OgMetaController::class, 'blogPost']);
 
 // Team
 Route::get('/team', function () {
-    $members = TeamMember::where('is_visible', true)->orderBy('display_order')->get();
+    $members = Cache::remember(PublicApiCache::KEY_TEAM, PublicApiCache::ttl(), function () {
+        return TeamMember::where('is_visible', true)->orderBy('display_order')->get();
+    });
+
     return response()->json([
         'success' => true,
         'data' => TeamMemberResource::collection($members),
@@ -193,9 +198,11 @@ Route::get('/team', function () {
 
 // Tags
 Route::get('/tags', function () {
+    $tags = Cache::remember(PublicApiCache::KEY_TAGS, PublicApiCache::ttl(), fn () => Tag::all());
+
     return response()->json([
         'success' => true,
-        'data' => Tag::all(),
+        'data' => $tags,
     ]);
 });
 

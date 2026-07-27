@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
+use App\Support\PublicApiCache;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -31,6 +32,8 @@ class SettingsController extends Controller
                 ['value' => $value]
             );
         }
+
+        PublicApiCache::forgetSettings();
 
         return response()->json([
             'success' => true,
