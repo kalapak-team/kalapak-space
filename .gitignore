@@ -6,6 +6,8 @@
 .env
 .env.backup
 .env.production
+scripts/restore.env.local
+scripts/.tmp-*.sql
 !frontend/.env.production
 
 # IDE
@@ -38,7 +40,7 @@ Thumbs.db
 /frontend/.output
 
 # Docker
-postgres_data/
+scripts/.tools/
 pgadmin_data/
 /public/storage
 /backend/public/storage
