@@ -138,6 +138,7 @@
         </div>
 
         <router-link
+          v-if="featuredPost?.slug"
           :to="`/blog/${featuredPost.slug}`"
           data-reveal
           class="group block relative surface-panel overflow-hidden hover:shadow-xl dark:hover:shadow-glow/10"
@@ -286,7 +287,7 @@
           class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
         >
           <router-link
-            v-for="(post, i) in displayPosts"
+            v-for="(post, i) in displayPosts.filter((p) => p?.slug)"
             :key="post.id"
             :to="`/blog/${post.slug}`"
             class="group flex flex-col surface-panel overflow-hidden hover:-translate-y-1.5 hover:shadow-xl dark:hover:shadow-glow/10"

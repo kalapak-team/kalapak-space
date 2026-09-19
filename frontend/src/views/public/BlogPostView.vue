@@ -300,13 +300,20 @@ const marked = new Marked(
 const route = useRoute()
 const config = useRuntimeConfig()
 const apiBase = useApiBase()
-const slug = computed(() => String(route.params.slug))
+const slug = computed(() => {
+  const raw = route.params.slug
+  const value = Array.isArray(raw) ? raw[0] : raw
+  if (!value || value === 'undefined' || value === 'null') return ''
+  return String(value)
+})
 const copied = ref(false)
 
 const { data: apiResponse, pending } = await useAsyncData(
-  () => `blog-post-${slug.value}`,
-  () =>
-    $fetch(`${apiBase}/blog/posts/${encodeURIComponent(slug.value)}`).catch(() => null),
+  () => `blog-post-${slug.value || 'missing'}`,
+  async () => {
+    if (!slug.value) return null
+    return $fetch(`${apiBase}/blog/posts/${encodeURIComponent(slug.value)}`).catch(() => null)
+  },
   { watch: [slug] },
 )
 

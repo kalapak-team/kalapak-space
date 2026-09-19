@@ -400,7 +400,7 @@
           class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
         >
           <router-link
-            v-for="(post, i) in posts"
+            v-for="(post, i) in posts.filter((p) => p?.slug)"
             :key="post.id"
             :to="`/blog/${post.slug}`"
             class="group block"

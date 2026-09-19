@@ -152,7 +152,7 @@
                     <span class="text-[9px] font-semibold text-gray-300 dark:text-gray-600">{{ filteredPosts.length }}</span>
                   </div>
                   <router-link
-                    v-for="(item, i) in filteredPosts"
+                    v-for="(item, i) in filteredPosts.filter((p) => p?.slug)"
                     :key="'b' + item.id"
                     :to="`/blog/${item.slug}`"
                     :ref="el => setItemRef(getGlobalIndex('post', i), el)"
@@ -729,6 +729,7 @@ function selectActive() {
 
   if (idx < offset + filteredPosts.value.length) {
     const item = filteredPosts.value[idx - offset]
+    if (!item?.slug) return
     saveRecent(query.value)
     router.push(`/blog/${item.slug}`)
     close()

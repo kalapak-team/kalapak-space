@@ -142,7 +142,12 @@ export const publicApi = {
   getProjects: (params) => api.get('/projects', { params }),
   getProject: (slug) => api.get(`/projects/${slug}`),
   getBlogPosts: (params) => api.get('/blog/posts', { params }),
-  getBlogPost: (slug) => api.get(`/blog/posts/${slug}`),
+  getBlogPost: (slug) => {
+    if (!slug || slug === 'undefined' || slug === 'null') {
+      return Promise.reject(new Error('Missing blog post slug'))
+    }
+    return api.get(`/blog/posts/${encodeURIComponent(slug)}`)
+  },
   getBlogCategories: () => api.get('/blog/categories'),
   getTeam: () => api.get('/team'),
   getTags: () => api.get('/tags'),
