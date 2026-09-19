@@ -567,6 +567,60 @@ const projects = ref([]);
 const posts = ref([]);
 const team = ref([]);
 
+async function loadHomeData() {
+  // Prefer allSettled so one slow/failing endpoint cannot blank the whole homepage.
+  const settled = await Promise.allSettled([
+    publicApi.getProjects({ per_page: 3, is_featured: true }),
+    publicApi.getBlogPosts({ per_page: 3 }),
+    publicApi.getTeam(),
+  ]);
+
+  if (settled[0].status === "fulfilled") {
+    projects.value = settled[0].value.data?.data || [];
+  }
+  if (settled[1].status === "fulfilled") {
+    posts.value = settled[1].value.data?.data || [];
+  }
+  if (settled[2].status === "fulfilled") {
+    const payload = settled[2].value.data;
+    team.value = payload?.data || payload || [];
+  }
+}
+
+// SSR + client: hydrate projects/team/blog into the first HTML response.
+const { data: homePayload } = await useAsyncData(
+  "home-public",
+  async () => {
+    const settled = await Promise.allSettled([
+      publicApi.getProjects({ per_page: 3, is_featured: true }),
+      publicApi.getBlogPosts({ per_page: 3 }),
+      publicApi.getTeam(),
+    ]);
+
+    return {
+      projects:
+        settled[0].status === "fulfilled"
+          ? settled[0].value.data?.data || []
+          : [],
+      posts:
+        settled[1].status === "fulfilled"
+          ? settled[1].value.data?.data || []
+          : [],
+      team:
+        settled[2].status === "fulfilled"
+          ? settled[2].value.data?.data || settled[2].value.data || []
+          : [],
+    };
+  },
+  { server: true, lazy: false },
+);
+
+if (homePayload.value) {
+  projects.value = homePayload.value.projects || [];
+  posts.value = homePayload.value.posts || [];
+  team.value = homePayload.value.team || [];
+}
+
 const statsSection = ref(null);
 const statsInView = ref(false);
 const statsAnimated = ref(false);
@@ -801,17 +855,13 @@ function runStatsAnimation() {
 let statsObserver = null;
 
 onMounted(async () => {
-  try {
-    const [projectsRes, postsRes, teamRes] = await Promise.all([
-      publicApi.getProjects({ per_page: 3, is_featured: true }),
-      publicApi.getBlogPosts({ per_page: 3 }),
-      publicApi.getTeam(),
-    ]);
-    projects.value = projectsRes.data.data || [];
-    posts.value = postsRes.data.data || [];
-    team.value = teamRes.data.data || teamRes.data || [];
-  } catch {
-    // Silently fail for public page
+  // Client fallback if SSR missed data (proxy cold start / transient API error).
+  if (!projects.value.length || !team.value.length || !posts.value.length) {
+    try {
+      await loadHomeData();
+    } catch {
+      // Public page stays resilient with whatever we already have.
+    }
   }
 
   if (statsSection.value && typeof IntersectionObserver !== "undefined") {

@@ -27,13 +27,13 @@ function resolveApiBaseURL() {
   if (typeof window !== 'undefined' && isProductionSiteHost(window.location.hostname)) {
     return '/api'
   }
-  // Server runtime (Nuxt SSR on Render)
+  // Server runtime (Nuxt SSR): always use absolute Laravel URL — relative /api breaks Node axios.
   if (typeof window === 'undefined') {
-    const proxyTarget = process.env.NUXT_API_PROXY_TARGET || process.env.BACKEND_URL
-    if (proxyTarget) {
-      return `${String(proxyTarget).replace(/\/$/, '')}/api`
-    }
-    return process.env.NUXT_PUBLIC_API_URL || process.env.VITE_API_URL || 'http://127.0.0.1:8000/api'
+    const proxyTarget =
+      process.env.NUXT_API_PROXY_TARGET ||
+      process.env.BACKEND_URL ||
+      'https://api.kalapak-team.space'
+    return `${String(proxyTarget).replace(/\/$/, '')}/api`
   }
 
   // Client runtime from Nuxt payload config
@@ -48,6 +48,7 @@ function resolveApiBaseURL() {
 
 const api = axios.create({
   baseURL: resolveApiBaseURL(),
+  timeout: 20000,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
