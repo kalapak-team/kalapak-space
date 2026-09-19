@@ -427,7 +427,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, nextTick, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { publicApi } from '@/services/api'
 import dayjs from 'dayjs'
@@ -451,6 +451,44 @@ const loading = ref(true)
 const search = ref('')
 const selectedCategory = ref('')
 const meta = ref({ current_page: 1, last_page: 1 })
+
+const { data: initialBlog, pending: initialPending } = await useAsyncData(
+  'blog-index',
+  async () => {
+    const settled = await Promise.allSettled([
+      publicApi.getBlogPosts({ page: 1, per_page: 10 }),
+      publicApi.getBlogCategories(),
+    ])
+    return {
+      posts:
+        settled[0].status === 'fulfilled'
+          ? settled[0].value.data?.data || []
+          : [],
+      meta:
+        settled[0].status === 'fulfilled'
+          ? settled[0].value.data?.meta || { current_page: 1, last_page: 1 }
+          : { current_page: 1, last_page: 1 },
+      categories:
+        settled[1].status === 'fulfilled'
+          ? settled[1].value.data?.data || []
+          : [],
+    }
+  },
+  { server: true },
+)
+
+if (initialBlog.value) {
+  posts.value = initialBlog.value.posts || []
+  meta.value = initialBlog.value.meta || { current_page: 1, last_page: 1 }
+  categories.value = initialBlog.value.categories || []
+  loading.value = false
+}
+
+watch(initialPending, (pending) => {
+  if (!pending && initialBlog.value) {
+    loading.value = false
+  }
+})
 
 const featuredPost = computed(() => posts.value.find((p) => p.is_featured))
 const displayPosts = computed(() => {
@@ -507,13 +545,20 @@ function goToPage(page) {
 }
 
 onMounted(async () => {
-  try {
-    const { data } = await publicApi.getBlogCategories()
-    categories.value = data.data || []
-  } catch {
-    // ignore
+  if (!categories.value.length) {
+    try {
+      const { data } = await publicApi.getBlogCategories()
+      categories.value = data.data || []
+    } catch {
+      // ignore
+    }
   }
-  fetchPosts()
+  if (!posts.value.length) {
+    await fetchPosts()
+  } else {
+    await nextTick()
+    refreshReveals()
+  }
 })
 </script>
 

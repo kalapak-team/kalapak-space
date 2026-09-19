@@ -113,6 +113,9 @@ return [
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),
             'database' => env('REDIS_DB', 0),
+            // Fail fast — hanging Redis makes every public API request spin forever.
+            'timeout' => (float) env('REDIS_TIMEOUT', 1.5),
+            'read_write_timeout' => (float) env('REDIS_READ_TIMEOUT', 1.5),
         ],
 
         'cache' => [
@@ -123,6 +126,8 @@ return [
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),
             'database' => env('REDIS_CACHE_DB', 0),
+            'timeout' => (float) env('REDIS_TIMEOUT', 1.5),
+            'read_write_timeout' => (float) env('REDIS_READ_TIMEOUT', 1.5),
         ],
 
     ],

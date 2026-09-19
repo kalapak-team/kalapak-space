@@ -442,6 +442,28 @@ const tags = ref([
   'TypeScript',
 ])
 
+const { data: initialProjects } = await useAsyncData(
+  'projects-index',
+  async () => {
+    try {
+      const { data } = await publicApi.getProjects({ page: 1, per_page: 10 })
+      return {
+        projects: data.data || [],
+        meta: data.meta || { current_page: 1, last_page: 1 },
+      }
+    } catch {
+      return { projects: [], meta: { current_page: 1, last_page: 1 } }
+    }
+  },
+  { server: true },
+)
+
+if (initialProjects.value) {
+  projects.value = initialProjects.value.projects || []
+  meta.value = initialProjects.value.meta || { current_page: 1, last_page: 1 }
+  loading.value = false
+}
+
 const statsSection = ref(null)
 const statsInView = ref(false)
 const statsReady = ref(false)
@@ -634,7 +656,11 @@ function openLink(url) {
 }
 
 onMounted(() => {
-  fetchProjects()
+  if (!projects.value.length) {
+    fetchProjects()
+  } else {
+    nextTick(() => refreshReveals())
+  }
 
   if (statsSection.value && typeof IntersectionObserver !== 'undefined') {
     statsObserver = new IntersectionObserver(
