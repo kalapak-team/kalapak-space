@@ -13,6 +13,9 @@ export default defineNuxtConfig({
   pages: true,
   devtools: { enabled: false },
   app: {
+    // New asset prefix invalidates browsers that cached HTML under old /_nuxt/*.js URLs
+    // (missing chunks were wrongly served as text/html with immutable cache).
+    buildAssetsDir: '/_assets/',
     head: {
       titleTemplate: "%s | Kalapak Code Team",
       meta: [
@@ -40,7 +43,7 @@ export default defineNuxtConfig({
     public: {
       // Prefer explicit env; in local dev fall back to Laravel directly to avoid /api 404 when proxy/env is missing.
       apiUrl: process.env.NUXT_PUBLIC_API_URL || process.env.VITE_API_URL || (isDev ? 'http://127.0.0.1:8000/api' : '/api'),
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://kalapak-team.space",
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://www.kalapak-team.space",
       turnstileSiteKey: process.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY || process.env.VITE_TURNSTILE_SITE_KEY || '0x4AAAAAAC4BOZhJInXTTfSR',
     },
   },
@@ -56,6 +59,15 @@ export default defineNuxtConfig({
     routeRules: {
       '/api/**': { proxy: `${apiProxyBase}/api/**` },
       '/storage/**': { proxy: `${apiProxyBase}/storage/**` },
+      // HTML must not be cached across deploys (stale HTML → missing /_nuxt hashes).
+      '/**': { headers: { 'cache-control': 'public, max-age=0, must-revalidate' } },
+      // Real files are CDN/static; this only applies when the asset handler runs.
+      '/_nuxt/**': {
+        headers: { 'cache-control': 'public, max-age=31536000, immutable' },
+      },
+      '/_assets/**': {
+        headers: { 'cache-control': 'public, max-age=31536000, immutable' },
+      },
     },
   },
   css: [

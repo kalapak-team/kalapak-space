@@ -30,6 +30,16 @@ function cleanup() {
 }
 
 export default defineEventHandler((event) => {
+  const path = event.path?.split('?')[0] || ''
+  // Never rate-limit hashed build assets — a single page loads many in parallel.
+  if (
+    path.startsWith('/_nuxt/') ||
+    path.startsWith('/_assets/') ||
+    path.startsWith('/favicon')
+  ) {
+    return
+  }
+
   const ip = getRequestIP(event, { xForwardedFor: true }) || 'unknown'
 
   cleanup()
