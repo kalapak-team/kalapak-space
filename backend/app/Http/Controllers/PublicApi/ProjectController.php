@@ -31,6 +31,13 @@ class ProjectController extends Controller
             $query->where('status', $status);
         }
 
+        if ($request->has('is_featured')) {
+            $featured = filter_var($request->get('is_featured'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+            if ($featured !== null) {
+                $query->where('is_featured', $featured);
+            }
+        }
+
         $creatorScoped = false;
         if ($request->filled('created_by')) {
             $userId = (int) $request->get('created_by');

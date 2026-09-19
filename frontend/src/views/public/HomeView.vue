@@ -578,6 +578,15 @@ async function loadHomeData() {
   if (settled[0].status === "fulfilled") {
     projects.value = settled[0].value.data?.data || [];
   }
+  // Fallback: if no featured projects, show latest projects instead of empty state.
+  if (!projects.value.length) {
+    try {
+      const { data } = await publicApi.getProjects({ per_page: 3 });
+      projects.value = data?.data || [];
+    } catch {
+      // keep empty
+    }
+  }
   if (settled[1].status === "fulfilled") {
     posts.value = settled[1].value.data?.data || [];
   }
@@ -597,11 +606,22 @@ const { data: homePayload } = await useAsyncData(
       publicApi.getTeam(),
     ]);
 
+    let projectRows =
+      settled[0].status === "fulfilled"
+        ? settled[0].value.data?.data || []
+        : [];
+
+    if (!projectRows.length) {
+      try {
+        const { data } = await publicApi.getProjects({ per_page: 3 });
+        projectRows = data?.data || [];
+      } catch {
+        projectRows = [];
+      }
+    }
+
     return {
-      projects:
-        settled[0].status === "fulfilled"
-          ? settled[0].value.data?.data || []
-          : [],
+      projects: projectRows,
       posts:
         settled[1].status === "fulfilled"
           ? settled[1].value.data?.data || []
